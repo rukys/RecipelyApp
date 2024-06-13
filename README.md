@@ -1,15 +1,12 @@
-
 # Recipely App
 
-Recipely aplikasi masakan harian yang akan menjadi asisten dapur Anda! Dengan Recipely, Anda dapat menjelajahi berbagai resep masakan dari seluruh dunia, menemukan inspirasi untuk hidangan harian, dan mempelajari cara memasak dengan mudah.
+Recipely is a daily cooking app that will be your kitchen assistant! With Recipely, you can explore a variety of recipes from around the world, find inspiration for your daily meals, and learn how to cook with ease.
 
 ![App Screenshot](https://firebasestorage.googleapis.com/v0/b/recipelyapp-28951.appspot.com/o/Group%2037020.png?alt=media&token=f30a5542-eb26-4acd-9199-c1ecdd744426)
-
 
 ## Demo App
 
 [![portfolio](https://firebasestorage.googleapis.com/v0/b/recipelyapp-28951.appspot.com/o/google-play-badge.png?alt=media&token=e722a9c7-aadb-4a9a-9101-e82bec675390)](https://play.google.com/store/apps/details?id=com.recipely)
-
 
 ## Tech Stack
 
@@ -23,7 +20,6 @@ Recipely aplikasi masakan harian yang akan menjadi asisten dapur Anda! Dengan Re
 - React Reanimated
 - Zustand
 - Axios
-
 
 ## Installation
 
