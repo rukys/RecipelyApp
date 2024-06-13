@@ -1,0 +1,69 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "assets/fonts/Sofia-Pro-Black-Italic.otf",
+      "sha1": "d8632297fd017fab89ec4f2e898f0368c6e2306d"
+    },
+    {
+      "path": "assets/fonts/Sofia-Pro-Black.otf",
+      "sha1": "2c329f57045fc027d0f338056a4a1b82c052f556"
+    },
+    {
+      "path": "assets/fonts/Sofia-Pro-Bold-Italic.otf",
+      "sha1": "f6034c6ee06e9984a5907b2079da86328773d2da"
+    },
+    {
+      "path": "assets/fonts/Sofia-Pro-Bold.otf",
+      "sha1": "3e77b75a32477f1f3f1121b2bbcb5128c017a92f"
+    },
+    {
+      "path": "assets/fonts/Sofia-Pro-ExtraLight-Italic.otf",
+      "sha1": "6b4448049bb38861ded48f733d64d343d94007e7"
+    },
+    {
+      "path": "assets/fonts/Sofia-Pro-ExtraLight.otf",
+      "sha1": "e6f648f07b02c82b3eda00058ee19e74ff8868b5"
+    },
+    {
+      "path": "assets/fonts/Sofia-Pro-Light-Italic.otf",
+      "sha1": "e59ad6ae539c35564e8304b5d56b4be544cd4e6d"
+    },
+    {
+      "path": "assets/fonts/Sofia-Pro-Light.otf",
+      "sha1": "844c27a9a4ed2defb0470b20351f8e89602d1b2f"
+    },
+    {
+      "path": "assets/fonts/Sofia-Pro-Medium-Italic.otf",
+      "sha1": "3f4366529b522863a58c568251a614f44d952cf2"
+    },
+    {
+      "path": "assets/fonts/Sofia-Pro-Medium.otf",
+      "sha1": "031fbc487fedfb1d112f5ee21d74dd5c91b8c240"
+    },
+    {
+      "path": "assets/fonts/Sofia-Pro-Regular-Italic.otf",
+      "sha1": "56e8215ce8c730593280ed7404c0549b33778e21"
+    },
+    {
+      "path": "assets/fonts/Sofia-Pro-Regular.otf",
+      "sha1": "a316b3beca0376331f497c9c44a33224512c5fe9"
+    },
+    {
+      "path": "assets/fonts/Sofia-Pro-Semi-Bold-Italic.otf",
+      "sha1": "1d11e800a62164daac04899c073183a284e7cba6"
+    },
+    {
+      "path": "assets/fonts/Sofia-Pro-Semi-Bold.otf",
+      "sha1": "cc5717c99183d0009be73de5f938680aea962c7f"
+    },
+    {
+      "path": "assets/fonts/Sofia-Pro-UltraLight-Italic.otf",
+      "sha1": "2c0c7597e54ef9aae677896add40b323e3677c8f"
+    },
+    {
+      "path": "assets/fonts/Sofia-Pro-UltraLight.otf",
+      "sha1": "f87854d06dc363d591081bc039e7b57fd96ec4eb"
+    }
+  ]
+}
