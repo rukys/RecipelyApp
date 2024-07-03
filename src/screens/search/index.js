@@ -9,14 +9,12 @@ import {
   Header,
   InputSearch,
 } from '../../components';
-import {useNavigation} from '@react-navigation/native';
 import useRecipeSearch from '../../hooks/use-recipe-search';
 import ShimmerRecomended from './shimmer/shimmer-recomended';
 import ShimmerSearch from './shimmer/shimmer-search';
 import useRecomended from '../../hooks/use-recomended';
 
-export default function SearchScreen() {
-  const navigation = useNavigation();
+export default function SearchScreen({navigation}) {
   const [form, setForm] = useForm({
     keyword: '',
   });

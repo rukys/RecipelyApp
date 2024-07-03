@@ -10,23 +10,20 @@ import {
   Text,
 } from 'react-native';
 import moment from 'moment';
-import {useNavigation} from '@react-navigation/native';
+import {launchImageLibrary} from 'react-native-image-picker';
 import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
+import storage from '@react-native-firebase/storage';
 import RadioGroup from 'react-native-radio-buttons-group';
 import DatePicker from 'react-native-date-picker';
 import ReactNativeModal from 'react-native-modal';
+import Spinner from 'react-native-loading-spinner-overlay';
 import {colors, fonts, showMessage} from '../../utils';
 import {Button, Gap, Header, Input} from '../../components';
-import {
-  // IconEditPhoto,
-  ImgDefault,
-} from '../../assets';
+import {IconEditPhoto, ImgDefault} from '../../assets';
 import {globalStore, userStore} from '../../stores';
 
-export default function ProfileDetailScreen() {
-  const navigation = useNavigation();
-
+export default function ProfileDetailScreen({navigation}) {
   const getUser = userStore(state => state.user);
   const isLoading = globalStore(state => state.loading);
   const setIsLoading = globalStore(state => state.setLoading);
@@ -35,29 +32,37 @@ export default function ProfileDetailScreen() {
   const [email, setEmail] = useState('');
   const [gender, setGender] = useState(null);
   const [dob, setDob] = useState(null);
+  const [photo, setPhoto] = useState('');
+  const [isEmailVerified, setIsEmailVerified] = useState(false);
+  const [spinner, setSpinner] = useState(false);
 
   const [date, setDate] = useState(new Date());
 
   const [isVisibleDOB, setIsVisibleDOB] = useState(false);
   const [isVisibleGender, setIsVisibleGender] = useState(false);
 
-  const getEmailVerified = auth().currentUser.emailVerified;
-
   const disableButton = fullName === '' || gender === null || dob === null;
 
   const submitSendEmailVerification = () => {
-    setIsLoading(true);
-    setTimeout(() => {
-      auth()
-        .currentUser.sendEmailVerification()
-        .then(() => {
-          setIsLoading(false);
-          showMessage(
-            'Verifikasi email berhasil dikirim, cek email Anda',
-            'success',
-          );
-        });
-    }, 1500);
+    auth().onAuthStateChanged(user => {
+      if (user.emailVerified) {
+        setIsEmailVerified(true);
+        showMessage('Email sudah diverifikasi', 'success');
+      } else {
+        setIsLoading(true);
+        setTimeout(() => {
+          auth()
+            .currentUser.sendEmailVerification()
+            .then(() => {
+              setIsLoading(false);
+              showMessage(
+                'Verifikasi email berhasil dikirim, cek email Anda',
+                'success',
+              );
+            });
+        }, 1500);
+      }
+    });
   };
 
   const getDataFromDatabase = () => {
@@ -71,6 +76,7 @@ export default function ProfileDetailScreen() {
           setEmail(getData?.email);
           setGender(getData?.gender);
           setDob(getData?.dob);
+          setPhoto(getData?.photo);
         }
       });
   };
@@ -89,7 +95,43 @@ export default function ProfileDetailScreen() {
       });
   };
 
+  const onLaunchImageLibrary = () => {
+    const reference = storage().ref(`users/${getUser.uid}.png`);
+
+    launchImageLibrary({quality: 0.5}, response => {
+      if (response.didCancel || response.errorMessage) {
+        // cancel choose photo
+      } else {
+        setSpinner(true);
+        const source = {uri: response.assets[0].uri};
+        const task = reference.putFile(source?.uri);
+        task.then(res => {
+          const getUrl = storage()
+            .ref(`users/${res.metadata.name}`)
+            .getDownloadURL();
+
+          getUrl.then(result => {
+            database()
+              .ref('/users/' + getUser.uid)
+              .update({
+                photo: result,
+              })
+              .then(() => {
+                getDataFromDatabase();
+                showMessage('Foto berhasil di ubah', 'success');
+                setSpinner(false);
+              });
+          });
+        });
+      }
+    });
+  };
+
   useEffect(() => {
+    auth().onAuthStateChanged(user => {
+      setIsEmailVerified(user.emailVerified);
+    });
+
     getDataFromDatabase();
 
     return () => getDataFromDatabase();
@@ -106,10 +148,15 @@ export default function ProfileDetailScreen() {
         />
         <Gap height={36} />
         <View style={styles.containerAvatar}>
-          <Image source={ImgDefault} style={styles.avatar} />
-          {/* <TouchableOpacity style={styles.editPhoto}>
+          <Image
+            source={photo ? {uri: photo} : ImgDefault}
+            style={styles.avatar}
+          />
+          <TouchableOpacity
+            style={styles.editPhoto}
+            onPress={onLaunchImageLibrary}>
             <IconEditPhoto height={32} width={32} />
-          </TouchableOpacity> */}
+          </TouchableOpacity>
         </View>
         <Gap height={24} />
         <View style={styles.content}>
@@ -122,6 +169,7 @@ export default function ProfileDetailScreen() {
               containerStyle={styles.containerInput}
               inputStyle={styles.input}
               onChangeText={val => setFullName(val)}
+              placeholderColor={colors.textPrimary}
             />
           </View>
           <Gap height={16} />
@@ -134,8 +182,9 @@ export default function ProfileDetailScreen() {
               containerStyle={styles.containerInput}
               inputStyle={styles.input}
               root={styles.flex}
+              placeholderColor={colors.textPrimary}
             />
-            {!getEmailVerified ? (
+            {!isEmailVerified ? (
               <>
                 <Gap width={8} />
                 <Button
@@ -155,8 +204,13 @@ export default function ProfileDetailScreen() {
           <TouchableOpacity
             style={styles.containerDOB}
             onPress={() => setIsVisibleGender(true)}>
-            <Text style={gender === null ? styles.textPlacDOB : styles.label}>
-              {gender === null
+            <Text
+              style={
+                gender === null || gender === undefined
+                  ? styles.textPlacDOB
+                  : styles.label
+              }>
+              {gender === null || gender === undefined
                 ? 'Masukkan jenis kelamin Anda'
                 : gender === 0
                 ? 'Laki-laki'
@@ -171,8 +225,15 @@ export default function ProfileDetailScreen() {
           <TouchableOpacity
             style={styles.containerDOB}
             onPress={() => setIsVisibleDOB(true)}>
-            <Text style={dob === null ? styles.textPlacDOB : styles.label}>
-              {dob === null ? 'Masukkan tanggal lahir Anda' : dob}
+            <Text
+              style={
+                dob === null || dob === undefined
+                  ? styles.textPlacDOB
+                  : styles.label
+              }>
+              {dob === null || dob === undefined
+                ? 'Masukkan tanggal lahir Anda'
+                : dob}
             </Text>
           </TouchableOpacity>
         </View>
@@ -267,6 +328,12 @@ export default function ProfileDetailScreen() {
           </View>
         </View>
       </ReactNativeModal>
+
+      <Spinner
+        visible={spinner}
+        textContent={'Mohon tunggu...'}
+        textStyle={styles.spinnerTextStyle}
+      />
     </>
   );
 }
@@ -389,5 +456,8 @@ const styles = StyleSheet.create({
     // height: 100,
     borderRadius: 16,
     padding: 16,
+  },
+  spinnerTextStyle: {
+    color: colors.white,
   },
 });

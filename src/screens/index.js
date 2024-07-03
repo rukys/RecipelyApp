@@ -14,7 +14,10 @@ import ProfileDetailScreen from './profile-detail';
 import AboutScreen from './about';
 import FaqScreen from './faq';
 import ContactMeScreen from './contact-me';
-import PrivacyPolicyScreen from './privacy-policy';
+import ForgotPasswordScreen from './forgot-password';
+import DeleteAccountScreen from './delete-account';
+import WebviewScreen from './webview';
+import UpdateVersionScreen from './update-version';
 
 export {
   HomeScreen,
@@ -33,5 +36,8 @@ export {
   AboutScreen,
   FaqScreen,
   ContactMeScreen,
-  PrivacyPolicyScreen,
+  ForgotPasswordScreen,
+  DeleteAccountScreen,
+  WebviewScreen,
+  UpdateVersionScreen,
 };

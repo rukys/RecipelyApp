@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, {useEffect, useState} from 'react';
 import {useDebounce} from 'use-debounce';
-import {useNavigation} from '@react-navigation/native';
 import {RefreshControl, ScrollView, StyleSheet, Text, View} from 'react-native';
 import {colors, fonts, useForm} from '../../utils';
 import {
@@ -16,9 +15,7 @@ import {globalStore} from '../../stores';
 import {ImgFoody} from '../../assets';
 import useFavorite from '../../hooks/use-favorite';
 
-export default function FavoriteScreen() {
-  const navigation = useNavigation();
-
+export default function FavoriteScreen({navigation}) {
   const [form, setForm] = useForm({
     keyword: '',
   });

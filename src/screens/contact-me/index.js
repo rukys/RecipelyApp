@@ -2,11 +2,9 @@ import React from 'react';
 import {ScrollView, StyleSheet, Text, View} from 'react-native';
 import {colors, fonts} from '../../utils';
 import {Gap, Header} from '../../components';
-import {useNavigation} from '@react-navigation/native';
 import {IconEmail, IconWa} from '../../assets';
 
-export default function ContactMeScreen() {
-  const navigation = useNavigation();
+export default function ContactMeScreen({navigation}) {
   return (
     <ScrollView style={styles.page}>
       <Header

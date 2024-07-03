@@ -45,6 +45,11 @@ const globalStore = create(set => ({
   setListFavorite: data => {
     set({listFavorite: data});
   },
+
+  remoteSetting: {},
+  setRemoteSetting: data => {
+    set({remoteSetting: data});
+  },
 }));
 
 export default globalStore;

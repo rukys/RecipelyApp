@@ -2,7 +2,10 @@ import React from 'react';
 import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {colors, fonts} from '../../utils';
-import {IconArrowRight, ImgDefault} from '../../assets';
+import {
+  // IconArrowRight,
+  ImgDefault,
+} from '../../assets';
 import Gap from '../gap';
 
 const CardProfileDetail = ({img, fullName, email, onPress}) => {
@@ -18,9 +21,9 @@ const CardProfileDetail = ({img, fullName, email, onPress}) => {
         <Text style={styles.textFullname}>{fullName}</Text>
         <Text style={styles.textEmail}>{email}</Text>
       </View>
-      <TouchableOpacity style={styles.containerRight}>
+      {/* <TouchableOpacity style={styles.containerRight}>
         <IconArrowRight />
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </TouchableOpacity>
   );
 };

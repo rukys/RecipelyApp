@@ -1,14 +1,20 @@
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React from 'react';
-import {IconArrowLeft} from '../../assets';
+import {IconArrowLeft, IconArrowLeftWhite} from '../../assets';
 import {colors, fonts} from '../../utils';
 
-const Header = ({title, onPressBack, isHideLeft = false, textStyle}) => {
+const Header = ({
+  isWhite = false,
+  title,
+  onPressBack,
+  isHideLeft = false,
+  textStyle,
+}) => {
   return (
     <View style={styles.container}>
       {!isHideLeft ? (
         <TouchableOpacity onPress={onPressBack} style={styles.back}>
-          <IconArrowLeft />
+          {isWhite ? <IconArrowLeftWhite /> : <IconArrowLeft />}
         </TouchableOpacity>
       ) : null}
       <View style={styles.flex}>

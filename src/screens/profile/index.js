@@ -1,33 +1,43 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import {StyleSheet, Switch, Text, TouchableOpacity, View} from 'react-native';
+import {
+  StyleSheet,
+  // Switch,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
-import ReactNativeModal from 'react-native-modal';
-import {colors, fonts, showMessage} from '../../utils';
 import {
-  Button,
+  colors,
+  fonts,
+  // showMessage,
+} from '../../utils';
+import {
   CardProfileDetail,
   CardProfileList,
   Gap,
   Header,
+  ModalConfirm,
 } from '../../components';
 import {globalStore, userStore} from '../../stores';
 import {
   IconChef2,
-  // IconContactMe,
+  IconContactMe,
   IconDanger,
+  IconDeleteAccount,
   IconHelp,
   // IconLanguage,
   IconLogout,
-  IconNotif,
+  // IconNotif,
+  IconProfile,
 } from '../../assets';
-import {useNavigation} from '@react-navigation/native';
+import useRemoteSetting from '../../hooks/use-remote-setting';
 
-export default function ProfileScreen() {
-  const navigation = useNavigation();
-
-  const [isSwitch, setIsSwitch] = useState(false);
+export default function ProfileScreen({navigation}) {
+  // const [isSwitch, setIsSwitch] = useState(false);
+  const [photo, setPhoto] = useState(false);
   // const [language, setLanguage] = useState('id');
 
   const getUser = userStore(state => state.user);
@@ -37,24 +47,14 @@ export default function ProfileScreen() {
   const isLoading = globalStore(state => state.loading);
   const setIsLoading = globalStore(state => state.setLoading);
 
-  const onNavigateAbout = () => {
-    navigation.navigate('AboutScreen');
+  const {remoteSetting} = useRemoteSetting();
+
+  const onNavigateListMenu = screenName => {
+    navigation.navigate(screenName);
   };
 
-  const onNavigateFaq = () => {
-    navigation.navigate('FaqScreen');
-  };
-
-  // const onNavigateContactMe = () => {
-  //   navigation.navigate('ContactMeScreen');
-  // };
-
-  const onNavigateProfileDetail = () => {
-    navigation.navigate('ProfileDetailScreen');
-  };
-
-  const onNavigatePrivacyPolicy = () => {
-    navigation.navigate('PrivacyPolicyScreen');
+  const onNavigateWebview = (valUrl, title) => {
+    navigation.navigate('WebviewScreen', {url: valUrl, titleHeader: title});
   };
 
   const onSubmitLogout = () => {
@@ -64,32 +64,32 @@ export default function ProfileScreen() {
   const getDataFromDatabase = () => {
     database()
       .ref('/users/' + getUser.uid)
-      .once('value')
-      .then(snapshot => {
+      .on('value', snapshot => {
         if (snapshot.val()) {
           const getData = snapshot.val();
-          setIsSwitch(getData?.isNotif);
+          setPhoto(getData?.photo);
+          // setIsSwitch(getData?.isNotif);
         }
       });
   };
 
-  const onChangeRuleNotification = () => {
-    const newRule = !isSwitch;
-    database()
-      .ref('/users/' + getUser.uid)
-      .update({
-        isNotif: newRule,
-      })
-      .then(() => {
-        setIsSwitch(newRule);
-        showMessage(
-          newRule
-            ? 'Notifkasi berhasil di bunyikan'
-            : 'Notifkasi berhasil di senyapkan',
-          'success',
-        );
-      });
-  };
+  // const onChangeRuleNotification = () => {
+  //   const newRule = !isSwitch;
+  //   database()
+  //     .ref('/users/' + getUser.uid)
+  //     .update({
+  //       isNotif: newRule,
+  //     })
+  //     .then(() => {
+  //       setIsSwitch(newRule);
+  //       showMessage(
+  //         newRule
+  //           ? 'Notifkasi berhasil di bunyikan'
+  //           : 'Notifkasi berhasil di senyapkan',
+  //         'success',
+  //       );
+  //     });
+  // };
 
   const onChangeLogout = () => {
     setIsLoading(true);
@@ -122,10 +122,11 @@ export default function ProfileScreen() {
         <CardProfileDetail
           fullName={getUser?.fullName}
           email={getUser?.email}
-          onPress={onNavigateProfileDetail}
+          img={photo}
+          onPress={() => onNavigateListMenu('ProfileDetailScreen')}
         />
         <Gap height={24} />
-        <CardProfileList
+        {/* <CardProfileList
           onPress={() => {
             onChangeRuleNotification();
           }}
@@ -141,27 +142,42 @@ export default function ProfileScreen() {
               }}
             />
           }
-        />
+        /> */}
         {/* <CardProfileList title="Ganti Bahasa" icon={<IconLanguage />} /> */}
         <CardProfileList
-          title="Kebijakan dan Privasi"
-          icon={<IconDanger />}
-          onPress={onNavigatePrivacyPolicy}
+          title="Ubah Profil"
+          icon={<IconProfile />}
+          onPress={() => onNavigateListMenu('ProfileDetailScreen')}
+        />
+        <CardProfileList
+          title="Tentang Aplikasi"
+          icon={<IconChef2 />}
+          onPress={() => onNavigateListMenu('AboutScreen')}
         />
         <CardProfileList
           title="F.A.Q"
           icon={<IconHelp />}
-          onPress={onNavigateFaq}
+          onPress={() => onNavigateListMenu('FaqScreen')}
         />
-        {/* <CardProfileList
+        <CardProfileList
           title="Hubungi Kami"
           icon={<IconContactMe />}
-          onPress={onNavigateContactMe}
-        /> */}
+          onPress={() => onNavigateListMenu('ContactMeScreen')}
+        />
         <CardProfileList
-          title="Tentang Aplikasi"
-          icon={<IconChef2 />}
-          onPress={onNavigateAbout}
+          title="Kebijakan dan Privasi"
+          icon={<IconDanger />}
+          onPress={() => {
+            onNavigateWebview(
+              remoteSetting?.url_privacy,
+              'Kebijakan dan Privasi',
+            );
+          }}
+        />
+        <CardProfileList
+          title="Hapus Akun"
+          icon={<IconDeleteAccount />}
+          onPress={() => onNavigateListMenu('DeleteAccountScreen')}
         />
         <TouchableOpacity
           style={styles.containerLogout}
@@ -173,34 +189,17 @@ export default function ProfileScreen() {
         </TouchableOpacity>
       </View>
 
-      <ReactNativeModal
-        isVisible={visible}
-        onBackdropPress={() => setVisible(false)}>
-        <View style={styles.containerModal}>
-          <Text style={styles.titleModal}>Konfirmasi Keluar</Text>
-          <Gap height={5} />
-          <Text style={styles.titlSubeModal}>
-            Apakah Anda yakin ingin keluar?
-          </Text>
-          <Gap height={36} />
-          <View style={styles.row}>
-            <Button
-              style={[styles.button, styles.buttonCancel]}
-              textStyle={styles.textButtonCancel}
-              type="text"
-              title="Tidak"
-              onPress={() => setVisible(false)}
-            />
-            <Gap width={16} />
-            <Button
-              style={styles.button}
-              title="Ya"
-              onPress={onChangeLogout}
-              isLoading={isLoading}
-            />
-          </View>
-        </View>
-      </ReactNativeModal>
+      <ModalConfirm
+        visible={visible}
+        isLoading={isLoading}
+        buttonTextRight="Ya"
+        buttonTextLeft="Tidak"
+        titleModal="Konfirmasi Keluar"
+        subTitleModal="Apakah Anda yakin ingin keluar aplikasi?"
+        onBackdropPress={() => setVisible(false)}
+        onCancel={() => setVisible(false)}
+        onPress={onChangeLogout}
+      />
     </>
   );
 }
@@ -226,36 +225,5 @@ const styles = StyleSheet.create({
   },
   row: {
     flexDirection: 'row',
-  },
-  containerModal: {
-    padding: 16,
-    backgroundColor: colors.white,
-    borderRadius: 16,
-  },
-  titleModal: {
-    fontFamily: fonts.SofiaProBold,
-    fontSize: 16,
-    color: colors.textPrimary,
-  },
-  titlSubeModal: {
-    fontFamily: fonts.SofiaPro,
-    fontSize: 14,
-    color: colors.textPrimary,
-  },
-  textButton: {
-    color: colors.textPrimary,
-  },
-  button: {
-    flex: 1,
-  },
-  buttonCancel: {
-    backgroundColor: colors.white,
-    borderColor: colors.textPrimary,
-    borderWidth: 1,
-  },
-  textButtonCancel: {
-    fontFamily: fonts.SofiaProBold,
-    color: colors.textPrimary,
-    // fontSize: 14,
   },
 });

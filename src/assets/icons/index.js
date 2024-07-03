@@ -18,6 +18,7 @@ import NavProfile from './NavProfile.svg';
 import NavProfileFill from './NavProfileFill.svg';
 import IconBolt from './bolt.svg';
 import IconArrowLeft from './arrow-left.svg';
+import IconArrowLeftWhite from './arrow-left-white.svg';
 import IconSearch from './search.svg';
 import IconArrowRight from './arrow-right.svg';
 import IconRectangle from './rectangle.svg';
@@ -31,8 +32,12 @@ import IconContactMe from './contact-me.svg';
 import IconDelete from './icon-delete.svg';
 import IconEmail from './icon-email.svg';
 import IconWa from './icon-wa.svg';
+import IconDeleteAccount from './icon-delete-account.svg';
+import IconProfile from './icon-profile.svg';
 
 export {
+  IconDeleteAccount,
+  IconProfile,
   IconWa,
   IconEmail,
   IconDelete,
@@ -47,6 +52,7 @@ export {
   IconRectangle,
   IconSearch,
   IconArrowLeft,
+  IconArrowLeftWhite,
   IconBolt,
   IconChef,
   IconEye,

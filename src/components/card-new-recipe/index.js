@@ -3,13 +3,20 @@ import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import Gap from '../gap';
 import {colors, fonts} from '../../utils';
-import {IconBolt, IconDot, IconHeartMini, IconTimeCircle} from '../../assets';
+import {
+  IconBolt,
+  IconCalories,
+  IconDot,
+  IconHeartMini,
+  IconTimeCircle,
+} from '../../assets';
 
 const CardNewRecipe = ({
   img,
   title,
   time,
   difficulty,
+  calories,
   onPressFav = () => {},
   onPress = () => {},
 }) => {
@@ -32,9 +39,11 @@ const CardNewRecipe = ({
           </Text>
           <Gap height={8} />
           <View style={[styles.row, styles.center]}>
-            <IconBolt />
+            {calories ? <IconCalories /> : <IconBolt />}
             <Gap width={3} />
-            <Text style={styles.textDiff}>{difficulty}</Text>
+            <Text style={styles.textDiff}>
+              {calories ? calories : difficulty}
+            </Text>
             <Gap width={8} />
             <View style={styles.centerSelf}>
               <IconDot />

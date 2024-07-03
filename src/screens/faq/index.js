@@ -2,10 +2,8 @@ import {ScrollView, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import {colors, fonts} from '../../utils';
 import {Gap, Header} from '../../components';
-import {useNavigation} from '@react-navigation/native';
 
-export default function FaqScreen() {
-  const navigation = useNavigation();
+export default function FaqScreen({navigation}) {
   return (
     <ScrollView style={styles.page}>
       <Header

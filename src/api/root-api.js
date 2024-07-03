@@ -1,6 +1,7 @@
+import Config from 'react-native-config';
 import {fetchApi} from './fetch-api';
 
-const baseURL = 'https://resep-hari-ini.vercel.app/';
+const baseURL = Config?.API_URL;
 
 const apiNewRecipes = () => `${baseURL}api/recipes`;
 const apiNewRecipesByPage = (page = '') => `${baseURL}api/recipes/${page}`;

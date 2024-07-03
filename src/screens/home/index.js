@@ -8,7 +8,6 @@ import {
   View,
 } from 'react-native';
 import React, {useState} from 'react';
-import {useNavigation} from '@react-navigation/native';
 import deviceInfoModule from 'react-native-device-info';
 import {colors, fonts} from '../../utils';
 import {
@@ -33,8 +32,7 @@ import ShimmerCategory from './shimmer/shimmer-category';
 import ShimmerRecipeByCategory from './shimmer/shimmer-recipe-by-category';
 import ShimmerArticle from './shimmer/shimmer-article';
 
-export default function HomeScreen() {
-  const navigation = useNavigation();
+export default function HomeScreen({navigation}) {
   const getUser = userStore(state => state.user);
 
   const setLoading = globalStore(state => state.setLoading);
@@ -150,6 +148,7 @@ export default function HomeScreen() {
                       title={item.title}
                       time={item.times}
                       difficulty={item.difficulty}
+                      calories={item.calories}
                       onPressFav={() => {
                         onChangeFavorite(item);
                       }}

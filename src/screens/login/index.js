@@ -2,14 +2,12 @@ import React from 'react';
 import {StatusBar, StyleSheet, Text, View} from 'react-native';
 import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
-import {useNavigation} from '@react-navigation/native';
 import {IconChef, ImgPattern} from '../../assets';
 import {colors, fonts, showMessage, useForm} from '../../utils';
 import {Button, Gap, Input} from '../../components';
 import {globalStore, userStore} from '../../stores';
 
-export default function LoginScreen() {
-  const navigation = useNavigation();
+export default function LoginScreen({navigation}) {
   const setUser = userStore(state => state.setUser);
   const setIsLoading = globalStore(state => state.setLoading);
   const isLoading = globalStore(state => state.loading);
@@ -41,7 +39,8 @@ export default function LoginScreen() {
             .ref('/users/' + response?.user?.uid)
             .once('value')
             .then(snapshot => {
-              if (snapshot.val()) {
+              const getData = snapshot.val();
+              if (getData?.isActive) {
                 setIsLoading(false);
                 setUser(snapshot.val());
                 showMessage('Selamat datang di Recipely', 'success');
@@ -49,6 +48,9 @@ export default function LoginScreen() {
                   index: 0,
                   routes: [{name: 'AppBarScreen'}],
                 });
+              } else {
+                setIsLoading(false);
+                showMessage('Account Anda sudah tidak aktif', 'danger');
               }
             });
         }
@@ -66,6 +68,11 @@ export default function LoginScreen() {
         }
       });
   };
+
+  const onNavigateForgot = () => {
+    navigation.navigate('ForgotPasswordScreen');
+  };
+
   return (
     <>
       <StatusBar backgroundColor={colors.primary} />
@@ -96,8 +103,13 @@ export default function LoginScreen() {
               setForm('password', value);
             }}
           />
-          {/* <Gap height={8} /> */}
-          {/* <Button type="text" style={styles.button} title="Lupa Kata Sandi?" /> */}
+          <Gap height={8} />
+          <Button
+            type="text"
+            style={styles.button}
+            title="Lupa Kata Sandi?"
+            onPress={onNavigateForgot}
+          />
         </View>
         <Gap height={36} />
         <View style={styles.containerButton}>
