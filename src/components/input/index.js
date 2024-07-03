@@ -21,7 +21,10 @@ const Input = ({
   labelStyle,
   containerStyle,
   inputStyle,
+  placeholderColor,
+  multiline = false,
   root,
+  ...rest
 }) => {
   const [secure, setSecure] = useState(true);
   return (
@@ -34,9 +37,13 @@ const Input = ({
           editable={disable}
           style={[styles.textInput, inputStyle]}
           placeholder={placeholder}
-          placeholderTextColor={colors.white}
+          placeholderTextColor={
+            placeholderColor ? placeholderColor : colors.white
+          }
+          multiline={multiline}
           onChangeText={onChangeText}
           secureTextEntry={type === 'password' && secure}
+          {...rest}
         />
         {type === 'password' && (
           <TouchableOpacity

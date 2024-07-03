@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef} from 'react';
 import {LogBox} from 'react-native';
 import {QueryClient, QueryClientProvider} from 'react-query';
 import {
@@ -7,8 +7,11 @@ import {
 } from '@react-navigation/native';
 import Navigations from './navigations';
 import FlashMessage from 'react-native-flash-message';
+import analytics from '@react-native-firebase/analytics';
+import messaging from '@react-native-firebase/messaging';
 // import {colors} from './utils';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
+import useRemoteSetting from './hooks/use-remote-setting';
 
 LogBox.ignoreLogs(['Setting a timer']);
 LogBox.ignoreAllLogs();
@@ -17,7 +20,16 @@ const queryClient = new QueryClient();
 const App = () => {
   const navigationRef = useNavigationContainerRef();
   const routeNameRef = useRef();
-  const [screen, setScreen] = useState('');
+
+  useEffect(() => {
+    // foreground notification
+    const unsubscribe = messaging().onMessage(async ({notification, data}) => {
+      console.log(notification, data);
+      // handlePushLocalNotification(notification, data);
+    });
+
+    return unsubscribe;
+  }, []);
 
   return (
     <>
@@ -31,7 +43,7 @@ const App = () => {
             onStateChange={async () => {
               const previousRouteName = routeNameRef.current;
               const currentRouteName = navigationRef.getCurrentRoute().name;
-              setScreen(currentRouteName);
+
               const trackScreenView = () => {
                 // Your implementation of analytics goes here!
               };
@@ -42,7 +54,10 @@ const App = () => {
 
                 // Replace the line below to add the tracker from a mobile analytics SDK
                 await trackScreenView(currentRouteName);
-                console.log(currentRouteName);
+                await analytics().logEvent('AppScreen', {
+                  screen: currentRouteName,
+                });
+                // console.log(currentRouteName);
               }
             }}>
             <Navigations />

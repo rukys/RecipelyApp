@@ -9,7 +9,6 @@ import {
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import FastImage from 'react-native-fast-image';
-import {useNavigation} from '@react-navigation/native';
 import ReactNativeModal from 'react-native-modal';
 import {
   IconArrowLeft,
@@ -26,9 +25,8 @@ import useFavorite from '../../hooks/use-favorite';
 import {colors, fonts} from '../../utils';
 import {globalStore} from '../../stores';
 
-export default function RecipeDetailScreen({route}) {
-  const navigation = useNavigation();
-  const {key, thumb} = route.params || {};
+export default function RecipeDetailScreen({route, navigation}) {
+  const {key, thumb, calories} = route.params || {};
 
   const [expand, setExpand] = useState(false);
   const [isIngredient, setIsIngredient] = useState(false);
@@ -184,18 +182,18 @@ export default function RecipeDetailScreen({route}) {
                 </>
               ) : (
                 <>
-                  {resultRecipeDetail?.calories && (
+                  {resultRecipeDetail?.calories || calories ? (
                     <>
                       <View style={styles.containerBox}>
                         <IconCalories height={24} width={24} />
                       </View>
                       <Gap width={8} />
                       <Text style={styles.textSub}>
-                        {resultRecipeDetail?.calories}
+                        {resultRecipeDetail?.calories || calories}
                       </Text>
                       <Gap width={16} />
                     </>
-                  )}
+                  ) : null}
                   <View style={styles.containerBox}>
                     <IconBolt height={24} width={24} />
                   </View>

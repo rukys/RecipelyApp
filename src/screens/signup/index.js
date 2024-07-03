@@ -2,16 +2,18 @@ import React, {useState} from 'react';
 import {ScrollView, StatusBar, StyleSheet, Text, View} from 'react-native';
 import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
+import CheckBox from '@react-native-community/checkbox';
 import {colors, fonts, showMessage, useForm} from '../../utils';
 import {IconChef, ImgPattern} from '../../assets';
 import {Button, Gap, Input} from '../../components';
 import {globalStore, userStore} from '../../stores';
-import {useNavigation} from '@react-navigation/native';
+import useRemoteSetting from '../../hooks/use-remote-setting';
 
-export default function SignupScreen() {
-  const navigation = useNavigation();
-
+export default function SignupScreen({navigation}) {
   const [messageError, setMessageError] = useState('');
+  const [toggleCheckBox, setToggleCheckBox] = useState(false);
+
+  const {remoteSetting} = useRemoteSetting();
 
   const setUser = userStore(state => state.setUser);
   const setIsLoading = globalStore(state => state.setLoading);
@@ -24,7 +26,10 @@ export default function SignupScreen() {
   });
 
   const onValidationSubmit = () => {
-    if ((form.fullName || form.email || form.password) === '') {
+    if (
+      (form.fullName || form.email || form.password) === '' ||
+      !toggleCheckBox
+    ) {
       showMessage('Semua harap diisi', 'danger');
     } else if (form.fullName === '') {
       showMessage('Nama lengkap tidak boleh kosong', 'danger');
@@ -50,6 +55,7 @@ export default function SignupScreen() {
             email: form.email,
             fullName: form.fullName,
             isNotif: false,
+            isActive: true,
             language: 'id',
           };
           database()
@@ -81,6 +87,10 @@ export default function SignupScreen() {
           showMessage('Masukkan email dengan benar', 'danger');
         }
       });
+  };
+
+  const onNavigateWebview = (valUrl, title) => {
+    navigation.navigate('WebviewScreen', {url: valUrl, titleHeader: title});
   };
 
   return (
@@ -125,7 +135,43 @@ export default function SignupScreen() {
             }}
           />
         </View>
-        <Gap height={36} />
+        <Gap height={24} />
+        <View style={styles.row}>
+          <CheckBox
+            value={toggleCheckBox}
+            tintColors={colors.textPrimary}
+            onCheckColor={colors.textPrimary}
+            onValueChange={newValue => setToggleCheckBox(newValue)}
+          />
+          <Gap width={5} />
+          <View style={styles.syarat}>
+            <Text style={styles.desc}>
+              Dengan mendaftar, saya menyetujui{' '}
+              <Text
+                onPress={() =>
+                  onNavigateWebview(
+                    remoteSetting?.url_terms,
+                    'Syarat dan Ketentuan',
+                  )
+                }
+                style={[styles.desc, styles.underline]}>
+                Syarat dan Ketentuan
+              </Text>{' '}
+              serta{' '}
+              <Text
+                onPress={() =>
+                  onNavigateWebview(
+                    remoteSetting?.url_privacy,
+                    'Kebijakan dan Privasi',
+                  )
+                }
+                style={[styles.desc, styles.underline]}>
+                Kebijakan Privasi
+              </Text>
+            </Text>
+          </View>
+        </View>
+        <Gap height={16} />
         <View style={styles.containerButton}>
           <Button
             title="Buat Akun"
@@ -165,5 +211,22 @@ const styles = StyleSheet.create({
   },
   containerButton: {
     marginHorizontal: 16,
+  },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginHorizontal: 16,
+  },
+  desc: {
+    fontFamily: fonts.SofiaPro,
+    fontSize: 14,
+    color: colors.white,
+  },
+  syarat: {
+    alignItems: 'center',
+  },
+  center: {},
+  underline: {
+    textDecorationLine: 'underline',
   },
 });

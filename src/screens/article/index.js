@@ -3,12 +3,9 @@ import React from 'react';
 import {colors} from '../../utils';
 import useNewArticle from '../../hooks/use-newarticle';
 import {CardArticle, Gap, Header} from '../../components';
-import {useNavigation} from '@react-navigation/native';
 
-export default function ArticleScreen() {
-  const navigation = useNavigation();
-  const {resultNewArticle, isLoadingNewArticle, onRefetchNewArticle} =
-    useNewArticle();
+export default function ArticleScreen({navigation}) {
+  const {resultNewArticle} = useNewArticle();
 
   return (
     <>

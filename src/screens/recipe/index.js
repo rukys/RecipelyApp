@@ -8,14 +8,12 @@ import {
 import React from 'react';
 import {colors} from '../../utils';
 import {CardSearch, Gap, Header} from '../../components';
-import {useNavigation} from '@react-navigation/native';
 import useNewRecipes from '../../hooks/use-newrecipe';
 import useRecipeByCategory from '../../hooks/use-recipe-by-category';
 import ShimmerRecipe from './shimmer/shimmer-recipe';
 import {globalStore} from '../../stores';
 
-export default function RecipeScreen({route}) {
-  const navigation = useNavigation();
+export default function RecipeScreen({route, navigation}) {
   const {title, category = ''} = route.params || {};
 
   const valCategory = category.replace(/-/g, ' ');

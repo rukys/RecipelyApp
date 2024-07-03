@@ -1,13 +1,10 @@
 import React from 'react';
 import {ScrollView, StyleSheet, Text, View} from 'react-native';
-import {useNavigation} from '@react-navigation/native';
 import deviceInfoModule from 'react-native-device-info';
 import {colors, fonts} from '../../utils';
 import {Gap, Header} from '../../components';
 
-export default function AboutScreen() {
-  const navigation = useNavigation();
-
+export default function AboutScreen({navigation}) {
   return (
     <ScrollView style={styles.page}>
       <Header

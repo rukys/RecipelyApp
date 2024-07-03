@@ -1,7 +1,6 @@
 import axios from 'axios';
 
 const API_TIMEOUT = 2000;
-const API_KEY = '690707e6db9f4d18acea7111b8c2bef7';
 
 export const fetchApi = async ({
   url,
@@ -16,7 +15,6 @@ export const fetchApi = async ({
   const finalHeaders = {
     Accept: 'application/json',
     'Content-Type': 'application/json',
-    Authorization: `Bearer ${API_KEY}`,
   };
 
   // console.info(`%c[${method}]%c ${url || `${path}`}`, {

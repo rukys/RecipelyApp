@@ -15,6 +15,7 @@ import BottomNavigator from './bottom-navigator';
 import Header from './header';
 import InputSearch from './input-search';
 import Shimmer from './shimmer';
+import ModalConfirm from './modal-confirm';
 
 export {
   Gap,
@@ -34,4 +35,5 @@ export {
   Header,
   InputSearch,
   Shimmer,
+  ModalConfirm,
 };

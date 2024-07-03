@@ -1,13 +1,10 @@
-import {useNavigation} from '@react-navigation/native';
 import React from 'react';
 import {StatusBar, StyleSheet, Text, View} from 'react-native';
 import {ImgFoody, ImgPattern} from '../../assets';
 import {Button, Gap} from '../../components';
 import {colors, fonts} from '../../utils';
 
-export default function OnboardScreen() {
-  const navigation = useNavigation();
-
+export default function OnboardScreen({navigation}) {
   return (
     <>
       <StatusBar backgroundColor={colors.primary} />

@@ -1,6 +1,7 @@
 /* eslint-disable react/no-unstable-nested-components */
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
+
 import {
   HomeScreen,
   SignupScreen,
@@ -18,7 +19,10 @@ import {
   ProfileDetailScreen,
   FaqScreen,
   ContactMeScreen,
-  PrivacyPolicyScreen,
+  ForgotPasswordScreen,
+  DeleteAccountScreen,
+  WebviewScreen,
+  UpdateVersionScreen,
 } from '../screens';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {BottomNavigator} from '../components';
@@ -76,13 +80,22 @@ const Navigations = () => {
       <Stack.Screen name="FaqScreen" component={FaqScreen} />
       <Stack.Screen name="ContactMeScreen" component={ContactMeScreen} />
       <Stack.Screen
-        name="PrivacyPolicyScreen"
-        component={PrivacyPolicyScreen}
+        name="UpdateVersionScreen"
+        component={UpdateVersionScreen}
+      />
+      <Stack.Screen
+        name="DeleteAccountScreen"
+        component={DeleteAccountScreen}
+      />
+      <Stack.Screen
+        name="ForgotPasswordScreen"
+        component={ForgotPasswordScreen}
       />
       <Stack.Screen
         name="ProfileDetailScreen"
         component={ProfileDetailScreen}
       />
+      <Stack.Screen name="WebviewScreen" component={WebviewScreen} />
     </Stack.Navigator>
   );
 };

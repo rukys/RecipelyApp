@@ -1,17 +1,34 @@
 import {StatusBar, StyleSheet, Text, View} from 'react-native';
 import React, {useEffect} from 'react';
 import auth from '@react-native-firebase/auth';
+import database from '@react-native-firebase/database';
+import messaging from '@react-native-firebase/messaging';
 import {colors, fonts} from '../../utils';
 import {IconChef} from '../../assets';
-import {useNavigation} from '@react-navigation/native';
 
-export default function SplashScreen() {
-  const navigation = useNavigation();
+export default function SplashScreen({navigation}) {
+  // Generate unique token represents each devices
+  const generateFCMToken = uid => {
+    messaging()
+      .getToken()
+      .then(token => {
+        if (uid && token) {
+          database()
+            .ref('/users/' + uid)
+            .update({
+              fcmToken: token,
+            })
+            .then(() => console.log('Data updated generate FCM token'));
+        }
+      })
+      .catch(() => {});
+  };
 
   useEffect(() => {
     const unsubscribe = auth().onAuthStateChanged(user => {
       setTimeout(() => {
         if (user) {
+          generateFCMToken(user?.uid);
           navigation.reset({
             index: 0,
             routes: [{name: 'AppBarScreen'}],
