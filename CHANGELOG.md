@@ -1,3 +1,8 @@
+### Changelog v1.3
+
+- Add scroll with sticky header in recipe detail screen
+- Update target version SDK android from 33 to 34
+
 ### Changelog v1.1
 
 - Add feature reset password account

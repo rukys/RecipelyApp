@@ -98,7 +98,7 @@ export default function HomeScreen({navigation}) {
 
   return (
     <View style={styles.page}>
-      <StatusBar backgroundColor={colors.white} barStyle={'dark-content'} />
+      <StatusBar backgroundColor={colors.white} barStyle="dark-content" />
       <Gap height={16} />
       <View style={styles.containerHeader}>
         <View style={styles.flex}>

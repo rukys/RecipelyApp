@@ -1,31 +1,34 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+import React, {useState, useEffect} from 'react';
 import {
-  StatusBar,
   StyleSheet,
   Text,
   View,
   TouchableOpacity,
-  ScrollView,
+  StatusBar,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
-import FastImage from 'react-native-fast-image';
 import ReactNativeModal from 'react-native-modal';
+import {AnimatedScrollView} from '@kanelloc/react-native-animated-header-scroll-view';
+import useFavorite from '../../hooks/use-favorite';
+import useRecipeDetail from '../../hooks/use-recipe-detail';
 import {
-  IconArrowLeft,
+  Button,
+  ButtonSwitch,
+  Gap,
+  HeaderNavBar,
+  HeaderTopNavBar,
+  Shimmer,
+} from '../../components';
+import {
   IconBolt,
   IconCalories,
-  IconDelete,
-  IconHeartMini,
   IconRectangle,
   IconTimeCircle,
 } from '../../assets';
-import {Button, ButtonSwitch, Gap, Shimmer} from '../../components';
-import useRecipeDetail from '../../hooks/use-recipe-detail';
-import useFavorite from '../../hooks/use-favorite';
 import {colors, fonts} from '../../utils';
 import {globalStore} from '../../stores';
 
-export default function RecipeDetailScreen({route, navigation}) {
+export default function RecipeDetailScreen({route}) {
   const {key, thumb, calories} = route.params || {};
 
   const [expand, setExpand] = useState(false);
@@ -35,7 +38,6 @@ export default function RecipeDetailScreen({route, navigation}) {
   const setVisible = globalStore(state => state.setVisible);
 
   const {resultRecipeDetail, isLoadingRecipeDetail} = useRecipeDetail(key);
-
   const {
     onStoreDatabase,
     onCheckStoreDatabase,
@@ -72,214 +74,184 @@ export default function RecipeDetailScreen({route, navigation}) {
 
   return (
     <>
-      <StatusBar
-        translucent
-        backgroundColor="transparent"
-        barStyle={'dark-content'}
-      />
-      <View style={styles.page}>
-        <ScrollView>
-          {/* Component Image */}
+      <StatusBar translucent backgroundColor="transparent" />
+      <AnimatedScrollView
+        HeaderNavbarComponent={
+          <HeaderNavBar
+            isStore={isStore}
+            setVisible={() => {
+              setVisible(true);
+            }}
+            onChangeFavorite={() => {
+              onChangeFavorite(resultRecipeDetail);
+            }}
+          />
+        }
+        TopNavBarComponent={
+          <HeaderTopNavBar title={resultRecipeDetail?.title || ''} />
+        }
+        topBarHeight={75}
+        headerImage={{
+          uri: resultRecipeDetail?.thumb ? resultRecipeDetail?.thumb : thumb,
+        }}>
+        <View style={styles.content}>
+          <View style={styles.containerRectangle}>
+            <IconRectangle />
+          </View>
+          <Gap height={16} />
+
+          {/* Component Title */}
           {isLoadingRecipeDetail ? (
-            <Shimmer style={styles.shimmerImage} />
+            <>
+              <Shimmer style={styles.shimmerTitle} />
+              <Gap height={8} />
+              <Shimmer style={styles.shimmerTitle1} />
+            </>
           ) : (
-            <FastImage
-              source={{
-                uri: resultRecipeDetail?.thumb
-                  ? resultRecipeDetail?.thumb
-                  : thumb,
-              }}
-              style={styles.image}
-              resizeMode={FastImage.resizeMode.cover}
+            <View style={styles.containerTitle}>
+              <Text style={styles.texttitle}>{resultRecipeDetail?.title}</Text>
+            </View>
+          )}
+          <Gap height={8} />
+
+          {/* Component Description */}
+          {isLoadingRecipeDetail ? (
+            <>
+              <Gap height={8} />
+              <Shimmer style={styles.shimmerDesc} />
+              <Gap height={5} />
+              <Shimmer style={styles.shimmerDesc} />
+              <Gap height={5} />
+              <Shimmer style={styles.shimmerDesc1} />
+            </>
+          ) : (
+            <View style={styles.containerDesc}>
+              <Text style={styles.textDesc} numberOfLines={expand ? 300 : 3}>
+                {resultRecipeDetail?.desc}
+              </Text>
+              <TouchableOpacity
+                style={styles.containerExpand}
+                onPress={() => setExpand(!expand)}>
+                <Text style={styles.textExpand}>
+                  {expand ? 'Sembunyikan' : 'Lihat selengkapnya'}
+                </Text>
+              </TouchableOpacity>
+            </View>
+          )}
+          <Gap height={16} />
+
+          {/* Component Icon Calories, Dificulty and Times */}
+          <View style={styles.row}>
+            {isLoadingRecipeDetail ? (
+              <>
+                <Shimmer style={styles.containerBox} />
+                <Gap width={8} />
+                <Shimmer style={styles.shimmerDiff} />
+                <Gap width={8} />
+                <Shimmer style={styles.containerBox} />
+                <Gap width={8} />
+                <Shimmer style={styles.shimmerDiff} />
+                <Gap width={8} />
+                <Shimmer style={styles.containerBox} />
+                <Gap width={8} />
+                <Shimmer style={styles.shimmerDiff} />
+              </>
+            ) : (
+              <>
+                {resultRecipeDetail?.calories || calories ? (
+                  <>
+                    <View style={styles.containerBox}>
+                      <IconCalories height={24} width={24} />
+                    </View>
+                    <Gap width={8} />
+                    <Text style={styles.textSub}>
+                      {resultRecipeDetail?.calories || calories}
+                    </Text>
+                    <Gap width={16} />
+                  </>
+                ) : null}
+                <View style={styles.containerBox}>
+                  <IconBolt height={24} width={24} />
+                </View>
+                <Gap width={8} />
+                <Text style={styles.textSub}>
+                  {resultRecipeDetail?.difficulty}
+                </Text>
+                <Gap width={16} />
+                <View style={styles.containerBox}>
+                  <IconTimeCircle height={24} width={24} />
+                </View>
+                <Gap width={8} />
+                <Text style={styles.textSub}>{resultRecipeDetail?.times}</Text>
+              </>
+            )}
+          </View>
+          <Gap height={24} />
+
+          {/* Component Button Switch */}
+          {isLoadingRecipeDetail ? (
+            <Shimmer style={styles.shimmerSwitch} />
+          ) : (
+            <ButtonSwitch
+              titleLeft="Komposisi"
+              titleRight="Panduan"
+              onPress={onChangeSwitch}
             />
           )}
+          <Gap height={16} />
 
-          {/* Component Button Back and Favorit */}
-          <View style={styles.containerHeader}>
-            <TouchableOpacity
-              style={styles.containerBack}
-              onPress={() => {
-                navigation.goBack();
-              }}>
-              <IconArrowLeft />
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.containerFav}
-              onPress={() => {
-                if (isStore) {
-                  setVisible(true);
-                } else {
-                  onChangeFavorite(resultRecipeDetail);
-                }
-              }}>
-              {isStore ? <IconDelete /> : <IconHeartMini />}
-            </TouchableOpacity>
-          </View>
-
-          <View style={styles.content}>
-            <View style={styles.containerRectangle}>
-              <IconRectangle />
-            </View>
-            <Gap height={16} />
-
-            {/* Component Title */}
-            {isLoadingRecipeDetail ? (
-              <>
-                <Shimmer style={styles.shimmerTitle} />
-                <Gap height={8} />
-                <Shimmer style={styles.shimmerTitle1} />
-              </>
-            ) : (
-              <View style={styles.containerTitle}>
-                <Text style={styles.texttitle}>
-                  {resultRecipeDetail?.title}
-                </Text>
-              </View>
-            )}
-            <Gap height={8} />
-
-            {/* Component Description */}
-            {isLoadingRecipeDetail ? (
-              <>
-                <Gap height={8} />
-                <Shimmer style={styles.shimmerDesc} />
-                <Gap height={5} />
-                <Shimmer style={styles.shimmerDesc} />
-                <Gap height={5} />
-                <Shimmer style={styles.shimmerDesc1} />
-              </>
-            ) : (
-              <View style={styles.containerDesc}>
-                <Text style={styles.textDesc} numberOfLines={expand ? 300 : 3}>
-                  {resultRecipeDetail?.desc}
-                </Text>
-                <TouchableOpacity
-                  style={styles.containerExpand}
-                  onPress={() => setExpand(!expand)}>
-                  <Text style={styles.textExpand}>
-                    {expand ? 'Sembunyikan' : 'Lihat selengkapnya'}
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            )}
-            <Gap height={16} />
-
-            {/* Component Icon Calories, Dificulty and Times */}
+          {/* Component title Ingredients and Instructions */}
+          {isLoadingRecipeDetail ? (
+            <Shimmer style={styles.shimmerIng} />
+          ) : (
             <View style={styles.row}>
-              {isLoadingRecipeDetail ? (
-                <>
-                  <Shimmer style={styles.containerBox} />
-                  <Gap width={8} />
-                  <Shimmer style={styles.shimmerDiff} />
-                  <Gap width={8} />
-                  <Shimmer style={styles.containerBox} />
-                  <Gap width={8} />
-                  <Shimmer style={styles.shimmerDiff} />
-                  <Gap width={8} />
-                  <Shimmer style={styles.containerBox} />
-                  <Gap width={8} />
-                  <Shimmer style={styles.shimmerDiff} />
-                </>
-              ) : (
-                <>
-                  {resultRecipeDetail?.calories || calories ? (
-                    <>
-                      <View style={styles.containerBox}>
-                        <IconCalories height={24} width={24} />
-                      </View>
-                      <Gap width={8} />
-                      <Text style={styles.textSub}>
-                        {resultRecipeDetail?.calories || calories}
-                      </Text>
-                      <Gap width={16} />
-                    </>
-                  ) : null}
-                  <View style={styles.containerBox}>
-                    <IconBolt height={24} width={24} />
-                  </View>
-                  <Gap width={8} />
-                  <Text style={styles.textSub}>
-                    {resultRecipeDetail?.difficulty}
-                  </Text>
-                  <Gap width={16} />
-                  <View style={styles.containerBox}>
-                    <IconTimeCircle height={24} width={24} />
-                  </View>
-                  <Gap width={8} />
-                  <Text style={styles.textSub}>
-                    {resultRecipeDetail?.times}
-                  </Text>
-                </>
-              )}
+              <Text style={[styles.textTitle1, styles.flex]}>
+                {isIngredient ? 'Pandaun :' : 'Komposisi :'}
+              </Text>
             </View>
-            <Gap height={24} />
+          )}
+          <Gap height={8} />
 
-            {/* Component Button Switch */}
-            {isLoadingRecipeDetail ? (
-              <Shimmer style={styles.shimmerSwitch} />
-            ) : (
-              <ButtonSwitch
-                titleLeft="Komposisi"
-                titleRight="Panduan"
-                onPress={onChangeSwitch}
-              />
-            )}
-            <Gap height={16} />
+          {/* Component content Ingredients and Instructions */}
 
-            {/* Component title Ingredients and Instructions */}
-            {isLoadingRecipeDetail ? (
-              <Shimmer style={styles.shimmerIng} />
-            ) : (
-              <View style={styles.row}>
-                <Text style={[styles.textTitle1, styles.flex]}>
-                  {isIngredient ? 'Pandaun :' : 'Komposisi :'}
-                </Text>
-              </View>
-            )}
-            <Gap height={8} />
-
-            {/* Component content Ingredients and Instructions */}
-            <ScrollView style={styles.containerSubContent}>
-              {isLoadingRecipeDetail ? (
-                <>
-                  <Gap height={8} />
-                  <Shimmer style={styles.shimmerSubIng} />
-                  <Gap height={8} />
-                  <Shimmer style={styles.shimmerSubIng1} />
-                  <Gap height={16} />
-                  <Shimmer style={styles.shimmerSubIng} />
-                  <Gap height={8} />
-                  <Shimmer style={styles.shimmerSubIng1} />
-                  <Gap height={16} />
-                  <Shimmer style={styles.shimmerSubIng} />
-                  <Gap height={8} />
-                  <Shimmer style={styles.shimmerSubIng1} />
-                  <Gap height={16} />
-                  <Shimmer style={styles.shimmerSubIng} />
-                  <Gap height={8} />
-                  <Shimmer style={styles.shimmerSubIng1} />
-                  <Gap height={16} />
-                  <Shimmer style={styles.shimmerSubIng} />
-                  <Gap height={8} />
-                  <Shimmer style={styles.shimmerSubIng1} />
-                </>
-              ) : (
-                getDataSubContent.map((item, index) => {
-                  return (
-                    <View style={[styles.row]} key={index}>
-                      {!isIngredient ? (
-                        <Text style={styles.textSubContent}>- </Text>
-                      ) : null}
-                      <Text style={styles.textSubContent}>{item.trim()}</Text>
-                    </View>
-                  );
-                })
-              )}
+          {isLoadingRecipeDetail ? (
+            <>
+              <Gap height={8} />
+              <Shimmer style={styles.shimmerSubIng} />
+              <Gap height={8} />
+              <Shimmer style={styles.shimmerSubIng1} />
               <Gap height={16} />
-            </ScrollView>
-          </View>
-        </ScrollView>
-      </View>
+              <Shimmer style={styles.shimmerSubIng} />
+              <Gap height={8} />
+              <Shimmer style={styles.shimmerSubIng1} />
+              <Gap height={16} />
+              <Shimmer style={styles.shimmerSubIng} />
+              <Gap height={8} />
+              <Shimmer style={styles.shimmerSubIng1} />
+              <Gap height={16} />
+              <Shimmer style={styles.shimmerSubIng} />
+              <Gap height={8} />
+              <Shimmer style={styles.shimmerSubIng1} />
+              <Gap height={16} />
+              <Shimmer style={styles.shimmerSubIng} />
+              <Gap height={8} />
+              <Shimmer style={styles.shimmerSubIng1} />
+            </>
+          ) : (
+            getDataSubContent.map((item, index) => {
+              return (
+                <View style={[styles.row]} key={index}>
+                  {!isIngredient ? (
+                    <Text style={styles.textSubContent}>- </Text>
+                  ) : null}
+                  <Text style={styles.textSubContent}>{item.trim()}</Text>
+                </View>
+              );
+            })
+          )}
+          <Gap height={16} />
+        </View>
+      </AnimatedScrollView>
 
       <ReactNativeModal
         isVisible={visible}

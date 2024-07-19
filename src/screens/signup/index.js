@@ -150,7 +150,7 @@ export default function SignupScreen({navigation}) {
               <Text
                 onPress={() =>
                   onNavigateWebview(
-                    remoteSetting?.url_terms,
+                    remoteSetting?.url_privacy,
                     'Syarat dan Ketentuan',
                   )
                 }
