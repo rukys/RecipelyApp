@@ -16,6 +16,8 @@ import Header from './header';
 import InputSearch from './input-search';
 import Shimmer from './shimmer';
 import ModalConfirm from './modal-confirm';
+import HeaderNavBar from './header-nav-bar';
+import HeaderTopNavBar from './header-top-nav-bar';
 
 export {
   Gap,
@@ -36,4 +38,6 @@ export {
   InputSearch,
   Shimmer,
   ModalConfirm,
+  HeaderNavBar,
+  HeaderTopNavBar,
 };

@@ -128,9 +128,11 @@ export default function ProfileDetailScreen({navigation}) {
   };
 
   useEffect(() => {
-    auth().onAuthStateChanged(user => {
-      setIsEmailVerified(user.emailVerified);
-    });
+    if (getUser) {
+      auth().onAuthStateChanged(user => {
+        setIsEmailVerified(user.emailVerified);
+      });
+    }
 
     getDataFromDatabase();
 
