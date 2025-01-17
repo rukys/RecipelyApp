@@ -1,6 +1,6 @@
-import {StyleSheet, TouchableOpacity} from 'react-native';
 import React, {useState} from 'react';
-import {colors} from '../../utils';
+import {TouchableOpacity} from 'react-native';
+import tw from '../../../tailwind';
 import Button from '../button';
 
 const ButtonSwitch = ({titleLeft, titleRight, onPress = () => {}}) => {
@@ -12,11 +12,17 @@ const ButtonSwitch = ({titleLeft, titleRight, onPress = () => {}}) => {
   };
 
   return (
-    <TouchableOpacity style={styles.container}>
+    <TouchableOpacity
+      style={tw.style(
+        'h-14 bg-grey rounded-2xl flex-row justify-center items-center px-1.5',
+      )}>
       <Button
         type={active ? 'text' : ''}
-        style={active ? styles.buttonLeft : styles.buttonRight}
-        textStyle={active ? styles.textLeft : styles.textRight}
+        style={tw.style(
+          'flex-1 h-11 rounded-xl',
+          active ? 'rounded-xl' : 'self-center',
+        )}
+        textStyle={tw.style('text-textPrimary')}
         title={titleLeft}
         onPress={() => {
           onSwitchButton(false);
@@ -24,8 +30,11 @@ const ButtonSwitch = ({titleLeft, titleRight, onPress = () => {}}) => {
       />
       <Button
         type={active ? '' : 'text'}
-        style={active ? styles.buttonRight : styles.buttonLeft}
-        textStyle={active ? styles.textRight : styles.textLeft}
+        style={tw.style(
+          'flex-1 h-11 rounded-xl',
+          active ? 'self-center' : 'rounded-xl',
+        )}
+        textStyle={tw.style('text-textPrimary')}
         title={titleRight}
         onPress={() => {
           onSwitchButton(true);
@@ -36,31 +45,3 @@ const ButtonSwitch = ({titleLeft, titleRight, onPress = () => {}}) => {
 };
 
 export default ButtonSwitch;
-
-const styles = StyleSheet.create({
-  container: {
-    height: 55,
-    backgroundColor: colors.grey,
-    borderRadius: 16,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingHorizontal: 5,
-  },
-  buttonLeft: {
-    flex: 1,
-    height: 45,
-    borderRadius: 10,
-  },
-  textLeft: {
-    color: colors.textPrimary,
-  },
-  buttonRight: {
-    flex: 1,
-    height: 45,
-    alignSelf: 'center',
-  },
-  textRight: {
-    color: colors.textPrimary,
-  },
-});

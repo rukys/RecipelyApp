@@ -1,17 +1,11 @@
-import {
-  RefreshControl,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  View,
-} from 'react-native';
 import React from 'react';
-import {colors} from '../../utils';
+import {RefreshControl, ScrollView, StatusBar, View} from 'react-native';
+import tw from '../../../tailwind';
 import {CardSearch, Gap, Header} from '../../components';
 import useNewRecipes from '../../hooks/use-newrecipe';
 import useRecipeByCategory from '../../hooks/use-recipe-by-category';
-import ShimmerRecipe from './shimmer/shimmer-recipe';
 import {globalStore} from '../../stores';
+import ShimmerRecipe from './shimmer/shimmer-recipe';
 
 export default function RecipeScreen({route, navigation}) {
   const {title, category = ''} = route.params || {};
@@ -59,8 +53,11 @@ export default function RecipeScreen({route, navigation}) {
 
   return (
     <>
-      <StatusBar backgroundColor={colors.white} barStyle={'dark-content'} />
-      <View style={styles.page}>
+      <StatusBar
+        backgroundColor={tw.color('white')}
+        barStyle={'dark-content'}
+      />
+      <View style={tw.style('flex-1 bg-white')}>
         <Header
           onPressBack={() => navigation.goBack()}
           title={
@@ -71,7 +68,6 @@ export default function RecipeScreen({route, navigation}) {
         />
         <Gap height={8} />
         <ScrollView
-          style={styles.content}
           refreshControl={
             <RefreshControl
               refreshing={isLoading}
@@ -105,11 +101,3 @@ export default function RecipeScreen({route, navigation}) {
     </>
   );
 }
-
-const styles = StyleSheet.create({
-  page: {
-    flex: 1,
-    backgroundColor: colors.white,
-  },
-  content: {},
-});

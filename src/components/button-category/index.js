@@ -1,15 +1,22 @@
-import {StyleSheet, Text, TouchableOpacity} from 'react-native';
 import React from 'react';
+import {Text, TouchableOpacity} from 'react-native';
+import tw from '../../../tailwind';
 import Gap from '../gap';
-import {colors, fonts} from '../../utils';
 
 const ButtonCategory = ({id, title, onPress, indexButton, disabled}) => {
   return (
     <>
       <TouchableOpacity
-        style={id === indexButton ? styles.container : styles.container2}
+        style={tw.style(
+          'h-10 rounded-full px-6 justify-center items-center',
+          id === indexButton ? 'bg-primary' : 'bg-secondary',
+        )}
         onPress={onPress}>
-        <Text style={id === indexButton ? styles.text : styles.text2}>
+        <Text
+          style={tw.style(
+            'font-sofia text-base mb-1',
+            id === indexButton ? 'text-white' : 'text-textPrimary',
+          )}>
           {title}
         </Text>
       </TouchableOpacity>
@@ -19,34 +26,3 @@ const ButtonCategory = ({id, title, onPress, indexButton, disabled}) => {
 };
 
 export default ButtonCategory;
-
-const styles = StyleSheet.create({
-  container: {
-    height: 40,
-    borderRadius: 40,
-    backgroundColor: colors.primary,
-    paddingHorizontal: 24,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  container2: {
-    height: 40,
-    borderRadius: 40,
-    backgroundColor: colors.secondary,
-    paddingHorizontal: 24,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  text: {
-    fontFamily: fonts.SofiaPro,
-    fontSize: 16,
-    marginBottom: 4,
-    color: colors.white,
-  },
-  text2: {
-    fontFamily: fonts.SofiaPro,
-    fontSize: 16,
-    marginBottom: 4,
-    color: colors.textPrimary,
-  },
-});

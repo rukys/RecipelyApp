@@ -1,7 +1,7 @@
-import {ScrollView, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
+import {ScrollView, Text, View} from 'react-native';
 import {useDebounce} from 'use-debounce';
-import {colors, fonts, useForm} from '../../utils';
+import tw from '../../../tailwind';
 import {
   CardRecomended,
   CardSearch,
@@ -10,9 +10,10 @@ import {
   InputSearch,
 } from '../../components';
 import useRecipeSearch from '../../hooks/use-recipe-search';
+import useRecomended from '../../hooks/use-recomended';
+import {useForm} from '../../utils';
 import ShimmerRecomended from './shimmer/shimmer-recomended';
 import ShimmerSearch from './shimmer/shimmer-search';
-import useRecomended from '../../hooks/use-recomended';
 
 export default function SearchScreen({navigation}) {
   const [form, setForm] = useForm({
@@ -35,7 +36,7 @@ export default function SearchScreen({navigation}) {
 
   return (
     <>
-      <View style={styles.page}>
+      <View style={tw.style('flex-1 bg-white')}>
         <Header title="Pencarian" isHideLeft />
         <Gap height={8} />
         <InputSearch
@@ -48,12 +49,18 @@ export default function SearchScreen({navigation}) {
         <Gap height={16} />
         {debouncedKeyword !== '' ? (
           <>
-            <Text style={styles.textSearch}>
+            <Text
+              style={tw.style('text-md text-textGrey font-sofia ml-5 mx-4')}>
               Hasil pencarian untuk{' '}
-              <Text style={styles.textSearchSub}>"{debouncedKeyword}"</Text>
+              <Text
+                style={tw.style(
+                  'text-md text-textPrimary font-sofiaBold mx-4',
+                )}>
+                "{debouncedKeyword}"
+              </Text>
             </Text>
             <Gap height={4} />
-            <ScrollView style={styles.content}>
+            <ScrollView>
               {isLoadingRecipeSearch
                 ? [1, 2, 3, 4, 5].map(key => (
                     <>
@@ -80,13 +87,16 @@ export default function SearchScreen({navigation}) {
           </>
         ) : (
           <>
-            <View style={styles.row}>
-              <Text style={[styles.textTitle, styles.flex]}>
+            <View style={tw.style('flex-row')}>
+              <Text
+                style={tw.style(
+                  'flex-1 ml-4 text-textPrimary text-base font-sofiaBold',
+                )}>
                 Rekomendasi Resep
               </Text>
             </View>
             <Gap height={4} />
-            <ScrollView style={styles.content}>
+            <ScrollView>
               {isLoading
                 ? [1, 2, 3, 4, 5].map(key => (
                     <>
@@ -114,45 +124,3 @@ export default function SearchScreen({navigation}) {
     </>
   );
 }
-
-const styles = StyleSheet.create({
-  page: {
-    flex: 1,
-    backgroundColor: colors.white,
-  },
-  content: {},
-  textTitle: {
-    marginLeft: 16,
-    fontSize: 20,
-    color: colors.textPrimary,
-    fontFamily: fonts.SofiaProBold,
-  },
-  textSeeAll: {
-    fontSize: 14,
-    color: colors.primary,
-    fontFamily: fonts.SofiaProBold,
-    marginRight: 16,
-  },
-  textSearch: {
-    fontSize: 14,
-    color: colors.textGrey,
-    fontFamily: fonts.SofiaPro,
-    marginLeft: 20,
-    marginHorizontal: 16,
-  },
-  textSearchSub: {
-    fontSize: 14,
-    color: colors.textPrimary,
-    fontFamily: fonts.SofiaProBold,
-    marginHorizontal: 16,
-  },
-  flex: {
-    flex: 1,
-  },
-  row: {
-    flexDirection: 'row',
-  },
-  center: {
-    alignSelf: 'center',
-  },
-});

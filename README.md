@@ -19,6 +19,7 @@ Recipely is a daily cooking app that will be your kitchen assistant! With Recipe
 - React Hook Form
 - React Reanimated
 - Zustand
+- Tailwind
 - Axios
 
 ## Installation

@@ -1,7 +1,7 @@
 import React from 'react';
-import {StatusBar, StyleSheet} from 'react-native';
+import {StatusBar} from 'react-native';
 import {WebView} from 'react-native-webview';
-import {colors} from '../../utils';
+import tw from '../../../tailwind';
 
 export default function ArticleDetailScreen({route}) {
   const {key} = route.params || {};
@@ -11,15 +11,14 @@ export default function ArticleDetailScreen({route}) {
 
   return (
     <>
-      <StatusBar backgroundColor={colors.primary} barStyle={'light-content'} />
-      <WebView source={{uri: url + replaceKey}} style={styles.page} />
+      <StatusBar
+        backgroundColor={tw.color('primary')}
+        barStyle={'light-content'}
+      />
+      <WebView
+        source={{uri: url + replaceKey}}
+        style={tw.style('flex-1 bg-white')}
+      />
     </>
   );
 }
-
-const styles = StyleSheet.create({
-  page: {
-    flex: 1,
-    backgroundColor: colors.white,
-  },
-});

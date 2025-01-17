@@ -1,25 +1,26 @@
 import React from 'react';
-import {StatusBar, StyleSheet, Text, View} from 'react-native';
+import {StatusBar, Text, View} from 'react-native';
+import tw from '../../../tailwind';
 import {ImgFoody, ImgPattern} from '../../assets';
 import {Button, Gap} from '../../components';
-import {colors, fonts} from '../../utils';
 
 export default function OnboardScreen({navigation}) {
   return (
     <>
-      <StatusBar backgroundColor={colors.primary} />
-      <View style={styles.page}>
-        <View style={styles.pattern}>
+      <StatusBar backgroundColor={tw.color('primary')} />
+      <View
+        style={tw.style('flex-1 bg-primary justify-center items-center px-8')}>
+        <View style={tw.style('absolute')}>
           <ImgPattern />
         </View>
         <ImgFoody width={280} />
         <Gap height={64} />
-        <Text style={styles.textTitle}>
+        <Text
+          style={tw.style('text-2xl text-white font-sofiaBold text-center')}>
           Jalan Sehatmu Dimulai dari Dapur yang Bahagia
         </Text>
         <Gap height={24} />
         <Button
-          style={styles.button}
           title="Masuk"
           onPress={() => {
             navigation.navigate('LoginScreen');
@@ -37,23 +38,3 @@ export default function OnboardScreen({navigation}) {
     </>
   );
 }
-
-const styles = StyleSheet.create({
-  page: {
-    flex: 1,
-    backgroundColor: colors.primary,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingHorizontal: 32,
-  },
-  pattern: {
-    position: 'absolute',
-  },
-  textTitle: {
-    fontSize: 26,
-    textAlign: 'center',
-    color: colors.white,
-    fontWeight: '500',
-    fontFamily: fonts.SofiaProBold,
-  },
-});

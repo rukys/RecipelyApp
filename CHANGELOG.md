@@ -1,3 +1,9 @@
+### Changelog v1.4
+
+- Add library remind update google playstore
+- Add tailwind with twrnc
+- Change every style in component and screen with tailwind
+
 ### Changelog v1.3
 
 - Add scroll with sticky header in recipe detail screen

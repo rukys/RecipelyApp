@@ -22,7 +22,6 @@ import {
   ForgotPasswordScreen,
   DeleteAccountScreen,
   WebviewScreen,
-  UpdateVersionScreen,
 } from '../screens';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {BottomNavigator} from '../components';
@@ -79,10 +78,6 @@ const Navigations = () => {
       <Stack.Screen name="AboutScreen" component={AboutScreen} />
       <Stack.Screen name="FaqScreen" component={FaqScreen} />
       <Stack.Screen name="ContactMeScreen" component={ContactMeScreen} />
-      <Stack.Screen
-        name="UpdateVersionScreen"
-        component={UpdateVersionScreen}
-      />
       <Stack.Screen
         name="DeleteAccountScreen"
         component={DeleteAccountScreen}

@@ -1,36 +1,18 @@
-import {StyleSheet, View} from 'react-native';
 import React from 'react';
+import {View} from 'react-native';
+import tw from '../../../../tailwind';
 import {Gap, Shimmer} from '../../../components';
 
 const ShimmerRecipeByCategory = () => {
   return (
-    <View style={styles.containerNewRecipe}>
-      <Shimmer style={styles.shimmerRecipeByCategory} />
+    <View>
+      <Shimmer style={tw.style('w-52 h-36 rounded mt-2')} />
       <Gap height={8} />
-      <Shimmer style={styles.shimmerTextRecipeByCategory} />
+      <Shimmer style={tw.style('w-52 h-4 rounded')} />
       <Gap height={8} />
-      <Shimmer style={styles.shimmerTextSubRecipeByCategory} />
+      <Shimmer style={tw.style('w-36 h-4 rounded')} />
     </View>
   );
 };
 
 export default ShimmerRecipeByCategory;
-
-const styles = StyleSheet.create({
-  shimmerRecipeByCategory: {
-    width: 200,
-    height: 150,
-    borderRadius: 8,
-    marginTop: 8,
-  },
-  shimmerTextRecipeByCategory: {
-    width: 200,
-    height: 16,
-    borderRadius: 5,
-  },
-  shimmerTextSubRecipeByCategory: {
-    width: 150,
-    height: 16,
-    borderRadius: 5,
-  },
-});

@@ -1,41 +1,55 @@
 import React from 'react';
-import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+import {Text, TouchableOpacity, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
-import {colors, fonts} from '../../utils';
-import Gap from '../gap';
+import tw from '../../../tailwind';
 import {IconArrowRight, IconBolt, IconDot, IconTimeCircle} from '../../assets';
+import Gap from '../gap';
 
 const CardRecomended = ({Img, title, difficulty, times, onPressInside}) => {
   return (
     <>
-      <TouchableOpacity style={styles.container} onPress={onPressInside}>
+      <TouchableOpacity
+        style={tw.style(
+          'h-24 bg-white mx-4 shadow rounded-lg mt-2 p-2.5 flex-row',
+        )}
+        onPress={onPressInside}>
         <FastImage
-          style={styles.image}
+          style={tw.style('w-24 rounded')}
           source={{uri: Img}}
           resizeMode={FastImage.resizeMode.cover}
         />
         <Gap width={12} />
-        <View style={styles.containerDesc}>
-          <Text style={styles.title}>{title}</Text>
+        <View style={tw.style('flex-1')}>
+          <Text style={tw.style('text-md font-sofia text-textPrimary')}>
+            {title}
+          </Text>
           <Gap height={8} />
           <View>
-            <View style={[styles.row, styles.center]}>
+            <View style={tw.style('flex-row items-center')}>
               <IconBolt />
               <Gap width={3} />
-              <Text style={styles.textSubTitle}>{difficulty}</Text>
+              <Text style={tw.style('font-sofia text-md text-textGrey')}>
+                {difficulty}
+              </Text>
               <Gap width={8} />
-              <View style={styles.centerSelf}>
+              <View style={tw.style('self-center')}>
                 <IconDot />
               </View>
               <Gap width={8} />
               <IconTimeCircle />
               <Gap width={3} />
-              <Text style={styles.textSubTitle}>{times}</Text>
+              <Text style={tw.style('font-sofia text-md text-textGrey')}>
+                {times}
+              </Text>
             </View>
           </View>
         </View>
         <Gap width={12} />
-        <TouchableOpacity style={styles.containerRight} onPress={onPressInside}>
+        <TouchableOpacity
+          style={tw.style(
+            'h-6 w-6 bg-textPrimary self-center rounded-lg justify-center items-center',
+          )}
+          onPress={onPressInside}>
           <IconArrowRight />
         </TouchableOpacity>
       </TouchableOpacity>
@@ -45,51 +59,3 @@ const CardRecomended = ({Img, title, difficulty, times, onPressInside}) => {
 };
 
 export default CardRecomended;
-
-const styles = StyleSheet.create({
-  container: {
-    height: 100,
-    backgroundColor: colors.white,
-    marginHorizontal: 16,
-    elevation: 2,
-    borderRadius: 16,
-    marginTop: 8,
-    padding: 10,
-    flexDirection: 'row',
-  },
-  image: {
-    width: 100,
-    borderRadius: 8,
-  },
-  containerDesc: {
-    flex: 1,
-  },
-  title: {
-    fontSize: 14,
-    fontFamily: fonts.SofiaPro,
-    color: colors.textPrimary,
-  },
-  containerRight: {
-    height: 24,
-    width: 24,
-    backgroundColor: colors.textPrimary,
-    alignSelf: 'center',
-    borderRadius: 8,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  textSubTitle: {
-    fontFamily: fonts.SofiaPro,
-    fontSize: 14,
-    color: colors.textGrey,
-  },
-  row: {
-    flexDirection: 'row',
-  },
-  center: {
-    alignItems: 'center',
-  },
-  centerSelf: {
-    alignSelf: 'center',
-  },
-});

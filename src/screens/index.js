@@ -17,7 +17,6 @@ import ContactMeScreen from './contact-me';
 import ForgotPasswordScreen from './forgot-password';
 import DeleteAccountScreen from './delete-account';
 import WebviewScreen from './webview';
-import UpdateVersionScreen from './update-version';
 
 export {
   HomeScreen,
@@ -39,5 +38,4 @@ export {
   ForgotPasswordScreen,
   DeleteAccountScreen,
   WebviewScreen,
-  UpdateVersionScreen,
 };

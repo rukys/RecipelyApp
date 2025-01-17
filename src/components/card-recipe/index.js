@@ -1,7 +1,7 @@
 import React from 'react';
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {Text, TouchableOpacity, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
-import {colors, fonts} from '../../utils';
+import tw from '../../../tailwind';
 import {
   IconBolt,
   IconCalories,
@@ -23,37 +23,48 @@ const CardRecipe = ({
 }) => {
   return (
     <>
-      <TouchableOpacity style={styles.container} onPress={onPress}>
+      <TouchableOpacity
+        style={tw.style('w-48 rounded-lg shadow bg-white p-2.5 mb-2 mt-2')}
+        onPress={onPress}>
         <View>
           <FastImage
             resizeMode={FastImage.resizeMode.cover}
             source={{uri: img}}
-            style={styles.image}
+            style={tw.style('h-36 rounded')}
           />
-          <TouchableOpacity style={styles.containerFav} onPress={onPressFav}>
+          <TouchableOpacity
+            style={tw.style(
+              'absolute right-0 mt-2 mr-2 bg-white h-7 w-7 justify-center items-center rounded-lg',
+            )}
+            onPress={onPressFav}>
             <IconHeartMini />
           </TouchableOpacity>
         </View>
         <Gap height={12} />
-        <View style={styles.containerDesc}>
-          <Text style={styles.textTitle} numberOfLines={3} ellipsizeMode="tail">
+        <View>
+          <Text
+            style={tw.style('font-sofia text-md text-textPrimary')}
+            numberOfLines={3}
+            ellipsizeMode="tail">
             {title}
           </Text>
           <Gap height={8} />
-          <View style={[styles.row, styles.center]}>
+          <View style={tw.style('flex-row items-center')}>
             {calories ? <IconCalories /> : <IconBolt />}
             <Gap width={3} />
-            <Text style={styles.textSubTitle}>
+            <Text style={tw.style('font-sofia text-md text-textGrey')}>
               {calories ? calories : difficulty}
             </Text>
             <Gap width={8} />
-            <View style={styles.centerSelf}>
+            <View style={tw.style('self-center')}>
               <IconDot />
             </View>
             <Gap width={8} />
             <IconTimeCircle />
             <Gap width={3} />
-            <Text style={styles.textSubTitle}>{time}</Text>
+            <Text style={tw.style('font-sofia text-md text-textGrey')}>
+              {time}
+            </Text>
           </View>
         </View>
       </TouchableOpacity>
@@ -63,51 +74,3 @@ const CardRecipe = ({
 };
 
 export default CardRecipe;
-
-const styles = StyleSheet.create({
-  container: {
-    width: 200,
-    borderRadius: 16,
-    elevation: 2,
-    backgroundColor: colors.white,
-    padding: 10,
-    marginBottom: 8,
-    marginTop: 8,
-  },
-  image: {
-    height: 150,
-    borderRadius: 10,
-  },
-  containerFav: {
-    position: 'absolute',
-    right: 0,
-    marginTop: 8,
-    marginRight: 8,
-    backgroundColor: colors.white,
-    height: 28,
-    width: 28,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 8,
-  },
-  containerDesc: {},
-  textTitle: {
-    fontFamily: fonts.SofiaPro,
-    fontSize: 14,
-    color: colors.textPrimary,
-  },
-  textSubTitle: {
-    fontFamily: fonts.SofiaPro,
-    fontSize: 14,
-    color: colors.textGrey,
-  },
-  row: {
-    flexDirection: 'row',
-  },
-  center: {
-    alignItems: 'center',
-  },
-  centerSelf: {
-    alignSelf: 'center',
-  },
-});

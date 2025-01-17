@@ -1,16 +1,15 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, {useState, useEffect} from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  StatusBar,
-} from 'react-native';
-import ReactNativeModal from 'react-native-modal';
 import {AnimatedScrollView} from '@kanelloc/react-native-animated-header-scroll-view';
-import useFavorite from '../../hooks/use-favorite';
-import useRecipeDetail from '../../hooks/use-recipe-detail';
+import React, {useEffect, useState} from 'react';
+import {StatusBar, Text, TouchableOpacity, View} from 'react-native';
+import ReactNativeModal from 'react-native-modal';
+import tw from '../../../tailwind';
+import {
+  IconBolt,
+  IconCalories,
+  IconRectangle,
+  IconTimeCircle,
+} from '../../assets';
 import {
   Button,
   ButtonSwitch,
@@ -19,13 +18,8 @@ import {
   HeaderTopNavBar,
   Shimmer,
 } from '../../components';
-import {
-  IconBolt,
-  IconCalories,
-  IconRectangle,
-  IconTimeCircle,
-} from '../../assets';
-import {colors, fonts} from '../../utils';
+import useFavorite from '../../hooks/use-favorite';
+import useRecipeDetail from '../../hooks/use-recipe-detail';
 import {globalStore} from '../../stores';
 
 export default function RecipeDetailScreen({route}) {
@@ -94,8 +88,8 @@ export default function RecipeDetailScreen({route}) {
         headerImage={{
           uri: resultRecipeDetail?.thumb ? resultRecipeDetail?.thumb : thumb,
         }}>
-        <View style={styles.content}>
-          <View style={styles.containerRectangle}>
+        <View style={tw.style('bg-white -mt-4 rounded-t-2xl p-5 pt-4')}>
+          <View style={tw.style('self-center')}>
             <IconRectangle />
           </View>
           <Gap height={16} />
@@ -103,13 +97,16 @@ export default function RecipeDetailScreen({route}) {
           {/* Component Title */}
           {isLoadingRecipeDetail ? (
             <>
-              <Shimmer style={styles.shimmerTitle} />
+              <Shimmer style={tw.style('h-4 rounded')} />
               <Gap height={8} />
-              <Shimmer style={styles.shimmerTitle1} />
+              <Shimmer style={tw.style('w-3/4 h-4 rounded')} />
             </>
           ) : (
-            <View style={styles.containerTitle}>
-              <Text style={styles.texttitle}>{resultRecipeDetail?.title}</Text>
+            <View>
+              <Text
+                style={tw.style('font-sofiaBold text-base text-textPrimary')}>
+                {resultRecipeDetail?.title}
+              </Text>
             </View>
           )}
           <Gap height={8} />
@@ -118,21 +115,21 @@ export default function RecipeDetailScreen({route}) {
           {isLoadingRecipeDetail ? (
             <>
               <Gap height={8} />
-              <Shimmer style={styles.shimmerDesc} />
+              <Shimmer style={tw.style('h-3 rounded')} />
               <Gap height={5} />
-              <Shimmer style={styles.shimmerDesc} />
+              <Shimmer style={tw.style('h-3 rounded')} />
               <Gap height={5} />
-              <Shimmer style={styles.shimmerDesc1} />
+              <Shimmer style={tw.style('h-3 rounded w-3/4')} />
             </>
           ) : (
-            <View style={styles.containerDesc}>
-              <Text style={styles.textDesc} numberOfLines={expand ? 300 : 3}>
+            <View>
+              <Text
+                style={tw.style('font-sofia text-textGrey')}
+                numberOfLines={expand ? 300 : 3}>
                 {resultRecipeDetail?.desc}
               </Text>
-              <TouchableOpacity
-                style={styles.containerExpand}
-                onPress={() => setExpand(!expand)}>
-                <Text style={styles.textExpand}>
+              <TouchableOpacity onPress={() => setExpand(!expand)}>
+                <Text style={tw.style('font-sofia text-textPrimary')}>
                   {expand ? 'Sembunyikan' : 'Lihat selengkapnya'}
                 </Text>
               </TouchableOpacity>
@@ -141,48 +138,72 @@ export default function RecipeDetailScreen({route}) {
           <Gap height={16} />
 
           {/* Component Icon Calories, Dificulty and Times */}
-          <View style={styles.row}>
+          <View style={tw.style('flex-row')}>
             {isLoadingRecipeDetail ? (
               <>
-                <Shimmer style={styles.containerBox} />
+                <Shimmer
+                  style={tw.style(
+                    'h-9 w-9 rounded-lg justify-center items-center bg-grey',
+                  )}
+                />
                 <Gap width={8} />
-                <Shimmer style={styles.shimmerDiff} />
+                <Shimmer style={tw.style('h-4 w-1/5 self-center rounded')} />
                 <Gap width={8} />
-                <Shimmer style={styles.containerBox} />
+                <Shimmer
+                  style={tw.style(
+                    'h-9 w-9 rounded-lg justify-center items-center bg-grey',
+                  )}
+                />
                 <Gap width={8} />
-                <Shimmer style={styles.shimmerDiff} />
+                <Shimmer style={tw.style('h-4 w-1/5 self-center rounded')} />
                 <Gap width={8} />
-                <Shimmer style={styles.containerBox} />
+                <Shimmer
+                  style={tw.style(
+                    'h-9 w-9 rounded-lg justify-center items-center bg-grey',
+                  )}
+                />
                 <Gap width={8} />
-                <Shimmer style={styles.shimmerDiff} />
+                <Shimmer style={tw.style('h-4 w-1/5 self-center rounded')} />
               </>
             ) : (
               <>
                 {resultRecipeDetail?.calories || calories ? (
                   <>
-                    <View style={styles.containerBox}>
+                    <View
+                      style={tw.style(
+                        'h-9 w-9 rounded-lg justify-center items-center bg-grey',
+                      )}>
                       <IconCalories height={24} width={24} />
                     </View>
                     <Gap width={8} />
-                    <Text style={styles.textSub}>
+                    <Text
+                      style={tw.style('font-sofia self-center text-textGrey')}>
                       {resultRecipeDetail?.calories || calories}
                     </Text>
                     <Gap width={16} />
                   </>
                 ) : null}
-                <View style={styles.containerBox}>
+                <View
+                  style={tw.style(
+                    'h-9 w-9 rounded-lg justify-center items-center bg-grey',
+                  )}>
                   <IconBolt height={24} width={24} />
                 </View>
                 <Gap width={8} />
-                <Text style={styles.textSub}>
+                <Text style={tw.style('font-sofia self-center text-textGrey')}>
                   {resultRecipeDetail?.difficulty}
                 </Text>
                 <Gap width={16} />
-                <View style={styles.containerBox}>
+                <View
+                  style={tw.style(
+                    'h-9 w-9 rounded-lg justify-center items-center bg-grey',
+                  )}>
                   <IconTimeCircle height={24} width={24} />
                 </View>
                 <Gap width={8} />
-                <Text style={styles.textSub}>{resultRecipeDetail?.times}</Text>
+                <Text style={tw.style('font-sofia self-center text-textGrey')}>
+                  {resultRecipeDetail?.times}
+                </Text>
               </>
             )}
           </View>
@@ -190,7 +211,7 @@ export default function RecipeDetailScreen({route}) {
 
           {/* Component Button Switch */}
           {isLoadingRecipeDetail ? (
-            <Shimmer style={styles.shimmerSwitch} />
+            <Shimmer style={tw.style('h-14 rounded-xl')} />
           ) : (
             <ButtonSwitch
               titleLeft="Komposisi"
@@ -202,10 +223,13 @@ export default function RecipeDetailScreen({route}) {
 
           {/* Component title Ingredients and Instructions */}
           {isLoadingRecipeDetail ? (
-            <Shimmer style={styles.shimmerIng} />
+            <Shimmer style={tw.style('h-4 rounded w-1/3')} />
           ) : (
-            <View style={styles.row}>
-              <Text style={[styles.textTitle1, styles.flex]}>
+            <View style={tw.style('flex-row')}>
+              <Text
+                style={tw.style(
+                  'flex-1 text-base text-textPrimary font-sofiaBold',
+                )}>
                 {isIngredient ? 'Pandaun :' : 'Komposisi :'}
               </Text>
             </View>
@@ -217,34 +241,36 @@ export default function RecipeDetailScreen({route}) {
           {isLoadingRecipeDetail ? (
             <>
               <Gap height={8} />
-              <Shimmer style={styles.shimmerSubIng} />
+              <Shimmer style={tw.style('h-3 rounded w-3/4')} />
               <Gap height={8} />
-              <Shimmer style={styles.shimmerSubIng1} />
+              <Shimmer style={tw.style('h-3 rounded w-3/5')} />
               <Gap height={16} />
-              <Shimmer style={styles.shimmerSubIng} />
+              <Shimmer style={tw.style('h-3 rounded w-3/4')} />
               <Gap height={8} />
-              <Shimmer style={styles.shimmerSubIng1} />
+              <Shimmer style={tw.style('h-3 rounded w-3/5')} />
               <Gap height={16} />
-              <Shimmer style={styles.shimmerSubIng} />
+              <Shimmer style={tw.style('h-3 rounded w-3/4')} />
               <Gap height={8} />
-              <Shimmer style={styles.shimmerSubIng1} />
+              <Shimmer style={tw.style('h-3 rounded w-3/5')} />
               <Gap height={16} />
-              <Shimmer style={styles.shimmerSubIng} />
+              <Shimmer style={tw.style('h-3 rounded w-3/4')} />
               <Gap height={8} />
-              <Shimmer style={styles.shimmerSubIng1} />
+              <Shimmer style={tw.style('h-3 rounded w-3/5')} />
               <Gap height={16} />
-              <Shimmer style={styles.shimmerSubIng} />
+              <Shimmer style={tw.style('h-3 rounded w-3/4')} />
               <Gap height={8} />
-              <Shimmer style={styles.shimmerSubIng1} />
+              <Shimmer style={tw.style('h-3 rounded w-3/5')} />
             </>
           ) : (
             getDataSubContent.map((item, index) => {
               return (
-                <View style={[styles.row]} key={index}>
+                <View style={tw.style('flex-row')} key={index}>
                   {!isIngredient ? (
-                    <Text style={styles.textSubContent}>- </Text>
+                    <Text style={tw.style('font-sofia text-textGrey')}>- </Text>
                   ) : null}
-                  <Text style={styles.textSubContent}>{item.trim()}</Text>
+                  <Text style={tw.style('font-sofia text-textGrey')}>
+                    {item.trim()}
+                  </Text>
                 </View>
               );
             })
@@ -256,24 +282,26 @@ export default function RecipeDetailScreen({route}) {
       <ReactNativeModal
         isVisible={visible}
         onBackdropPress={() => setVisible(false)}>
-        <View style={styles.containerModal}>
-          <Text style={styles.titleModal}>Konfirmasi Hapus</Text>
+        <View style={tw.style('p-4 bg-white rounded-lg')}>
+          <Text style={tw.style('font-sofiaBold text-base text-textPrimary')}>
+            Konfirmasi Hapus
+          </Text>
           <Gap height={5} />
-          <Text style={styles.titlSubeModal}>
+          <Text style={tw.style('font-sofia text-textPrimary')}>
             Apakah Anda yakin ingin menghapus resep ini?
           </Text>
           <Gap height={36} />
-          <View style={styles.row}>
+          <View style={tw.style('flex-row')}>
             <Button
-              style={[styles.button, styles.buttonCancel]}
-              textStyle={styles.textButtonCancel}
+              style={tw.style('flex-1 bg-white text-textPrimary border')}
+              textStyle={tw.style('font-sofiaBold text-textPrimary')}
               type="text"
               title="Tidak"
               onPress={() => setVisible(false)}
             />
             <Gap width={16} />
             <Button
-              style={styles.button}
+              style={tw.style('flex-1')}
               title="Hapus"
               onPress={() => {
                 setVisible(false);
@@ -286,195 +314,3 @@ export default function RecipeDetailScreen({route}) {
     </>
   );
 }
-
-const styles = StyleSheet.create({
-  page: {
-    flex: 1,
-    backgroundColor: colors.white,
-  },
-  containerHeader: {
-    position: 'absolute',
-    flexDirection: 'row',
-    width: '100%',
-    justifyContent: 'space-between',
-  },
-  containerBack: {
-    height: 35,
-    width: 35,
-    marginLeft: 16,
-    marginTop: 32,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: colors.white,
-    borderRadius: 10,
-  },
-  containerFav: {
-    height: 35,
-    width: 35,
-    marginRight: 16,
-    marginTop: 32,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: colors.white,
-    borderRadius: 10,
-  },
-  content: {
-    // flex: 1,
-    backgroundColor: colors.white,
-    marginTop: -16,
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    padding: 20,
-    paddingTop: 16,
-  },
-  containerRectangle: {
-    alignSelf: 'center',
-  },
-  containerTitle: {},
-  texttitle: {
-    fontFamily: fonts.SofiaProBold,
-    fontSize: 18,
-    color: colors.textPrimary,
-  },
-  containerAuthor: {},
-  textAuthor: {
-    fontFamily: fonts.SofiaProLight,
-    fontSize: 12,
-    color: colors.textGrey,
-  },
-  containerDesc: {
-    // flex: 1,
-  },
-  textDesc: {
-    fontFamily: fonts.SofiaPro,
-    fontSize: 14,
-    color: colors.textGrey,
-    // textAlign: 'justify',
-  },
-  containerExpand: {},
-  textExpand: {
-    fontFamily: fonts.SofiaPro,
-    fontSize: 14,
-    // alignSelf: 'center',
-    color: colors.textPrimary,
-  },
-  containerBox: {
-    height: 35,
-    width: 35,
-    borderRadius: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: colors.grey,
-  },
-  textSub: {
-    fontFamily: fonts.SofiaPro,
-    fontSize: 14,
-    alignSelf: 'center',
-    color: colors.textGrey,
-  },
-  flex: {
-    flex: 1,
-  },
-  center: {
-    alignSelf: 'center',
-  },
-  row: {
-    flexDirection: 'row',
-  },
-  spaceBetwen: {
-    justifyContent: 'space-between',
-  },
-  image: {
-    flex: 1,
-    height: 300,
-  },
-  textTitle1: {
-    fontSize: 16,
-    color: colors.textPrimary,
-    fontFamily: fonts.SofiaProBold,
-  },
-  containerSubContent: {},
-  textSubContent: {
-    fontFamily: fonts.SofiaPro,
-    fontSize: 14,
-    color: colors.textGrey,
-  },
-  shimmerImage: {
-    flex: 1,
-    height: 300,
-  },
-  shimmerTitle: {
-    height: 16,
-    borderRadius: 5,
-  },
-  shimmerTitle1: {
-    height: 16,
-    width: '75%',
-    borderRadius: 5,
-  },
-  shimmerDesc: {
-    height: 12,
-    borderRadius: 3,
-  },
-  shimmerDesc1: {
-    height: 12,
-    width: '75%',
-    borderRadius: 3,
-  },
-  shimmerDiff: {
-    height: 16,
-    width: '20%',
-    alignSelf: 'center',
-    borderRadius: 3,
-  },
-  shimmerSwitch: {
-    height: 55,
-    borderRadius: 16,
-  },
-  shimmerIng: {
-    height: 16,
-    borderRadius: 3,
-    width: '30%',
-  },
-  shimmerSubIng: {
-    height: 12,
-    borderRadius: 3,
-    width: '75%',
-  },
-  shimmerSubIng1: {
-    height: 12,
-    borderRadius: 3,
-    width: '65%',
-  },
-  containerModal: {
-    padding: 16,
-    backgroundColor: colors.white,
-    borderRadius: 16,
-  },
-  titleModal: {
-    fontFamily: fonts.SofiaProBold,
-    fontSize: 16,
-    color: colors.textPrimary,
-  },
-  titlSubeModal: {
-    fontFamily: fonts.SofiaPro,
-    fontSize: 14,
-    color: colors.textPrimary,
-  },
-  textButton: {
-    color: colors.textPrimary,
-  },
-  button: {
-    flex: 1,
-  },
-  buttonCancel: {
-    backgroundColor: colors.white,
-    borderColor: colors.textPrimary,
-    borderWidth: 1,
-  },
-  textButtonCancel: {
-    fontFamily: fonts.SofiaProBold,
-    color: colors.textPrimary,
-    // fontSize: 14,
-  },
-});

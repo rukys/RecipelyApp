@@ -1,20 +1,23 @@
-import {ScrollView, StatusBar, StyleSheet, View} from 'react-native';
 import React from 'react';
-import {colors} from '../../utils';
-import useNewArticle from '../../hooks/use-newarticle';
+import {ScrollView, StatusBar, View} from 'react-native';
+import tw from '../../../tailwind';
 import {CardArticle, Gap, Header} from '../../components';
+import useNewArticle from '../../hooks/use-newarticle';
 
 export default function ArticleScreen({navigation}) {
   const {resultNewArticle} = useNewArticle();
 
   return (
     <>
-      <StatusBar backgroundColor={colors.white} barStyle={'dark-content'} />
-      <View style={styles.page}>
+      <StatusBar
+        backgroundColor={tw.color('white')}
+        barStyle={'dark-content'}
+      />
+      <View style={tw.style('flex-1 bg-white')}>
         <Header onPressBack={() => navigation.goBack()} title="Artikel" />
         <Gap height={8} />
         <ScrollView>
-          <View style={styles.content}>
+          <View style={tw.style('mx-4')}>
             {resultNewArticle.map((item, index) => {
               return (
                 <CardArticle title={item.title} img={item.thumb} key={index} />
@@ -27,13 +30,3 @@ export default function ArticleScreen({navigation}) {
     </>
   );
 }
-
-const styles = StyleSheet.create({
-  page: {
-    flex: 1,
-    backgroundColor: colors.white,
-  },
-  content: {
-    marginHorizontal: 16,
-  },
-});

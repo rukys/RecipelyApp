@@ -1,21 +1,14 @@
-import {StyleSheet, View} from 'react-native';
 import React from 'react';
+import {View} from 'react-native';
+import tw from '../../../../tailwind';
 import {Shimmer} from '../../../components';
 
 const ShimmerCategory = () => {
   return (
     <View>
-      <Shimmer style={styles.shimmerButtonCategory} />
+      <Shimmer style={tw.style('h-10 w-24 rounded-3xl')} />
     </View>
   );
 };
 
 export default ShimmerCategory;
-
-const styles = StyleSheet.create({
-  shimmerButtonCategory: {
-    height: 40,
-    width: 100,
-    borderRadius: 40,
-  },
-});

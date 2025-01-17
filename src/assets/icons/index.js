@@ -34,6 +34,7 @@ import IconEmail from './icon-email.svg';
 import IconWa from './icon-wa.svg';
 import IconDeleteAccount from './icon-delete-account.svg';
 import IconProfile from './icon-profile.svg';
+import IconContrast from './contrast.svg';
 
 export {
   IconDeleteAccount,
@@ -72,4 +73,5 @@ export {
   NavHeartFill,
   NavProfile,
   NavProfileFill,
+  IconContrast,
 };

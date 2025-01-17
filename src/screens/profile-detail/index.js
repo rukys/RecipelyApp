@@ -4,7 +4,6 @@ import {
   Image,
   ScrollView,
   StatusBar,
-  StyleSheet,
   TouchableOpacity,
   View,
   Text,
@@ -18,10 +17,11 @@ import RadioGroup from 'react-native-radio-buttons-group';
 import DatePicker from 'react-native-date-picker';
 import ReactNativeModal from 'react-native-modal';
 import Spinner from 'react-native-loading-spinner-overlay';
-import {colors, fonts, showMessage} from '../../utils';
+import {showMessage} from '../../utils';
 import {Button, Gap, Header, Input} from '../../components';
 import {IconEditPhoto, ImgDefault} from '../../assets';
 import {globalStore, userStore} from '../../stores';
+import tw from '../../../tailwind';
 
 export default function ProfileDetailScreen({navigation}) {
   const getUser = userStore(state => state.user);
@@ -140,57 +140,64 @@ export default function ProfileDetailScreen({navigation}) {
   }, []);
 
   return (
-    <>
-      <StatusBar backgroundColor={colors.white} barStyle={'dark-content'} />
-      <ScrollView style={styles.page}>
-        <Header
-          title="Ubah Profil"
-          textStyle={styles.titleHeader}
-          onPressBack={() => navigation.goBack()}
-        />
+    <View style={tw.style('flex-1 bg-white')}>
+      <StatusBar
+        backgroundColor={tw.color('white')}
+        barStyle={'dark-content'}
+      />
+      <Header
+        title="Ubah Profil"
+        style={tw.style('bg-white')}
+        onPressBack={() => navigation.goBack()}
+      />
+      <ScrollView>
         <Gap height={36} />
-        <View style={styles.containerAvatar}>
+        <View style={tw.style('self-center')}>
           <Image
             source={photo ? {uri: photo} : ImgDefault}
-            style={styles.avatar}
+            style={tw.style('h-32 w-32 rounded-full')}
           />
           <TouchableOpacity
-            style={styles.editPhoto}
+            style={tw.style('absolute bottom-0 right-0 mr-2')}
             onPress={onLaunchImageLibrary}>
             <IconEditPhoto height={32} width={32} />
           </TouchableOpacity>
         </View>
         <Gap height={24} />
-        <View style={styles.content}>
+        <View style={tw.style('flex-1 bg-white')}>
           <Gap height={16} />
-          <View style={styles.containerMargin}>
+          <View style={tw.style('mx-4')}>
             <Input
               label="Nama Lengkap"
               value={fullName}
-              labelStyle={styles.label}
-              containerStyle={styles.containerInput}
-              inputStyle={styles.input}
+              labelStyle={tw.style('text-textPrimary')}
+              containerStyle={tw.style(
+                'flex-1 bg-white border-textPrimary rounded-lg',
+              )}
+              inputStyle={tw.style('text-textPrimary')}
               onChangeText={val => setFullName(val)}
-              placeholderColor={colors.textPrimary}
+              placeholderColor={tw.color('textPrimary')}
             />
           </View>
           <Gap height={16} />
-          <View style={[styles.containerMargin, styles.row]}>
+          <View style={tw.style('mx-4 flex-row')}>
             <Input
               disable
               label="Email"
               value={email}
-              labelStyle={styles.label}
-              containerStyle={styles.containerInput}
-              inputStyle={styles.input}
-              root={styles.flex}
-              placeholderColor={colors.textPrimary}
+              labelStyle={tw.style('text-textPrimary')}
+              containerStyle={tw.style(
+                'flex-1 bg-white border-textPrimary rounded-lg',
+              )}
+              inputStyle={tw.style('text-textPrimary')}
+              root={tw.style('flex-1')}
+              placeholderColor={tw.color('textPrimary')}
             />
             {!isEmailVerified ? (
               <>
                 <Gap width={8} />
                 <Button
-                  style={styles.buttonVerif}
+                  style={tw.style('h-14 w-24 mt-6 bg-primary')}
                   title="Verifikasi"
                   isLoading={isLoading}
                   onPress={submitSendEmailVerification}
@@ -200,17 +207,21 @@ export default function ProfileDetailScreen({navigation}) {
           </View>
         </View>
         <Gap height={16} />
-        <View style={styles.containerMargin}>
-          <Text style={styles.labelDOB}>Jenis Kelamin</Text>
+        <View style={tw.style('mx-4')}>
+          <Text style={tw.style('text-md font-sofia text-textPrimary ml-1')}>
+            Jenis Kelamin
+          </Text>
           <Gap height={5} />
           <TouchableOpacity
-            style={styles.containerDOB}
+            style={tw.style(
+              'flex-row items-center h-14 rounded-lg border border-textPrimary px-2 bg-white',
+            )}
             onPress={() => setIsVisibleGender(true)}>
             <Text
               style={
                 gender === null || gender === undefined
-                  ? styles.textPlacDOB
-                  : styles.label
+                  ? tw.style('text-md font-sofia text-textGrey ml-1')
+                  : tw.style('text-textPrimary')
               }>
               {gender === null || gender === undefined
                 ? 'Masukkan jenis kelamin Anda'
@@ -221,17 +232,21 @@ export default function ProfileDetailScreen({navigation}) {
           </TouchableOpacity>
         </View>
         <Gap height={16} />
-        <View style={styles.containerMargin}>
-          <Text style={styles.labelDOB}>Tanggal Lahir</Text>
+        <View style={tw.style('mx-4')}>
+          <Text style={tw.style('text-md font-sofia text-textPrimary ml-1')}>
+            Tanggal Lahir
+          </Text>
           <Gap height={5} />
           <TouchableOpacity
-            style={styles.containerDOB}
+            style={tw.style(
+              'flex-row items-center h-14 rounded-lg border border-textPrimary px-2 bg-white',
+            )}
             onPress={() => setIsVisibleDOB(true)}>
             <Text
               style={
                 dob === null || dob === undefined
-                  ? styles.textPlacDOB
-                  : styles.label
+                  ? tw.style('text-md font-sofia text-textGrey ml-1')
+                  : tw.style('text-textPrimary')
               }>
               {dob === null || dob === undefined
                 ? 'Masukkan tanggal lahir Anda'
@@ -240,9 +255,8 @@ export default function ProfileDetailScreen({navigation}) {
           </TouchableOpacity>
         </View>
         <Gap height={36} />
-        <View style={styles.containerMargin}>
+        <View style={tw.style('mx-4')}>
           <Button
-            style={styles.buttonEdit}
             title="Simpan Perubahan"
             disabled={disableButton}
             onPress={() => onSubmitUpdateProfile()}
@@ -250,16 +264,17 @@ export default function ProfileDetailScreen({navigation}) {
         </View>
         <Gap height={36} />
       </ScrollView>
-
       <ReactNativeModal
         isVisible={isVisibleGender}
         onBackdropPress={() => setIsVisibleGender(false)}>
-        <View style={styles.containerModalGender}>
-          <Text style={styles.titleModalGender}>Pilih Jenis Kelamin</Text>
+        <View style={tw.style('bg-white rounded-lg p-4')}>
+          <Text style={tw.style('font-sofiaBold text-base text-textPrimary')}>
+            Pilih Jenis Kelamin
+          </Text>
           <Gap height={8} />
           <RadioGroup
-            containerStyle={styles.containerRadio}
-            labelStyle={styles.textRadio}
+            containerStyle={tw.style('items-start -ml-2')}
+            labelStyle={tw.style('font-sofia text-textPrimary text-md')}
             radioButtons={[
               {
                 id: 0,
@@ -278,17 +293,17 @@ export default function ProfileDetailScreen({navigation}) {
             selectedId={gender}
           />
           <Gap height={16} />
-          <View style={styles.row}>
+          <View style={tw.style('flex-row')}>
             <Button
-              style={[styles.flex, styles.buttonCancel]}
-              textStyle={styles.textButtonCancel}
+              style={tw.style('flex-1 bg-white border-textPrimary border')}
+              textStyle={tw.style('font-sofiaBold text-textPrimary')}
               type="text"
               title="Kembali"
               onPress={() => setIsVisibleGender(false)}
             />
             <Gap width={16} />
             <Button
-              style={styles.flex}
+              style={tw.style('flex-1')}
               title="Simpan"
               onPress={() => setIsVisibleGender(false)}
             />
@@ -299,8 +314,10 @@ export default function ProfileDetailScreen({navigation}) {
       <ReactNativeModal
         isVisible={isVisibleDOB}
         onBackdropPress={() => setIsVisibleDOB(false)}>
-        <View style={styles.containerModalPicker}>
-          <Text style={styles.titleModalGender}>Pilih Tanggal Lahir</Text>
+        <View style={tw.style('bg-white rounded-lg p-4')}>
+          <Text style={tw.style('font-sofiaBold text-base text-textPrimary')}>
+            Pilih Tanggal Lahir
+          </Text>
           <Gap height={8} />
           <DatePicker
             date={date}
@@ -310,17 +327,17 @@ export default function ProfileDetailScreen({navigation}) {
             }}
           />
           <Gap height={16} />
-          <View style={styles.row}>
+          <View style={tw.style('flex-row')}>
             <Button
-              style={[styles.flex, styles.buttonCancel]}
-              textStyle={styles.textButtonCancel}
+              style={tw.style('flex-1 bg-white border-textPrimary border')}
+              textStyle={tw.style('font-sofiaBold text-textPrimary')}
               type="text"
               title="Kembali"
               onPress={() => setIsVisibleDOB(false)}
             />
             <Gap width={16} />
             <Button
-              style={styles.flex}
+              style={tw.style('flex-1')}
               title="Simpan"
               onPress={() => {
                 setIsVisibleDOB(false);
@@ -334,132 +351,8 @@ export default function ProfileDetailScreen({navigation}) {
       <Spinner
         visible={spinner}
         textContent={'Mohon tunggu...'}
-        textStyle={styles.spinnerTextStyle}
+        textStyle={tw.style('text-white')}
       />
-    </>
+    </View>
   );
 }
-
-const styles = StyleSheet.create({
-  page: {
-    flex: 1,
-    backgroundColor: colors.white,
-  },
-  titleHeader: {},
-  containerAvatar: {
-    alignSelf: 'center',
-  },
-  editPhoto: {
-    position: 'absolute',
-    bottom: 0,
-    right: 0,
-    marginRight: 8,
-  },
-  avatar: {
-    height: 125,
-    width: 125,
-    borderRadius: 75,
-  },
-  row: {
-    flexDirection: 'row',
-  },
-  flex: {
-    flex: 1,
-  },
-  content: {
-    flex: 1,
-    backgroundColor: colors.white,
-  },
-  containerMargin: {
-    marginHorizontal: 16,
-  },
-  containerInput: {
-    flex: 1,
-    backgroundColor: colors.white,
-    borderColor: colors.textPrimary,
-  },
-  input: {
-    color: colors.textPrimary,
-  },
-  label: {
-    color: colors.textPrimary,
-  },
-  buttonVerif: {
-    height: 55,
-    width: 100,
-    marginTop: 24,
-    backgroundColor: colors.primary,
-  },
-  buttonEdit: {},
-  labelDOB: {
-    fontSize: 14,
-    fontFamily: fonts.SofiaPro,
-    color: colors.textPrimary,
-    marginLeft: 3,
-  },
-  containerDOB: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    height: 55,
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: colors.textPrimary,
-    paddingHorizontal: 8,
-    backgroundColor: colors.white,
-  },
-  textDOB: {
-    fontSize: 14,
-    fontFamily: fonts.SofiaPro,
-    color: colors.textPrimary,
-    marginLeft: 3,
-  },
-  textPlacDOB: {
-    fontSize: 14,
-    fontFamily: fonts.SofiaPro,
-    color: colors.textGrey,
-    marginLeft: 3,
-  },
-  containerModalGender: {
-    backgroundColor: colors.white,
-    borderRadius: 16,
-    padding: 16,
-  },
-  titleModalGender: {
-    fontFamily: fonts.SofiaProBold,
-    fontSize: 16,
-    color: colors.textPrimary,
-  },
-  titlSubeModalGender: {
-    fontFamily: fonts.SofiaPro,
-    fontSize: 14,
-    color: colors.textPrimary,
-  },
-  containerRadio: {
-    alignItems: 'flex-start',
-    marginLeft: -8,
-  },
-  textRadio: {
-    fontFamily: fonts.SofiaPro,
-    color: colors.textPrimary,
-    fontSize: 14,
-  },
-  buttonCancel: {
-    backgroundColor: colors.white,
-    borderColor: colors.textPrimary,
-    borderWidth: 1,
-  },
-  textButtonCancel: {
-    fontFamily: fonts.SofiaProBold,
-    color: colors.textPrimary,
-    // fontSize: 14,
-  },
-  containerModalPicker: {
-    backgroundColor: colors.white,
-    // height: 100,
-    borderRadius: 16,
-    padding: 16,
-  },
-  spinnerTextStyle: {
-    color: colors.white,
-  },
-});

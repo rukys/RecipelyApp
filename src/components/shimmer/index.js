@@ -2,6 +2,7 @@ import React, {useEffect, useRef} from 'react';
 import {Animated, Dimensions} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import {createShimmerPlaceholder} from 'react-native-shimmer-placeholder';
+import tw from '../../../tailwind';
 
 const SHIMMER_COLORS = ['#dadee3', '#ebeef2', '#dadee3'];
 const VW = Dimensions.get('window').width;
@@ -22,7 +23,7 @@ export default function Shimmer({style}) {
   return (
     <ShimmerPlaceholder
       ref={shimmerRef}
-      style={[{width: '100%'}, style]}
+      style={[tw.style('w-full'), style]}
       width={VW}
       shimmerColors={SHIMMER_COLORS}
       stopAutoRun

@@ -9,9 +9,9 @@ import Navigations from './navigations';
 import FlashMessage from 'react-native-flash-message';
 import analytics from '@react-native-firebase/analytics';
 import messaging from '@react-native-firebase/messaging';
+import {checkForUpdate, UpdateFlow} from 'react-native-in-app-updates';
 // import {colors} from './utils';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
-import useRemoteSetting from './hooks/use-remote-setting';
 
 LogBox.ignoreLogs(['Setting a timer']);
 LogBox.ignoreAllLogs();
@@ -20,6 +20,18 @@ const queryClient = new QueryClient();
 const App = () => {
   const navigationRef = useNavigationContainerRef();
   const routeNameRef = useRef();
+
+  async function getData() {
+    try {
+      await checkForUpdate(UpdateFlow.FLEXIBLE);
+    } catch (e) {
+      // Handle error
+    }
+  }
+
+  useEffect(() => {
+    getData();
+  }, []);
 
   useEffect(() => {
     // foreground notification

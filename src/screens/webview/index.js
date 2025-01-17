@@ -1,8 +1,8 @@
-import React from 'react';
-import {StatusBar, StyleSheet, View} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
+import React from 'react';
+import {StatusBar, View} from 'react-native';
 import {WebView} from 'react-native-webview';
-import {colors} from '../../utils';
+import tw from '../../../tailwind';
 import {Header} from '../../components';
 
 export default function WebviewScreen({route}) {
@@ -10,22 +10,18 @@ export default function WebviewScreen({route}) {
   const navigation = useNavigation();
 
   return (
-    <View style={styles.page}>
-      <StatusBar backgroundColor={colors.primary} barStyle={'light-content'} />
+    <View style={tw.style('flex-1 bg-white')}>
+      <StatusBar
+        backgroundColor={tw.color('primary')}
+        barStyle={'light-content'}
+      />
       <Header
         title={titleHeader}
         onPressBack={() => {
           navigation.goBack();
         }}
       />
-      <WebView source={{uri: url}} style={styles.page} />
+      <WebView source={{uri: url}} style={tw.style('flex-1 bg-white')} />
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  page: {
-    flex: 1,
-    backgroundColor: colors.white,
-  },
-});

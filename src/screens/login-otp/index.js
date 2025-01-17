@@ -1,5 +1,5 @@
-import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
+import {Text, View} from 'react-native';
 
 export default function LoginOtpScreen() {
   return (
@@ -8,9 +8,3 @@ export default function LoginOtpScreen() {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  page: {
-    flex: 1,
-  },
-});

@@ -1,0 +1,30 @@
+module.exports = {
+  theme: {
+    screens: {},
+    colors: {
+      primary: '#70B9BE',
+      secondary: '#F1F5F5',
+      buttonPrimary: '#042628',
+      textPrimary: '#0A2533',
+      textGrey: '#97A2B0',
+      white: 'white',
+      black: 'black',
+      grey: '#E6EBF2',
+      darkGrey: '#48525F',
+      silver: '#D8D7E0',
+      error: '#DF6565',
+      success: 'green',
+      inputSearch: '#F3F1F3',
+    },
+    fontFamily: {
+      sofia: ['Sofia-Pro-Regular'],
+      sofiaMedium: ['Sofia-Pro-Medium'],
+      sofiaLight: ['Sofia-Pro-Light'],
+      sofiaExtraLight: ['Sofia-Pro-ExtraLight'],
+      sofiaUltraLight: ['Sofia-Pro-UltraLight'],
+      sofiaSemiBold: ['Sofia-Pro-Semi-Bold'],
+      sofiaBold: ['Sofia-Pro-Bold'],
+    },
+    extend: {},
+  },
+};

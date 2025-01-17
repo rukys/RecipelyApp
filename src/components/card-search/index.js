@@ -1,36 +1,46 @@
 import React from 'react';
-import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+import {Text, TouchableOpacity, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
-import {colors, fonts} from '../../utils';
-import Gap from '../gap';
+import tw from '../../../tailwind';
 import {IconBolt, IconDot, IconTimeCircle} from '../../assets';
+import Gap from '../gap';
 
 const CardSearch = ({img, title, difficulty, time, onPress}) => {
   return (
     <>
-      <TouchableOpacity style={styles.container} onPress={onPress}>
+      <TouchableOpacity
+        style={tw.style(
+          'h-24 bg-white mx-4 shadow rounded-lg mt-2 p-2.5 flex-row',
+        )}
+        onPress={onPress}>
         <FastImage
-          style={styles.image}
+          style={tw.style('w-24 rounded')}
           source={{uri: img}}
           resizeMode={FastImage.resizeMode.cover}
         />
         <Gap width={12} />
-        <View style={styles.containerDesc}>
-          <Text style={styles.title}>{title}</Text>
+        <View style={tw.style('flex-1')}>
+          <Text style={tw.style('flex-1 text-md font-sofia text-textPrimary')}>
+            {title}
+          </Text>
           <Gap height={8} />
           <View>
-            <View style={[styles.row, styles.center]}>
+            <View style={tw.style('flex-row items-center')}>
               <IconBolt />
               <Gap width={3} />
-              <Text style={styles.textSubTitle}>{difficulty}</Text>
+              <Text style={tw.style('font-sofia text-md text-textGrey')}>
+                {difficulty}
+              </Text>
               <Gap width={8} />
-              <View style={styles.centerSelf}>
+              <View style={tw.style('self-center')}>
                 <IconDot />
               </View>
               <Gap width={8} />
               <IconTimeCircle />
               <Gap width={3} />
-              <Text style={styles.textSubTitle}>{time}</Text>
+              <Text style={tw.style('font-sofia text-md text-textGrey')}>
+                {time}
+              </Text>
             </View>
           </View>
         </View>
@@ -41,43 +51,3 @@ const CardSearch = ({img, title, difficulty, time, onPress}) => {
 };
 
 export default CardSearch;
-
-const styles = StyleSheet.create({
-  container: {
-    height: 100,
-    backgroundColor: colors.white,
-    marginHorizontal: 16,
-    elevation: 2,
-    borderRadius: 16,
-    marginTop: 8,
-    padding: 10,
-    flexDirection: 'row',
-  },
-  image: {
-    width: 100,
-    borderRadius: 8,
-  },
-  containerDesc: {
-    flex: 1,
-  },
-  title: {
-    flex: 1,
-    fontSize: 14,
-    fontFamily: fonts.SofiaPro,
-    color: colors.textPrimary,
-  },
-  textSubTitle: {
-    fontFamily: fonts.SofiaPro,
-    fontSize: 14,
-    color: colors.textGrey,
-  },
-  row: {
-    flexDirection: 'row',
-  },
-  center: {
-    alignItems: 'center',
-  },
-  centerSelf: {
-    alignSelf: 'center',
-  },
-});

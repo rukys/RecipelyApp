@@ -2,14 +2,12 @@ import {
   RefreshControl,
   ScrollView,
   StatusBar,
-  StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from 'react-native';
 import React, {useState} from 'react';
 import deviceInfoModule from 'react-native-device-info';
-import {colors, fonts} from '../../utils';
 import {
   ButtonCategory,
   CardArticle,
@@ -31,6 +29,7 @@ import ShimmerNewRecipe from './shimmer/shimmer-new-recipe';
 import ShimmerCategory from './shimmer/shimmer-category';
 import ShimmerRecipeByCategory from './shimmer/shimmer-recipe-by-category';
 import ShimmerArticle from './shimmer/shimmer-article';
+import tw from '../../../tailwind';
 
 export default function HomeScreen({navigation}) {
   const getUser = userStore(state => state.user);
@@ -97,37 +96,49 @@ export default function HomeScreen({navigation}) {
   };
 
   return (
-    <View style={styles.page}>
-      <StatusBar backgroundColor={colors.white} barStyle="dark-content" />
+    <View style={tw.style('flex-1 bg-white')}>
+      <StatusBar backgroundColor={tw.color('white')} barStyle="dark-content" />
       <Gap height={16} />
-      <View style={styles.containerHeader}>
-        <View style={styles.flex}>
-          <View style={styles.row}>
+      <View style={tw.style('flex-row mx-4 bg-white h-14')}>
+        <View style={tw.style('flex-1')}>
+          <View style={tw.style('flex-row')}>
             <IconSun />
             <Gap width={8} />
-            <Text style={styles.textWelcome}>Selamat Datang</Text>
+            <Text style={tw.style('font-sofia text-textPrimary')}>
+              Selamat Datang
+            </Text>
           </View>
-          <Text style={styles.textFullName}>{getUser?.fullName}</Text>
+          <Text style={tw.style('font-sofiaBold text-xl text-textPrimary')}>
+            {getUser?.fullName}
+          </Text>
         </View>
         {/* <TouchableOpacity style={styles.center} onPress={onNavigateNotif}>
           <IconNotif />
         </TouchableOpacity> */}
       </View>
       <ScrollView
-        style={styles.content}
+        style={tw.style('flex-1')}
         refreshControl={
           <RefreshControl refreshing={isLoading} onRefresh={onRefreshScreen} />
         }>
         <Gap height={19} />
-        <View style={styles.containerNewRecipe}>
-          <View style={styles.row}>
-            <Text style={[styles.textTitle, styles.flex]}>Resep Terbaru</Text>
+        <View>
+          <View style={tw.style('flex-row')}>
+            <Text
+              style={tw.style(
+                'flex-1 ml-4 text-lg text-textPrimary font-sofiaBold',
+              )}>
+              Resep Terbaru
+            </Text>
             <TouchableOpacity
-              style={styles.center}
+              style={tw.style('self-center')}
               onPress={() => {
                 onNavigateRecipe('NewRecipe');
               }}>
-              <Text style={styles.textSeeAll}>Lihat Semua</Text>
+              <Text
+                style={tw.style('text-md text-primary font-sofiaBold mr-4')}>
+                Lihat Semua
+              </Text>
             </TouchableOpacity>
           </View>
           <Gap height={4} />
@@ -161,13 +172,21 @@ export default function HomeScreen({navigation}) {
           </ScrollView>
         </View>
         <Gap height={16} />
-        <View style={styles.containerCategory}>
-          <View style={styles.row}>
-            <Text style={[styles.textTitle, styles.flex]}>Kategori</Text>
+        <View>
+          <View style={tw.style('flex-row')}>
+            <Text
+              style={tw.style(
+                'flex-1 ml-4 text-lg text-textPrimary font-sofiaBold',
+              )}>
+              Kategori
+            </Text>
             <TouchableOpacity
-              style={styles.center}
+              style={tw.style('self-center')}
               onPress={() => onNavigateRecipe('RecipeByCategory')}>
-              <Text style={styles.textSeeAll}>Lihat Semua</Text>
+              <Text
+                style={tw.style('text-md text-primary font-sofiaBold mr-4')}>
+                Lihat Semua
+              </Text>
             </TouchableOpacity>
           </View>
           <Gap height={12} />
@@ -194,11 +213,8 @@ export default function HomeScreen({navigation}) {
           </ScrollView>
         </View>
         <Gap height={12} />
-        <View style={styles.containerRecipe}>
-          <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            style={styles.scrollRecipe}>
+        <View>
+          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
             <Gap width={16} />
             {isLoadingRecipeByCategory || isLoading
               ? [1, 2, 3, 4, 5].map(key => (
@@ -228,19 +244,27 @@ export default function HomeScreen({navigation}) {
           </ScrollView>
         </View>
         <Gap height={16} />
-        <View style={styles.containerArticle}>
-          <View style={styles.row}>
-            <Text style={[styles.textTitle, styles.flex]}>Artikel</Text>
+        <View>
+          <View style={tw.style('flex-row')}>
+            <Text
+              style={tw.style(
+                'flex-1 ml-4 text-lg text-textPrimary font-sofiaBold',
+              )}>
+              Artikel
+            </Text>
             <TouchableOpacity
-              style={styles.center}
+              style={tw.style('self-center')}
               onPress={() => {
                 navigation.navigate('ArticleScreen');
               }}>
-              <Text style={styles.textSeeAll}>Lihat Semua</Text>
+              <Text
+                style={tw.style('text-md text-primary font-sofiaBold mr-4')}>
+                Lihat Semua
+              </Text>
             </TouchableOpacity>
           </View>
           <Gap height={12} />
-          <View style={styles.contentArticle}>
+          <View style={tw.style('mx-4')}>
             {isLoadingNewArticle || isLoading
               ? [1, 2, 3].map(key => (
                   <>
@@ -261,9 +285,17 @@ export default function HomeScreen({navigation}) {
           </View>
         </View>
         <Gap height={8} />
-        <View style={styles.center}>
-          <Text style={styles.textNameApp}>Recipely</Text>
-          <Text style={styles.textVersionApp}>
+        <View style={tw.style('items-center')}>
+          <Text
+            style={tw.style(
+              'font-sofiaExtraLight text-xs text-textGrey text-center',
+            )}>
+            Recipely
+          </Text>
+          <Text
+            style={tw.style(
+              'text-xs font-sofiaExtraLight text-textGrey text-center',
+            )}>
             version {deviceInfoModule.getVersion()}
           </Text>
         </View>
@@ -272,68 +304,3 @@ export default function HomeScreen({navigation}) {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  page: {
-    flex: 1,
-    backgroundColor: colors.white,
-  },
-  containerHeader: {
-    flexDirection: 'row',
-    marginHorizontal: 16,
-    backgroundColor: colors.white,
-    height: 60,
-  },
-  textWelcome: {
-    fontFamily: fonts.SofiaPro,
-    color: colors.textPrimary,
-  },
-  textFullName: {
-    fontFamily: fonts.SofiaProBold,
-    fontSize: 24,
-    color: colors.textPrimary,
-  },
-  content: {
-    flex: 1,
-  },
-  containerNewRecipe: {},
-  containerCategory: {},
-  textTitle: {
-    marginLeft: 16,
-    fontSize: 20,
-    color: colors.textPrimary,
-    fontFamily: fonts.SofiaProBold,
-  },
-  textSeeAll: {
-    fontSize: 14,
-    color: colors.primary,
-    fontFamily: fonts.SofiaProBold,
-    marginRight: 16,
-  },
-  containerRecipe: {},
-  scrollRecipe: {},
-  contentArticle: {
-    marginHorizontal: 16,
-  },
-  textNameApp: {
-    fontFamily: fonts.SofiaProExtraLight,
-    fontSize: 12,
-    color: colors.textGrey,
-    textAlign: 'center',
-  },
-  textVersionApp: {
-    fontSize: 10,
-    fontFamily: fonts.SofiaProExtraLight,
-    color: colors.textGrey,
-    textAlign: 'center',
-  },
-  flex: {
-    flex: 1,
-  },
-  row: {
-    flexDirection: 'row',
-  },
-  center: {
-    alignSelf: 'center',
-  },
-});
