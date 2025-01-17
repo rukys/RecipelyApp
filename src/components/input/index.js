@@ -1,14 +1,8 @@
-import {
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from 'react-native';
 import React, {useState} from 'react';
-import {colors, fonts} from '../../utils';
-import Gap from '../gap';
+import {Text, TextInput, TouchableOpacity, View} from 'react-native';
+import tw from '../../../tailwind';
 import {IconEye, IconEyeOff} from '../../assets';
+import Gap from '../gap';
 
 const Input = ({
   type,
@@ -29,16 +23,25 @@ const Input = ({
   const [secure, setSecure] = useState(true);
   return (
     <View style={root}>
-      <Text style={[styles.label, labelStyle]}>{label}</Text>
+      <Text
+        style={[tw.style('text-md font-sofia text-white ml-1'), labelStyle]}>
+        {label}
+      </Text>
       <Gap height={5} />
-      <View style={[styles.container, containerStyle]}>
+      <View
+        style={[
+          tw.style(
+            'flex-row items-center h-14 rounded-lg border border-white px-2 bg-primary',
+          ),
+          containerStyle,
+        ]}>
         <TextInput
           value={value}
           editable={disable}
-          style={[styles.textInput, inputStyle]}
+          style={[tw.style('flex-1 text-white font-sofia'), inputStyle]}
           placeholder={placeholder}
           placeholderTextColor={
-            placeholderColor ? placeholderColor : colors.white
+            placeholderColor ? placeholderColor : tw.color('white')
           }
           multiline={multiline}
           onChangeText={onChangeText}
@@ -61,7 +64,9 @@ const Input = ({
       {errorMessage && (
         <View>
           <Gap height={5} />
-          <Text style={styles.textError}>{errorMessage}</Text>
+          <Text style={tw.style('text-md font-sofia ml-1 text-error')}>
+            {errorMessage}
+          </Text>
         </View>
       )}
     </View>
@@ -69,33 +74,3 @@ const Input = ({
 };
 
 export default Input;
-
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    height: 55,
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: colors.white,
-    paddingHorizontal: 8,
-    backgroundColor: colors.primary,
-  },
-  textInput: {
-    flex: 1,
-    color: colors.white,
-    fontFamily: fonts.SofiaPro,
-  },
-  label: {
-    fontSize: 14,
-    fontFamily: fonts.SofiaPro,
-    color: colors.white,
-    marginLeft: 3,
-  },
-  textError: {
-    fontSize: 14,
-    fontFamily: fonts.SofiaPro,
-    marginLeft: 3,
-    color: colors.error,
-  },
-});

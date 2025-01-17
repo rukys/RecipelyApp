@@ -1,11 +1,12 @@
-import React from 'react';
-import {StatusBar, StyleSheet, Text, View} from 'react-native';
 import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
+import React from 'react';
+import {StatusBar, Text, View} from 'react-native';
+import tw from '../../../tailwind';
 import {IconChef, ImgPattern} from '../../assets';
-import {colors, fonts, showMessage, useForm} from '../../utils';
 import {Button, Gap, Input} from '../../components';
 import {globalStore, userStore} from '../../stores';
+import {showMessage, useForm} from '../../utils';
 
 export default function LoginScreen({navigation}) {
   const setUser = userStore(state => state.setUser);
@@ -75,18 +76,20 @@ export default function LoginScreen({navigation}) {
 
   return (
     <>
-      <StatusBar backgroundColor={colors.primary} />
-      <View style={styles.page}>
-        <View style={styles.pattern}>
+      <StatusBar backgroundColor={tw.color('primary')} />
+      <View style={tw.style('flex-1 justify-center bg-primary')}>
+        <View style={tw.style('absolute')}>
           <ImgPattern />
         </View>
-        <View style={styles.containerLogo}>
+        <View style={tw.style('mx-4 items-center')}>
           <IconChef width={55} height={55} />
           <Gap width={8} />
-          <Text style={styles.titleLogo}>Recipely</Text>
+          <Text style={tw.style('font-sofiaExtraLight text-3xl text-white')}>
+            Recipely
+          </Text>
         </View>
         <Gap height={24} />
-        <View style={styles.containerForm}>
+        <View style={tw.style('mx-4')}>
           <Input
             label="Email"
             placeholder="Masukkan Email Anda"
@@ -106,13 +109,13 @@ export default function LoginScreen({navigation}) {
           <Gap height={8} />
           <Button
             type="text"
-            style={styles.button}
+            style={tw.style('items-end')}
             title="Lupa Kata Sandi?"
             onPress={onNavigateForgot}
           />
         </View>
         <Gap height={36} />
-        <View style={styles.containerButton}>
+        <View style={tw.style('mx-4')}>
           <Button
             title="Masuk"
             disabled={isLoading}
@@ -124,32 +127,3 @@ export default function LoginScreen({navigation}) {
     </>
   );
 }
-
-const styles = StyleSheet.create({
-  page: {
-    flex: 1,
-    justifyContent: 'center',
-    backgroundColor: colors.primary,
-  },
-  pattern: {
-    position: 'absolute',
-  },
-  containerLogo: {
-    marginHorizontal: 16,
-    alignItems: 'center',
-  },
-  titleLogo: {
-    fontSize: 26,
-    fontFamily: fonts.SofiaProExtraLight,
-    color: colors.white,
-  },
-  containerForm: {
-    marginHorizontal: 16,
-  },
-  button: {
-    alignItems: 'flex-end',
-  },
-  containerButton: {
-    marginHorizontal: 16,
-  },
-});

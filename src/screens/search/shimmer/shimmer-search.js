@@ -1,49 +1,20 @@
-import {StyleSheet, View} from 'react-native';
 import React from 'react';
+import {View} from 'react-native';
+import tw from '../../../../tailwind';
 import {Gap, Shimmer} from '../../../components';
 
 const ShimmerSearch = () => {
   return (
-    <View style={styles.container}>
-      <Shimmer style={styles.shimmerImage} />
+    <View style={tw.style('flex-1 flex-row ml-1.5 p-2.5')}>
+      <Shimmer style={tw.style('h-20 w-24 rounded')} />
       <Gap width={16} />
-      <View style={styles.containerSub}>
-        <Shimmer style={styles.shimmerText} />
-        <Shimmer style={styles.shimmerText} />
-        <Shimmer style={styles.shimmerSubText} />
+      <View style={tw.style('flex-1 mr-2')}>
+        <Shimmer style={tw.style('w-full mt-2 h-4 rounded')} />
+        <Shimmer style={tw.style('w-full mt-2 h-4 rounded')} />
+        <Shimmer style={tw.style('w-32 mt-2 h-4 rounded')} />
       </View>
     </View>
   );
 };
 
 export default ShimmerSearch;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: 'row',
-    marginLeft: 6,
-    padding: 10,
-  },
-  containerSub: {
-    flex: 1,
-    marginRight: 8,
-  },
-  shimmerImage: {
-    height: 80,
-    width: 100,
-    borderRadius: 8,
-  },
-  shimmerText: {
-    width: '100%',
-    marginTop: 8,
-    height: 16,
-    borderRadius: 5,
-  },
-  shimmerSubText: {
-    width: 125,
-    marginTop: 8,
-    height: 16,
-    borderRadius: 5,
-  },
-});

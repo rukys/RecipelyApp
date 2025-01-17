@@ -1,19 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import {
-  StyleSheet,
-  // Switch,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {Text, TouchableOpacity, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
-import {
-  colors,
-  fonts,
-  // showMessage,
-} from '../../utils';
 import {
   CardProfileDetail,
   CardProfileList,
@@ -25,6 +14,7 @@ import {globalStore, userStore} from '../../stores';
 import {
   IconChef2,
   IconContactMe,
+  // IconContrast,
   IconDanger,
   IconDeleteAccount,
   IconHelp,
@@ -34,11 +24,15 @@ import {
   IconProfile,
 } from '../../assets';
 import useRemoteSetting from '../../hooks/use-remote-setting';
+import tw from '../../../tailwind';
 
 export default function ProfileScreen({navigation}) {
   // const [isSwitch, setIsSwitch] = useState(false);
   const [photo, setPhoto] = useState(false);
   // const [language, setLanguage] = useState('id');
+
+  // const isDarkMode = themeStore(state => state.isDarkMode);
+  // const setIsDarkMode = themeStore(state => state.setIsDarkMode);
 
   const getUser = userStore(state => state.user);
   const setUser = userStore(state => state.setUser);
@@ -116,7 +110,7 @@ export default function ProfileScreen({navigation}) {
 
   return (
     <>
-      <View style={styles.page}>
+      <View style={tw.style('flex-1 bg-white px-4')}>
         <Header title="Profil" isHideLeft />
         <Gap height={8} />
         <CardProfileDetail
@@ -149,6 +143,27 @@ export default function ProfileScreen({navigation}) {
           icon={<IconProfile />}
           onPress={() => onNavigateListMenu('ProfileDetailScreen')}
         />
+        {/* <CardProfileList
+          onPress={() => {
+            setIsDarkMode(!isDarkMode);
+          }}
+          title={isDarkMode ? 'Mode Gelap' : 'Mode Terang'}
+          icon={<IconContrast />}
+          iconRight={
+            <Switch
+              trackColor={
+                isDarkMode ? tw.color('textPrimary') : tw.color('grey')
+              }
+              thumbColor={
+                isDarkMode ? tw.color('textPrimary') : tw.color('white')
+              }
+              value={isDarkMode}
+              onValueChange={() => {
+                setIsDarkMode(!isDarkMode);
+              }}
+            />
+          }
+        /> */}
         <CardProfileList
           title="Tentang Aplikasi"
           icon={<IconChef2 />}
@@ -180,12 +195,14 @@ export default function ProfileScreen({navigation}) {
           onPress={() => onNavigateListMenu('DeleteAccountScreen')}
         />
         <TouchableOpacity
-          style={styles.containerLogout}
+          style={tw.style('h-11 flex-row items-center')}
           onPress={onSubmitLogout}>
           <Gap width={3} />
           <IconLogout />
           <Gap width={13} />
-          <Text style={styles.textLogout}>Keluar</Text>
+          <Text style={tw.style('font-sofia text-base text-error')}>
+            Keluar
+          </Text>
         </TouchableOpacity>
       </View>
 
@@ -203,27 +220,3 @@ export default function ProfileScreen({navigation}) {
     </>
   );
 }
-
-const styles = StyleSheet.create({
-  page: {
-    flex: 1,
-    backgroundColor: colors.white,
-    paddingHorizontal: 16,
-  },
-  flex: {
-    flex: 1,
-  },
-  containerLogout: {
-    height: 45,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  textLogout: {
-    fontFamily: fonts.SofiaPro,
-    fontSize: 16,
-    color: colors.error,
-  },
-  row: {
-    flexDirection: 'row',
-  },
-});

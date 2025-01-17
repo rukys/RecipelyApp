@@ -1,6 +1,7 @@
 /* eslint-disable react/no-unstable-nested-components */
 import React from 'react';
-import {StyleSheet, TouchableOpacity} from 'react-native';
+import {TouchableOpacity} from 'react-native';
+import tw from '../../../tailwind';
 import {
   NavHeart,
   NavHeartFill,
@@ -49,7 +50,7 @@ const TabItem = ({title, active, size, onPress, onLongPress}) => {
 
   return (
     <TouchableOpacity
-      style={styles.container}
+      style={tw.style('items-center')}
       onPress={onPress}
       onLongPress={onLongPress}>
       <Icon />
@@ -58,9 +59,3 @@ const TabItem = ({title, active, size, onPress, onLongPress}) => {
 };
 
 export default TabItem;
-
-const styles = StyleSheet.create({
-  container: {
-    alignItems: 'center',
-  },
-});

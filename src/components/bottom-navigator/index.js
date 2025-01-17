@@ -1,12 +1,15 @@
 import React from 'react';
-import {StyleSheet, View} from 'react-native';
+import {View} from 'react-native';
+import tw from '../../../tailwind';
 import TabItem from '../tab-item';
-import {colors} from '../../utils';
 
 const BottomNavigator = ({state, descriptors, navigation}) => {
   return (
-    <View style={{backgroundColor: colors.white}}>
-      <View style={styles.container}>
+    <View style={tw.style('bg-white')}>
+      <View
+        style={tw.style(
+          'flex-row justify-between bg-white px-12 py-4 rounded-t-2xl shadow-2xl',
+        )}>
         {state.routes.map((route, index) => {
           const {options} = descriptors[route.key];
           const label =
@@ -54,19 +57,3 @@ const BottomNavigator = ({state, descriptors, navigation}) => {
 };
 
 export default BottomNavigator;
-
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingHorizontal: 50,
-    paddingVertical: 15,
-    borderTopLeftRadius: 24,
-    borderTopRightRadius: 24,
-    backgroundColor: colors.white,
-    shadowOffset: {width: 0, height: 5},
-    shadowRadius: 5,
-    shadowOpacity: 0.5,
-    elevation: 20,
-  },
-});

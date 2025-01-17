@@ -1,20 +1,25 @@
 import React from 'react';
-import {StyleSheet, Text, TouchableOpacity} from 'react-native';
+import {Text, TouchableOpacity} from 'react-native';
 import FastImage from 'react-native-fast-image';
-import {colors, fonts} from '../../utils';
+import tw from '../../../tailwind';
 import Gap from '../gap';
 
 const CartArticle = ({img, title, onPress}) => {
   return (
     <>
-      <TouchableOpacity style={styles.container} onPress={onPress}>
+      <TouchableOpacity
+        style={tw.style('rounded-lg shadow bg-white p-3 mb-1.5 mt-1.5')}
+        onPress={onPress}>
         <FastImage
           resizeMode={FastImage.resizeMode.cover}
           source={{uri: img}}
-          style={styles.image}
+          style={tw.style('h-32 rounded')}
         />
         <Gap height={8} />
-        <Text style={styles.textTitle} numberOfLines={2} ellipsizeMode="tail">
+        <Text
+          style={tw.style('font-sofia text-md text-textPrimary')}
+          numberOfLines={2}
+          ellipsizeMode="tail">
           {title}
         </Text>
       </TouchableOpacity>
@@ -24,23 +29,3 @@ const CartArticle = ({img, title, onPress}) => {
 };
 
 export default CartArticle;
-
-const styles = StyleSheet.create({
-  container: {
-    borderRadius: 16,
-    elevation: 2,
-    backgroundColor: colors.white,
-    padding: 10,
-    marginBottom: 6,
-    marginTop: 6,
-  },
-  image: {
-    height: 125,
-    borderRadius: 8,
-  },
-  textTitle: {
-    fontFamily: fonts.SofiaPro,
-    fontSize: 14,
-    color: colors.textPrimary,
-  },
-});

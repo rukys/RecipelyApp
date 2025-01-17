@@ -1,18 +1,11 @@
-import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
-import {colors} from '../../utils';
+import {Text, View} from 'react-native';
+import tw from '../../../tailwind';
 
 export default function NotificationScreen() {
   return (
-    <View style={styles.page}>
+    <View style={tw.style('flex-1 bg-white')}>
       <Text>NotificationScreen</Text>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  page: {
-    flex: 1,
-    backgroundColor: colors.white,
-  },
-});

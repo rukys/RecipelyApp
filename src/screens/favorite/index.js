@@ -1,8 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, {useEffect, useState} from 'react';
+import {RefreshControl, ScrollView, Text, View} from 'react-native';
 import {useDebounce} from 'use-debounce';
-import {RefreshControl, ScrollView, StyleSheet, Text, View} from 'react-native';
-import {colors, fonts, useForm} from '../../utils';
+import tw from '../../../tailwind';
+import {ImgFoody} from '../../assets';
 import {
   Button,
   CardFavorite,
@@ -11,9 +12,9 @@ import {
   Header,
   InputSearch,
 } from '../../components';
-import {globalStore} from '../../stores';
-import {ImgFoody} from '../../assets';
 import useFavorite from '../../hooks/use-favorite';
+import {globalStore} from '../../stores';
+import {useForm} from '../../utils';
 
 export default function FavoriteScreen({navigation}) {
   const [form, setForm] = useForm({
@@ -65,13 +66,13 @@ export default function FavoriteScreen({navigation}) {
 
   return (
     <>
-      <View style={styles.page}>
+      <View style={tw.style('flex-1 bg-white')}>
         <Header title="Resep Favorit" isHideLeft />
         <Gap height={8} />
 
         {listFavorite.length === 0 ? (
           <ScrollView
-            style={styles.containerEmpty}
+            style={tw.style('flex-1 mx-8')}
             refreshControl={
               <RefreshControl
                 refreshing={isLoading}
@@ -79,20 +80,28 @@ export default function FavoriteScreen({navigation}) {
               />
             }>
             <Gap height={24} />
-            <View style={styles.center}>
+            <View style={tw.style('self-center')}>
               <ImgFoody width={225} />
             </View>
             {/* <Gap height={16} /> */}
-            <Text style={styles.textEmpty}>Temukan Resep Favorit Anda</Text>
+            <Text
+              style={tw.style(
+                'font-sofia text-textPrimary text-center text-lg mx-4',
+              )}>
+              Temukan Resep Favorit Anda
+            </Text>
             <Gap height={8} />
-            <Text style={styles.textEmptySub}>
+            <Text
+              style={tw.style(
+                'font-sofiaLight text-textGrey text-center text-md',
+              )}>
               Anda belum menandai resep apapun sebagai favorit. Temukan
               resep-resep lezat dan simpan untuk akses mudah di sini
             </Text>
             <Gap height={24} />
             <Button
               title="Temukan Resep"
-              style={styles.button}
+              style={tw.style('p-2')}
               onPress={onNavigateHome}
             />
           </ScrollView>
@@ -109,12 +118,20 @@ export default function FavoriteScreen({navigation}) {
             <Gap height={16} />
             {debouncedKeyword !== '' ? (
               <View>
-                <Text style={styles.textSearch}>
+                <Text
+                  style={tw.style(
+                    'text-md text-textGrey font-sofia ml-5 mx-4',
+                  )}>
                   Hasil pencarian untuk{' '}
-                  <Text style={styles.textSearchSub}>"{debouncedKeyword}"</Text>
+                  <Text
+                    style={tw.style(
+                      'text-md text-textPrimary font-sofiaBold mx-4',
+                    )}>
+                    "{debouncedKeyword}"
+                  </Text>
                 </Text>
                 <Gap height={4} />
-                <ScrollView style={styles.contentSearch}>
+                <ScrollView>
                   {resultSearch.map((item, index) => {
                     return (
                       <CardSearch
@@ -135,7 +152,6 @@ export default function FavoriteScreen({navigation}) {
             ) : (
               <>
                 <ScrollView
-                  style={styles.scroll}
                   refreshControl={
                     <RefreshControl
                       refreshing={isLoading}
@@ -143,7 +159,7 @@ export default function FavoriteScreen({navigation}) {
                     />
                   }>
                   <Gap height={8} />
-                  <View style={styles.content}>
+                  <View style={tw.style('flex-row flex-wrap')}>
                     {listFavorite.map((item, index) => {
                       return (
                         <CardFavorite
@@ -169,54 +185,3 @@ export default function FavoriteScreen({navigation}) {
     </>
   );
 }
-
-const styles = StyleSheet.create({
-  page: {
-    flex: 1,
-    backgroundColor: colors.white,
-  },
-  scroll: {},
-  content: {
-    // width: '100%',
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-  },
-  containerEmpty: {
-    flex: 1,
-    // alignItems: 'center',
-    // justifyContent: 'center',
-    marginHorizontal: 32,
-  },
-  textEmpty: {
-    fontFamily: fonts.SofiaPro,
-    color: colors.textPrimary,
-    textAlign: 'center',
-    fontSize: 18,
-    marginHorizontal: 16,
-  },
-  textEmptySub: {
-    fontFamily: fonts.SofiaProLight,
-    color: colors.textGrey,
-    textAlign: 'center',
-    fontSize: 14,
-  },
-  button: {
-    paddingHorizontal: 16,
-  },
-  center: {
-    alignSelf: 'center',
-  },
-  textSearch: {
-    fontSize: 14,
-    color: colors.textGrey,
-    fontFamily: fonts.SofiaPro,
-    marginLeft: 20,
-    marginHorizontal: 16,
-  },
-  textSearchSub: {
-    fontSize: 14,
-    color: colors.textPrimary,
-    fontFamily: fonts.SofiaProBold,
-    marginHorizontal: 16,
-  },
-});

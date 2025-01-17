@@ -1,8 +1,7 @@
 import React from 'react';
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {Text, TouchableOpacity, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
-import Gap from '../gap';
-import {colors, fonts} from '../../utils';
+import tw from '../../../tailwind';
 import {
   IconBolt,
   IconCalories,
@@ -10,6 +9,7 @@ import {
   IconHeartMini,
   IconTimeCircle,
 } from '../../assets';
+import Gap from '../gap';
 
 const CardNewRecipe = ({
   img,
@@ -22,36 +22,48 @@ const CardNewRecipe = ({
 }) => {
   return (
     <>
-      <TouchableOpacity style={styles.container} onPress={onPress}>
+      <TouchableOpacity
+        style={tw.style('w-64 bg-white rounded-lg shadow mt-2 mb-2 p-2.5')}
+        onPress={onPress}>
         <View>
           <FastImage
             source={{uri: img}}
             resizeMode={FastImage.resizeMode.cover}
-            style={styles.image}
+            style={tw.style('rounded h-40')}
           />
-          <TouchableOpacity style={styles.containerFav} onPress={onPressFav}>
+          <TouchableOpacity
+            style={tw.style(
+              'absolute right-0 mt-2 mr-2 bg-white h-7 w-7 justify-center items-center rounded-lg',
+            )}
+            onPress={onPressFav}>
             <IconHeartMini />
           </TouchableOpacity>
         </View>
-        <View style={styles.containerLabel}>
-          <Text style={styles.label} numberOfLines={2} ellipsizeMode="tail">
+        <View style={tw.style('pt-2')}>
+          <Text
+            style={tw.style('font-sofia text-textPrimary text-md text-start')}
+            numberOfLines={2}
+            ellipsizeMode="tail">
             {title}
           </Text>
           <Gap height={8} />
-          <View style={[styles.row, styles.center]}>
+          <View style={tw.style('flex-row items-center')}>
             {calories ? <IconCalories /> : <IconBolt />}
             <Gap width={3} />
-            <Text style={styles.textDiff}>
+            <Text
+              style={tw.style('font-sofia text-textGrey text-md text-start')}>
               {calories ? calories : difficulty}
             </Text>
             <Gap width={8} />
-            <View style={styles.centerSelf}>
+            <View style={tw.style('self-center')}>
               <IconDot />
             </View>
             <Gap width={8} />
             <IconTimeCircle />
             <Gap width={3} />
-            <Text style={styles.textSubTitle}>{time}</Text>
+            <Text style={tw.style('font-sofia text-md text-textGrey')}>
+              {time}
+            </Text>
           </View>
         </View>
       </TouchableOpacity>
@@ -61,61 +73,3 @@ const CardNewRecipe = ({
 };
 
 export default CardNewRecipe;
-
-const styles = StyleSheet.create({
-  container: {
-    width: 264,
-    backgroundColor: colors.white,
-    borderRadius: 16,
-    elevation: 2,
-    marginTop: 8,
-    marginBottom: 8,
-    padding: 10,
-  },
-  image: {
-    borderRadius: 10,
-    height: 172,
-    // width: 264,
-  },
-  containerFav: {
-    position: 'absolute',
-    right: 0,
-    marginTop: 8,
-    marginRight: 8,
-    backgroundColor: colors.white,
-    height: 28,
-    width: 28,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 10,
-  },
-  containerLabel: {
-    paddingTop: 8,
-  },
-  label: {
-    fontFamily: fonts.SofiaPro,
-    color: colors.textPrimary,
-    fontSize: 14,
-    textAlign: 'left',
-  },
-  textDiff: {
-    fontFamily: fonts.SofiaPro,
-    color: colors.textGrey,
-    fontSize: 14,
-    textAlign: 'left',
-  },
-  textSubTitle: {
-    fontFamily: fonts.SofiaPro,
-    fontSize: 14,
-    color: colors.textGrey,
-  },
-  row: {
-    flexDirection: 'row',
-  },
-  center: {
-    alignItems: 'center',
-  },
-  centerSelf: {
-    alignSelf: 'center',
-  },
-});

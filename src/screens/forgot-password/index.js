@@ -1,11 +1,12 @@
-import React, {useState} from 'react';
-import {StatusBar, StyleSheet, Text, View} from 'react-native';
-import database from '@react-native-firebase/database';
 import auth from '@react-native-firebase/auth';
-import {colors, fonts, showMessage, useForm} from '../../utils';
+import database from '@react-native-firebase/database';
+import React, {useState} from 'react';
+import {StatusBar, Text, View} from 'react-native';
+import tw from '../../../tailwind';
 import {ImgPattern} from '../../assets';
 import {Button, Gap, Header, Input} from '../../components';
 import {globalStore} from '../../stores';
+import {showMessage, useForm} from '../../utils';
 
 export default function ForgotPasswordScreen({navigation}) {
   const [message, setMessage] = useState('');
@@ -59,20 +60,20 @@ export default function ForgotPasswordScreen({navigation}) {
 
   return (
     <>
-      <StatusBar backgroundColor={colors.primary} />
-      <View style={styles.page}>
-        <View style={styles.pattern}>
+      <StatusBar backgroundColor={tw.color('primary')} />
+      <View style={tw.style('flex-1 bg-primary')}>
+        <View style={tw.style('absolute')}>
           <ImgPattern />
         </View>
         <Header
           isWhite
           title="Lupa Kata Sandi"
-          textStyle={styles.textHeader}
+          textStyle={tw.style('text-white')}
           onPressBack={() => navigation.goBack()}
         />
-        <View style={styles.content}>
+        <View style={tw.style('mx-4 justify-center')}>
           <Gap height={80} />
-          <Text style={styles.title}>
+          <Text style={tw.style('font-sofia text-white text-md text-center')}>
             Masukkan email yang sudah terdaftar, lalu cek di email tersebut
             untuk mendapatkan link mengubah kata sandi terbaru
           </Text>
@@ -98,26 +99,3 @@ export default function ForgotPasswordScreen({navigation}) {
     </>
   );
 }
-
-const styles = StyleSheet.create({
-  page: {
-    flex: 1,
-    backgroundColor: colors.primary,
-  },
-  pattern: {
-    position: 'absolute',
-  },
-  content: {
-    marginHorizontal: 16,
-    justifyContent: 'center',
-  },
-  textHeader: {
-    color: colors.white,
-  },
-  title: {
-    fontFamily: fonts.SofiaPro,
-    color: colors.white,
-    fontSize: 14,
-    textAlign: 'center',
-  },
-});

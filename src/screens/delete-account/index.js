@@ -1,11 +1,12 @@
-import React, {useState} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
 import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
-import {colors, fonts, showMessage} from '../../utils';
+import React, {useState} from 'react';
+import {Text, View} from 'react-native';
+import tw from '../../../tailwind';
 import {Button, Gap, Header, Input, ModalConfirm} from '../../components';
 import {userStore} from '../../stores';
+import {showMessage} from '../../utils';
 
 export default function DeleteAccountScreen({navigation}) {
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
@@ -45,38 +46,43 @@ export default function DeleteAccountScreen({navigation}) {
 
   return (
     <>
-      <View style={styles.page}>
+      <View style={tw.style('flex-1 bg-white')}>
         <Header
           title="Hapus Akun"
           onPressBack={() => {
             navigation.goBack();
           }}
         />
-        <View style={styles.content}>
+        <View style={tw.style('flex-1 mx-4')}>
           <Input
             label="Alasan"
             multiline
             value={reason}
-            inputStyle={styles.input}
-            labelStyle={styles.label}
-            containerStyle={styles.containerInput}
-            placeholderColor={colors.textGrey}
+            inputStyle={tw.style('self-start text-textPrimary')}
+            labelStyle={tw.style('text-textPrimary')}
+            containerStyle={tw.style('bg-white border-textPrimary h-36')}
+            placeholderColor={tw.style('text-textGrey')}
             placeholder="Tuliskan alasan lengkap"
             onChangeText={val => setReason(val)}
             maxLength={300}
           />
           <Gap height={5} />
-          <Text style={styles.countText}>{reason.length + '/300'}</Text>
+          <Text
+            style={tw.style(
+              'font-sofiaLight text-textGrey text-xs self-end mr-1',
+            )}>
+            {reason.length + '/300'}
+          </Text>
           <Gap height={8} />
-          <View style={styles.row}>
+          <View style={tw.style('flex-row items-center')}>
             <CheckBox
               value={toggleCheckBox}
-              tintColors={colors.textPrimary}
-              onCheckColor={colors.primary}
+              tintColors={tw.color('textPrimary')}
+              onCheckColor={tw.color('primary')}
               onValueChange={newValue => setToggleCheckBox(newValue)}
             />
             <Gap width={5} />
-            <Text style={styles.desc}>
+            <Text style={tw.style('font-sofia text-md text-textPrimary')}>
               Dengan ini saya menyetujui penghapusan akun
             </Text>
           </View>
@@ -105,42 +111,3 @@ export default function DeleteAccountScreen({navigation}) {
     </>
   );
 }
-
-const styles = StyleSheet.create({
-  page: {
-    flex: 1,
-    backgroundColor: colors.white,
-  },
-  content: {
-    flex: 1,
-    marginHorizontal: 16,
-  },
-  row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  desc: {
-    fontFamily: fonts.SofiaPro,
-    fontSize: 14,
-    color: colors.textPrimary,
-  },
-  input: {
-    alignSelf: 'flex-start',
-    color: colors.textPrimary,
-  },
-  label: {
-    color: colors.textPrimary,
-  },
-  containerInput: {
-    backgroundColor: colors.white,
-    borderColor: colors.textPrimary,
-    height: 150,
-  },
-  countText: {
-    fontFamily: fonts.SofiaProLight,
-    color: colors.textGrey,
-    fontSize: 12,
-    alignSelf: 'flex-end',
-    marginRight: 5,
-  },
-});

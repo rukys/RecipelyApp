@@ -1,13 +1,14 @@
-import React, {useState} from 'react';
-import {ScrollView, StatusBar, StyleSheet, Text, View} from 'react-native';
+import CheckBox from '@react-native-community/checkbox';
 import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
-import CheckBox from '@react-native-community/checkbox';
-import {colors, fonts, showMessage, useForm} from '../../utils';
+import React, {useState} from 'react';
+import {ScrollView, StatusBar, Text, View} from 'react-native';
+import tw from '../../../tailwind';
 import {IconChef, ImgPattern} from '../../assets';
 import {Button, Gap, Input} from '../../components';
-import {globalStore, userStore} from '../../stores';
 import useRemoteSetting from '../../hooks/use-remote-setting';
+import {globalStore, userStore} from '../../stores';
+import {showMessage, useForm} from '../../utils';
 
 export default function SignupScreen({navigation}) {
   const [messageError, setMessageError] = useState('');
@@ -95,19 +96,21 @@ export default function SignupScreen({navigation}) {
 
   return (
     <>
-      <StatusBar backgroundColor={colors.primary} />
-      <ScrollView style={styles.page}>
+      <StatusBar backgroundColor={tw.style('primary')} />
+      <ScrollView style={tw.style('flex-1 bg-primary')}>
         <Gap height={64} />
-        <View style={styles.pattern}>
+        <View style={tw.style('absolute')}>
           <ImgPattern />
         </View>
-        <View style={styles.containerLogo}>
+        <View style={tw.style('mx-4 items-center')}>
           <IconChef width={55} height={55} />
           <Gap width={8} />
-          <Text style={styles.titleLogo}>Recipely</Text>
+          <Text style={tw.style('text-xl font-sofiaExtraLight text-white')}>
+            Recipely
+          </Text>
         </View>
         <Gap height={24} />
-        <View style={styles.containerForm}>
+        <View style={tw.style('mx-4')}>
           <Input
             label="Nama Lengkap"
             placeholder="Masukkan Nama Lengkap Anda"
@@ -136,16 +139,16 @@ export default function SignupScreen({navigation}) {
           />
         </View>
         <Gap height={24} />
-        <View style={styles.row}>
+        <View style={tw.style('flex-row items-center mx-4')}>
           <CheckBox
             value={toggleCheckBox}
-            tintColors={colors.textPrimary}
-            onCheckColor={colors.textPrimary}
+            tintColors={tw.color('textPriamry')}
+            onCheckColor={tw.color('textPriamry')}
             onValueChange={newValue => setToggleCheckBox(newValue)}
           />
           <Gap width={5} />
-          <View style={styles.syarat}>
-            <Text style={styles.desc}>
+          <View style={tw.style('items-center')}>
+            <Text style={tw.style('font-sofia text-md text-white')}>
               Dengan mendaftar, saya menyetujui{' '}
               <Text
                 onPress={() =>
@@ -154,7 +157,7 @@ export default function SignupScreen({navigation}) {
                     'Syarat dan Ketentuan',
                   )
                 }
-                style={[styles.desc, styles.underline]}>
+                style={tw.style('font-sofia text-md text-white underline')}>
                 Syarat dan Ketentuan
               </Text>{' '}
               serta{' '}
@@ -165,14 +168,14 @@ export default function SignupScreen({navigation}) {
                     'Kebijakan dan Privasi',
                   )
                 }
-                style={[styles.desc, styles.underline]}>
+                style={tw.style('font-sofia text-md text-white underline')}>
                 Kebijakan Privasi
               </Text>
             </Text>
           </View>
         </View>
         <Gap height={16} />
-        <View style={styles.containerButton}>
+        <View style={tw.style('mx-4')}>
           <Button
             title="Buat Akun"
             disabled={isLoading}
@@ -185,48 +188,3 @@ export default function SignupScreen({navigation}) {
     </>
   );
 }
-
-const styles = StyleSheet.create({
-  page: {
-    flex: 1,
-    backgroundColor: colors.primary,
-  },
-  pattern: {
-    position: 'absolute',
-  },
-  containerLogo: {
-    marginHorizontal: 16,
-    alignItems: 'center',
-  },
-  titleLogo: {
-    fontSize: 26,
-    fontFamily: fonts.SofiaProExtraLight,
-    color: colors.white,
-  },
-  containerForm: {
-    marginHorizontal: 16,
-  },
-  button: {
-    alignItems: 'flex-end',
-  },
-  containerButton: {
-    marginHorizontal: 16,
-  },
-  row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginHorizontal: 16,
-  },
-  desc: {
-    fontFamily: fonts.SofiaPro,
-    fontSize: 14,
-    color: colors.white,
-  },
-  syarat: {
-    alignItems: 'center',
-  },
-  center: {},
-  underline: {
-    textDecorationLine: 'underline',
-  },
-});
