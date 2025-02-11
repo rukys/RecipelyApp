@@ -14,11 +14,14 @@ import useRecomended from '../../hooks/use-recomended';
 import {useForm} from '../../utils';
 import ShimmerRecomended from './shimmer/shimmer-recomended';
 import ShimmerSearch from './shimmer/shimmer-search';
+import {themeStore} from '../../stores';
 
 export default function SearchScreen({navigation}) {
   const [form, setForm] = useForm({
     keyword: '',
   });
+
+  const isDarkMode = themeStore(state => state.isDarkMode);
 
   const [debouncedKeyword] = useDebounce(form?.keyword, 400);
 
@@ -36,11 +39,12 @@ export default function SearchScreen({navigation}) {
 
   return (
     <>
-      <View style={tw.style('flex-1 bg-white')}>
-        <Header title="Pencarian" isHideLeft />
+      <View style={tw.style('flex-1', isDarkMode ? 'bg-black' : 'bg-white')}>
+        <Header title="Pencarian" isHideLeft isWhite={isDarkMode} />
         <Gap height={8} />
         <InputSearch
           value={form?.keyowrd}
+          isDarkMode={isDarkMode}
           placeholder="Explore resep"
           onChangeText={value => {
             setForm('keyword', value);
@@ -50,11 +54,15 @@ export default function SearchScreen({navigation}) {
         {debouncedKeyword !== '' ? (
           <>
             <Text
-              style={tw.style('text-md text-textGrey font-sofia ml-5 mx-4')}>
+              style={tw.style(
+                'text-md font-sofia ml-5 mx-4',
+                isDarkMode ? 'text-white' : 'text-textGrey ',
+              )}>
               Hasil pencarian untuk{' '}
               <Text
                 style={tw.style(
-                  'text-md text-textPrimary font-sofiaBold mx-4',
+                  'text-md font-sofiaBold mx-4',
+                  isDarkMode ? 'text-white' : 'text-textPrimary',
                 )}>
                 "{debouncedKeyword}"
               </Text>
@@ -76,6 +84,7 @@ export default function SearchScreen({navigation}) {
                         time={item.times}
                         difficulty={item.difficulty}
                         key={index}
+                        isDarkMode={isDarkMode}
                         onPress={() => {
                           onNavigateDetail(item);
                         }}
@@ -90,7 +99,8 @@ export default function SearchScreen({navigation}) {
             <View style={tw.style('flex-row')}>
               <Text
                 style={tw.style(
-                  'flex-1 ml-4 text-textPrimary text-base font-sofiaBold',
+                  'flex-1 ml-4 text-base font-sofiaBold',
+                  isDarkMode ? 'text-white' : 'text-textPrimary',
                 )}>
                 Rekomendasi Resep
               </Text>
@@ -112,6 +122,7 @@ export default function SearchScreen({navigation}) {
                         times={item?.times}
                         difficulty={item?.difficulty}
                         title={item?.title}
+                        isDarkMode={isDarkMode}
                         onPressInside={() => onNavigateRecomended(item)}
                       />
                     );

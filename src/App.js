@@ -1,5 +1,5 @@
 import React, {useEffect, useRef} from 'react';
-import {LogBox} from 'react-native';
+import {LogBox, StatusBar} from 'react-native';
 import {QueryClient, QueryClientProvider} from 'react-query';
 import {
   NavigationContainer,
@@ -12,6 +12,8 @@ import messaging from '@react-native-firebase/messaging';
 import {checkForUpdate, UpdateFlow} from 'react-native-in-app-updates';
 // import {colors} from './utils';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
+import tw from '../tailwind';
+import {themeStore} from './stores';
 
 LogBox.ignoreLogs(['Setting a timer']);
 LogBox.ignoreAllLogs();
@@ -20,6 +22,8 @@ const queryClient = new QueryClient();
 const App = () => {
   const navigationRef = useNavigationContainerRef();
   const routeNameRef = useRef();
+
+  const isDarkMode = themeStore(state => state.isDarkMode);
 
   async function getData() {
     try {
@@ -72,6 +76,10 @@ const App = () => {
                 // console.log(currentRouteName);
               }
             }}>
+            <StatusBar
+              backgroundColor={tw.color(isDarkMode ? 'black' : 'white')}
+              barStyle={isDarkMode ? 'light-content' : 'dark-content'}
+            />
             <Navigations />
           </NavigationContainer>
         </SafeAreaProvider>

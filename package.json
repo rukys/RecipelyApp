@@ -47,6 +47,7 @@
     "react-native-screens": "^3.31.1",
     "react-native-shimmer-placeholder": "^2.0.9",
     "react-native-svg": "^15.2.0",
+    "react-native-vector-icons": "^10.2.0",
     "react-native-webview": "^13.10.2",
     "react-query": "^3.39.3",
     "twrnc": "^4.6.0",

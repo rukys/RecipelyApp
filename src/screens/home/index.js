@@ -1,7 +1,6 @@
 import {
   RefreshControl,
   ScrollView,
-  StatusBar,
   Text,
   TouchableOpacity,
   View,
@@ -14,12 +13,9 @@ import {
   CardNewRecipe,
   CardRecipe,
   Gap,
+  HeaderHome,
 } from '../../components';
-import {
-  // IconNotif,
-  IconSun,
-} from '../../assets';
-import {globalStore, userStore} from '../../stores';
+import {globalStore, themeStore, userStore} from '../../stores';
 import useNewRecipes from '../../hooks/use-newrecipe';
 import useRecipeCategory from '../../hooks/use-recipe-category';
 import useRecipeByCategory from '../../hooks/use-recipe-by-category';
@@ -36,6 +32,8 @@ export default function HomeScreen({navigation}) {
 
   const setLoading = globalStore(state => state.setLoading);
   const isLoading = globalStore(state => state.loading);
+
+  const isDarkMode = themeStore(state => state.isDarkMode);
 
   const [indexCategory, setIndexCategory] = useState(0);
   const [valueCategory, setValueCategory] = useState('sarapan');
@@ -96,37 +94,21 @@ export default function HomeScreen({navigation}) {
   };
 
   return (
-    <View style={tw.style('flex-1 bg-white')}>
-      <StatusBar backgroundColor={tw.color('white')} barStyle="dark-content" />
+    <View style={tw.style('flex-1', isDarkMode ? 'bg-black' : 'bg-white')}>
       <Gap height={16} />
-      <View style={tw.style('flex-row mx-4 bg-white h-14')}>
-        <View style={tw.style('flex-1')}>
-          <View style={tw.style('flex-row')}>
-            <IconSun />
-            <Gap width={8} />
-            <Text style={tw.style('font-sofia text-textPrimary')}>
-              Selamat Datang
-            </Text>
-          </View>
-          <Text style={tw.style('font-sofiaBold text-xl text-textPrimary')}>
-            {getUser?.fullName}
-          </Text>
-        </View>
-        {/* <TouchableOpacity style={styles.center} onPress={onNavigateNotif}>
-          <IconNotif />
-        </TouchableOpacity> */}
-      </View>
+      <HeaderHome data={getUser} isDarkMode={isDarkMode} />
       <ScrollView
         style={tw.style('flex-1')}
         refreshControl={
           <RefreshControl refreshing={isLoading} onRefresh={onRefreshScreen} />
         }>
-        <Gap height={19} />
+        <Gap height={20} />
         <View>
           <View style={tw.style('flex-row')}>
             <Text
               style={tw.style(
-                'flex-1 ml-4 text-lg text-textPrimary font-sofiaBold',
+                'flex-1 ml-4 text-lg font-sofiaBold',
+                isDarkMode ? 'text-white' : 'text-textPrimary',
               )}>
               Resep Terbaru
             </Text>
@@ -136,7 +118,10 @@ export default function HomeScreen({navigation}) {
                 onNavigateRecipe('NewRecipe');
               }}>
               <Text
-                style={tw.style('text-md text-primary font-sofiaBold mr-4')}>
+                style={tw.style(
+                  'text-md font-sofiaBold mr-4',
+                  isDarkMode ? 'text-white' : 'text-primary ',
+                )}>
                 Lihat Semua
               </Text>
             </TouchableOpacity>
@@ -160,6 +145,7 @@ export default function HomeScreen({navigation}) {
                       time={item.times}
                       difficulty={item.difficulty}
                       calories={item.calories}
+                      isDarkMode={isDarkMode}
                       onPressFav={() => {
                         onChangeFavorite(item);
                       }}
@@ -176,7 +162,8 @@ export default function HomeScreen({navigation}) {
           <View style={tw.style('flex-row')}>
             <Text
               style={tw.style(
-                'flex-1 ml-4 text-lg text-textPrimary font-sofiaBold',
+                'flex-1 ml-4 text-lg font-sofiaBold',
+                isDarkMode ? 'text-white' : 'text-textPrimary',
               )}>
               Kategori
             </Text>
@@ -184,7 +171,10 @@ export default function HomeScreen({navigation}) {
               style={tw.style('self-center')}
               onPress={() => onNavigateRecipe('RecipeByCategory')}>
               <Text
-                style={tw.style('text-md text-primary font-sofiaBold mr-4')}>
+                style={tw.style(
+                  'text-md font-sofiaBold mr-4',
+                  isDarkMode ? 'text-white' : 'text-primary',
+                )}>
                 Lihat Semua
               </Text>
             </TouchableOpacity>
@@ -205,6 +195,7 @@ export default function HomeScreen({navigation}) {
                       key={index}
                       title={item.category}
                       id={index}
+                      isDarkMode={isDarkMode}
                       indexButton={indexCategory}
                       onPress={() => onChangeRecipeCategory(index, item?.key)}
                     />
@@ -232,6 +223,7 @@ export default function HomeScreen({navigation}) {
                       time={item.times}
                       calories={item.calories}
                       difficulty={item.difficulty}
+                      isDarkMode={isDarkMode}
                       onPress={() => {
                         onNavigateDetail(item);
                       }}
@@ -248,7 +240,8 @@ export default function HomeScreen({navigation}) {
           <View style={tw.style('flex-row')}>
             <Text
               style={tw.style(
-                'flex-1 ml-4 text-lg text-textPrimary font-sofiaBold',
+                'flex-1 ml-4 text-lg font-sofiaBold',
+                isDarkMode ? 'text-white' : 'text-textPrimary',
               )}>
               Artikel
             </Text>
@@ -258,7 +251,10 @@ export default function HomeScreen({navigation}) {
                 navigation.navigate('ArticleScreen');
               }}>
               <Text
-                style={tw.style('text-md text-primary font-sofiaBold mr-4')}>
+                style={tw.style(
+                  'text-md font-sofiaBold mr-4',
+                  isDarkMode ? 'text-white' : 'text-primary',
+                )}>
                 Lihat Semua
               </Text>
             </TouchableOpacity>
@@ -278,6 +274,7 @@ export default function HomeScreen({navigation}) {
                       img={item.thumb}
                       title={item.title}
                       key={index}
+                      isDarkMode={isDarkMode}
                       onPress={() => onNavigateArticleDetail(item)}
                     />
                   );
@@ -288,13 +285,15 @@ export default function HomeScreen({navigation}) {
         <View style={tw.style('items-center')}>
           <Text
             style={tw.style(
-              'font-sofiaExtraLight text-xs text-textGrey text-center',
+              'font-sofiaExtraLight text-xs text-center',
+              isDarkMode ? 'text-white' : ' text-textGrey',
             )}>
             Recipely
           </Text>
           <Text
             style={tw.style(
-              'text-xs font-sofiaExtraLight text-textGrey text-center',
+              'text-xs font-sofiaExtraLight text-center',
+              isDarkMode ? 'text-white' : ' text-textGrey',
             )}>
             version {deviceInfoModule.getVersion()}
           </Text>

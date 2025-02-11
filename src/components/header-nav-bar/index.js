@@ -1,8 +1,8 @@
 import {useNavigation} from '@react-navigation/native';
 import React from 'react';
+import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome6';
 import {TouchableOpacity, View} from 'react-native';
 import tw from '../../../tailwind';
-import {IconArrowLeft, IconDelete, IconHeartMini} from '../../assets';
 
 const HeaderNavBar = ({
   isStore,
@@ -19,7 +19,11 @@ const HeaderNavBar = ({
         onPress={() => {
           navigation.goBack();
         }}>
-        <IconArrowLeft />
+        <FontAwesomeIcon
+          name={'arrow-left'}
+          size={18}
+          color={tw.color('textPrimary')}
+        />
       </TouchableOpacity>
       <TouchableOpacity
         style={tw.style(
@@ -32,7 +36,11 @@ const HeaderNavBar = ({
             onChangeFavorite();
           }
         }}>
-        {isStore ? <IconDelete /> : <IconHeartMini />}
+        <FontAwesomeIcon
+          name={isStore ? 'trash-can' : 'heart'}
+          size={18}
+          color={tw.color('textPrimary')}
+        />
       </TouchableOpacity>
     </View>
   );

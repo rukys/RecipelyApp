@@ -1,51 +1,61 @@
 /* eslint-disable react/no-unstable-nested-components */
 import React from 'react';
 import {TouchableOpacity} from 'react-native';
+import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome6';
 import tw from '../../../tailwind';
-import {
-  NavHeart,
-  NavHeartFill,
-  NavHome,
-  NavHomeFill,
-  NavProfile,
-  NavProfileFill,
-  NavSearch,
-  NavSearchFill,
-} from '../../assets';
+import {themeStore} from '../../stores';
 
 const TabItem = ({title, active, size, onPress, onLongPress}) => {
   // const {dataProfile} = useProfile();
 
+  const isDarkMode = themeStore(state => state.isDarkMode);
+
   const Icon = () => {
     if (title === 'HomeScreen') {
-      if (active) {
-        return <NavHomeFill />;
-      } else {
-        return <NavHome />;
-      }
+      return (
+        <FontAwesomeIcon
+          name="house"
+          size={size}
+          color={tw.color(
+            active ? (isDarkMode ? 'white' : 'primary') : 'textGrey',
+          )}
+        />
+      );
     }
     if (title === 'SearchScreen') {
-      if (active) {
-        return <NavSearchFill />;
-      } else {
-        return <NavSearch />;
-      }
+      return (
+        <FontAwesomeIcon
+          name="magnifying-glass"
+          size={size}
+          color={tw.color(
+            active ? (isDarkMode ? 'white' : 'primary') : 'textGrey',
+          )}
+        />
+      );
     }
     if (title === 'FavoriteScreen') {
-      if (active) {
-        return <NavHeartFill />;
-      } else {
-        return <NavHeart />;
-      }
+      return (
+        <FontAwesomeIcon
+          name="heart"
+          iconStyle="solid"
+          size={size}
+          color={tw.color(
+            active ? (isDarkMode ? 'white' : 'primary') : 'textGrey',
+          )}
+        />
+      );
     }
     if (title === 'ProfileScreen') {
-      if (active) {
-        return <NavProfileFill />;
-      } else {
-        return <NavProfile />;
-      }
+      return (
+        <FontAwesomeIcon
+          name="user"
+          size={size}
+          color={tw.color(
+            active ? (isDarkMode ? 'white' : 'primary') : 'textGrey',
+          )}
+        />
+      );
     }
-    return <NavHome />;
   };
 
   return (

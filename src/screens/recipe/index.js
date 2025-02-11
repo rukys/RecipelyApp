@@ -1,10 +1,10 @@
 import React from 'react';
-import {RefreshControl, ScrollView, StatusBar, View} from 'react-native';
+import {RefreshControl, ScrollView, View} from 'react-native';
 import tw from '../../../tailwind';
 import {CardSearch, Gap, Header} from '../../components';
 import useNewRecipes from '../../hooks/use-newrecipe';
 import useRecipeByCategory from '../../hooks/use-recipe-by-category';
-import {globalStore} from '../../stores';
+import {globalStore, themeStore} from '../../stores';
 import ShimmerRecipe from './shimmer/shimmer-recipe';
 
 export default function RecipeScreen({route, navigation}) {
@@ -19,6 +19,8 @@ export default function RecipeScreen({route, navigation}) {
 
   const setLoading = globalStore(state => state.setLoading);
   const isLoading = globalStore(state => state.loading);
+
+  const isDarkMode = themeStore(state => state.isDarkMode);
 
   const {resultNewRecipes, isLoadingNewRecipes, onRefetchNewRecipes} =
     useNewRecipes();
@@ -53,13 +55,10 @@ export default function RecipeScreen({route, navigation}) {
 
   return (
     <>
-      <StatusBar
-        backgroundColor={tw.color('white')}
-        barStyle={'dark-content'}
-      />
-      <View style={tw.style('flex-1 bg-white')}>
+      <View style={tw.style('flex-1', isDarkMode ? 'bg-black' : 'bg-white')}>
         <Header
           onPressBack={() => navigation.goBack()}
+          isWhite={isDarkMode}
           title={
             title === 'NewRecipe'
               ? 'Resep Terbaru'
@@ -88,6 +87,7 @@ export default function RecipeScreen({route, navigation}) {
                     title={item.title}
                     time={item.times}
                     difficulty={item.difficulty}
+                    isDarkMode={isDarkMode}
                     onPress={() => {
                       onNavigateDetail(item);
                     }}
