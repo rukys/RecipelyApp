@@ -1,15 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, {useEffect, useState} from 'react';
-import {
-  Image,
-  ScrollView,
-  StatusBar,
-  TouchableOpacity,
-  View,
-  Text,
-} from 'react-native';
+import {Image, ScrollView, TouchableOpacity, View, Text} from 'react-native';
 import moment from 'moment';
 import {launchImageLibrary} from 'react-native-image-picker';
+import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome6';
 import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
 import storage from '@react-native-firebase/storage';
@@ -19,11 +13,12 @@ import ReactNativeModal from 'react-native-modal';
 import Spinner from 'react-native-loading-spinner-overlay';
 import {showMessage} from '../../utils';
 import {Button, Gap, Header, Input} from '../../components';
-import {IconEditPhoto, ImgDefault} from '../../assets';
-import {globalStore, userStore} from '../../stores';
+import {ImgDefault} from '../../assets';
+import {globalStore, themeStore, userStore} from '../../stores';
 import tw from '../../../tailwind';
 
 export default function ProfileDetailScreen({navigation}) {
+  const isDarkMode = themeStore(state => state.isDarkMode);
   const getUser = userStore(state => state.user);
   const isLoading = globalStore(state => state.loading);
   const setIsLoading = globalStore(state => state.setLoading);
@@ -140,14 +135,10 @@ export default function ProfileDetailScreen({navigation}) {
   }, []);
 
   return (
-    <View style={tw.style('flex-1 bg-white')}>
-      <StatusBar
-        backgroundColor={tw.color('white')}
-        barStyle={'dark-content'}
-      />
+    <View style={tw.style('flex-1', isDarkMode ? 'bg-black' : 'bg-white')}>
       <Header
+        isWhite={isDarkMode}
         title="Ubah Profil"
-        style={tw.style('bg-white')}
         onPressBack={() => navigation.goBack()}
       />
       <ScrollView>
@@ -160,23 +151,34 @@ export default function ProfileDetailScreen({navigation}) {
           <TouchableOpacity
             style={tw.style('absolute bottom-0 right-0 mr-2')}
             onPress={onLaunchImageLibrary}>
-            <IconEditPhoto height={32} width={32} />
+            <FontAwesomeIcon
+              name="pen"
+              size={20}
+              color={tw.color(isDarkMode ? 'text-white' : 'textPrimary')}
+            />
           </TouchableOpacity>
         </View>
         <Gap height={24} />
-        <View style={tw.style('flex-1 bg-white')}>
+        <View style={tw.style('flex-1')}>
           <Gap height={16} />
           <View style={tw.style('mx-4')}>
             <Input
               label="Nama Lengkap"
               value={fullName}
-              labelStyle={tw.style('text-textPrimary')}
+              labelStyle={tw.style(
+                isDarkMode ? 'text-white' : 'text-textPrimary',
+              )}
               containerStyle={tw.style(
                 'flex-1 bg-white border-textPrimary rounded-lg',
+                isDarkMode ? 'bg-black border border-white' : 'bg-white',
               )}
-              inputStyle={tw.style('text-textPrimary')}
+              inputStyle={tw.style(
+                isDarkMode ? 'text-white' : 'text-textPrimary',
+              )}
               onChangeText={val => setFullName(val)}
-              placeholderColor={tw.color('textPrimary')}
+              placeholderColor={tw.color(
+                isDarkMode ? 'text-white' : 'textPrimary',
+              )}
             />
           </View>
           <Gap height={16} />
@@ -185,13 +187,20 @@ export default function ProfileDetailScreen({navigation}) {
               disable
               label="Email"
               value={email}
-              labelStyle={tw.style('text-textPrimary')}
+              labelStyle={tw.style(
+                isDarkMode ? 'text-white' : 'text-textPrimary',
+              )}
               containerStyle={tw.style(
                 'flex-1 bg-white border-textPrimary rounded-lg',
+                isDarkMode ? 'bg-black border border-white' : 'bg-white',
               )}
-              inputStyle={tw.style('text-textPrimary')}
+              inputStyle={tw.style(
+                isDarkMode ? 'text-white' : 'text-textPrimary',
+              )}
               root={tw.style('flex-1')}
-              placeholderColor={tw.color('textPrimary')}
+              placeholderColor={tw.color(
+                isDarkMode ? 'text-white' : 'textPrimary',
+              )}
             />
             {!isEmailVerified ? (
               <>
@@ -208,20 +217,30 @@ export default function ProfileDetailScreen({navigation}) {
         </View>
         <Gap height={16} />
         <View style={tw.style('mx-4')}>
-          <Text style={tw.style('text-md font-sofia text-textPrimary ml-1')}>
+          <Text
+            style={tw.style(
+              'text-md font-sofia ml-1',
+              isDarkMode ? 'text-white' : 'text-textPrimary',
+            )}>
             Jenis Kelamin
           </Text>
           <Gap height={5} />
           <TouchableOpacity
             style={tw.style(
-              'flex-row items-center h-14 rounded-lg border border-textPrimary px-2 bg-white',
+              'flex-row items-center h-14 rounded-lg px-2 ',
+              isDarkMode
+                ? 'bg-black border border-white'
+                : 'border border-textPrimary bg-white',
             )}
             onPress={() => setIsVisibleGender(true)}>
             <Text
               style={
                 gender === null || gender === undefined
-                  ? tw.style('text-md font-sofia text-textGrey ml-1')
-                  : tw.style('text-textPrimary')
+                  ? tw.style(
+                      'text-md font-sofia ml-1',
+                      isDarkMode ? 'text-white' : 'text-textGrey',
+                    )
+                  : tw.style(isDarkMode ? 'text-white' : 'text-textPrimary')
               }>
               {gender === null || gender === undefined
                 ? 'Masukkan jenis kelamin Anda'
@@ -233,20 +252,30 @@ export default function ProfileDetailScreen({navigation}) {
         </View>
         <Gap height={16} />
         <View style={tw.style('mx-4')}>
-          <Text style={tw.style('text-md font-sofia text-textPrimary ml-1')}>
+          <Text
+            style={tw.style(
+              'text-md font-sofia  ml-1',
+              isDarkMode ? 'text-white' : 'text-textPrimary',
+            )}>
             Tanggal Lahir
           </Text>
           <Gap height={5} />
           <TouchableOpacity
             style={tw.style(
-              'flex-row items-center h-14 rounded-lg border border-textPrimary px-2 bg-white',
+              'flex-row items-center h-14 rounded-lg border px-2 ',
+              isDarkMode
+                ? 'border-white text-white'
+                : 'bg-white border-textPrimary',
             )}
             onPress={() => setIsVisibleDOB(true)}>
             <Text
               style={
                 dob === null || dob === undefined
-                  ? tw.style('text-md font-sofia text-textGrey ml-1')
-                  : tw.style('text-textPrimary')
+                  ? tw.style(
+                      'text-md font-sofia ml-1',
+                      isDarkMode ? 'text-white' : 'text-textGrey',
+                    )
+                  : tw.style(isDarkMode ? 'text-white' : 'text-textPrimary')
               }>
               {dob === null || dob === undefined
                 ? 'Masukkan tanggal lahir Anda'

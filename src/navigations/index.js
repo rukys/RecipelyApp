@@ -68,16 +68,17 @@ const Navigations = () => {
       <Stack.Screen name="LoginScreen" component={LoginScreen} />
       <Stack.Screen name="SignupScreen" component={SignupScreen} />
       <Stack.Screen name="ArticleScreen" component={ArticleScreen} />
-      <Stack.Screen
-        name="ArticleDetailScreen"
-        component={ArticleDetailScreen}
-      />
       <Stack.Screen name="NotificationScreen" component={NotificationScreen} />
       <Stack.Screen name="RecipeScreen" component={RecipeScreen} />
       <Stack.Screen name="RecipeDetailScreen" component={RecipeDetailScreen} />
       <Stack.Screen name="AboutScreen" component={AboutScreen} />
       <Stack.Screen name="FaqScreen" component={FaqScreen} />
       <Stack.Screen name="ContactMeScreen" component={ContactMeScreen} />
+      <Stack.Screen name="WebviewScreen" component={WebviewScreen} />
+      <Stack.Screen
+        name="ArticleDetailScreen"
+        component={ArticleDetailScreen}
+      />
       <Stack.Screen
         name="DeleteAccountScreen"
         component={DeleteAccountScreen}
@@ -90,7 +91,6 @@ const Navigations = () => {
         name="ProfileDetailScreen"
         component={ProfileDetailScreen}
       />
-      <Stack.Screen name="WebviewScreen" component={WebviewScreen} />
     </Stack.Navigator>
   );
 };

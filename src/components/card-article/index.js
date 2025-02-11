@@ -4,11 +4,14 @@ import FastImage from 'react-native-fast-image';
 import tw from '../../../tailwind';
 import Gap from '../gap';
 
-const CartArticle = ({img, title, onPress}) => {
+const CartArticle = ({img, title, isDarkMode = false, onPress}) => {
   return (
     <>
       <TouchableOpacity
-        style={tw.style('rounded-lg shadow bg-white p-3 mb-1.5 mt-1.5')}
+        style={tw.style(
+          'rounded-lg shadow p-3 mb-1.5 mt-1.5',
+          isDarkMode ? 'bg-black' : 'bg-white',
+        )}
         onPress={onPress}>
         <FastImage
           resizeMode={FastImage.resizeMode.cover}
@@ -17,7 +20,10 @@ const CartArticle = ({img, title, onPress}) => {
         />
         <Gap height={8} />
         <Text
-          style={tw.style('font-sofia text-md text-textPrimary')}
+          style={tw.style(
+            'font-sofia text-md',
+            isDarkMode ? 'text-white' : 'text-textPrimary',
+          )}
           numberOfLines={2}
           ellipsizeMode="tail">
           {title}

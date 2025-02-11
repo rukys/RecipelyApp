@@ -4,12 +4,15 @@ import FastImage from 'react-native-fast-image';
 import tw from '../../../tailwind';
 import {ImgDefault} from '../../assets';
 import Gap from '../gap';
+import {themeStore} from '../../stores';
 
 const CardProfileDetail = ({img, fullName, email, onPress}) => {
+  const isDarkMode = themeStore(state => state.isDarkMode);
   return (
     <TouchableOpacity
       style={tw.style(
-        'flex-row items-center bg-white shadow-md rounded-lg p-4 ',
+        'flex-row items-center shadow-md rounded-lg p-4 ',
+        isDarkMode ? 'bg-black border border-grey' : 'bg-white',
       )}
       onPress={onPress}>
       <FastImage
@@ -19,10 +22,18 @@ const CardProfileDetail = ({img, fullName, email, onPress}) => {
       />
       <Gap width={16} />
       <View style={tw.style('flex-1')}>
-        <Text style={tw.style('font-sofiaBold text-textPrimary text-lg')}>
+        <Text
+          style={tw.style(
+            'font-sofiaBold text-lg',
+            isDarkMode ? 'text-white' : 'text-textPrimary',
+          )}>
           {fullName}
         </Text>
-        <Text style={tw.style('font-sofia text-sm text-darkGrey')}>
+        <Text
+          style={tw.style(
+            'font-sofia text-sm',
+            isDarkMode ? 'text-white' : 'text-darkGrey',
+          )}>
           {email}
         </Text>
       </View>

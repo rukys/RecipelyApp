@@ -2,17 +2,27 @@
 import React from 'react';
 import {Text, TouchableOpacity, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
+import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome6';
 import tw from '../../../tailwind';
-import {IconBolt, IconTimeCircle} from '../../assets';
 import Gap from '../gap';
 
-const CardFavorite = ({img, title, difficulty, time, onPress = () => {}}) => {
+const CardFavorite = ({
+  img,
+  title,
+  difficulty,
+  time,
+  isDarkMode = false,
+  onPress = () => {},
+}) => {
   return (
     <>
       <Gap width={16} />
       <TouchableOpacity
         style={[
-          tw.style('mb-4 rounded-lg bg-white p-2.5 shadow-md'),
+          tw.style(
+            'mb-4 rounded-lg p-2.5 shadow-md',
+            isDarkMode ? 'bg-black' : 'bg-white',
+          ),
           {width: '44%'},
         ]}
         onPress={onPress}>
@@ -24,7 +34,8 @@ const CardFavorite = ({img, title, difficulty, time, onPress = () => {}}) => {
         <Gap height={8} />
         <Text
           style={tw.style(
-            'flex-1 w-full font-sofia text-textPrimary text-md text-start',
+            'flex-1 w-full font-sofia text-md text-start',
+            isDarkMode ? 'text-white' : 'text-textPrimary',
           )}
           numberOfLines={4}
           ellipsizeMode="tail">
@@ -32,16 +43,34 @@ const CardFavorite = ({img, title, difficulty, time, onPress = () => {}}) => {
         </Text>
         <Gap height={8} />
         <View style={tw.style('flex-row items-center')}>
-          <IconBolt />
+          <FontAwesomeIcon
+            name={'bolt'}
+            size={14}
+            style={tw.style('mr-1')}
+            color={tw.color(isDarkMode ? 'white' : 'textGrey')}
+          />
           <Gap width={3} />
-          <Text style={tw.style('font-sofia text-textGrey text-md text-start')}>
+          <Text
+            style={tw.style(
+              'font-sofia text-md text-start',
+              isDarkMode ? 'text-white' : 'text-textGrey',
+            )}>
             {difficulty}
           </Text>
         </View>
         <View style={tw.style('flex-row items-center')}>
-          <IconTimeCircle />
+          <FontAwesomeIcon
+            name="clock"
+            size={16}
+            style={tw.style('mr-1')}
+            color={tw.color(isDarkMode ? 'white' : 'textGrey')}
+          />
           <Gap width={3} />
-          <Text style={tw.style('font-sofia text-md text-textGrey')}>
+          <Text
+            style={tw.style(
+              'font-sofia text-md',
+              isDarkMode ? 'text-white' : 'text-textGrey',
+            )}>
             {time}
           </Text>
         </View>

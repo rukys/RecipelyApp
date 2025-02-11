@@ -13,7 +13,7 @@ import {
   InputSearch,
 } from '../../components';
 import useFavorite from '../../hooks/use-favorite';
-import {globalStore} from '../../stores';
+import {globalStore, themeStore} from '../../stores';
 import {useForm} from '../../utils';
 
 export default function FavoriteScreen({navigation}) {
@@ -27,6 +27,8 @@ export default function FavoriteScreen({navigation}) {
   const setLoading = globalStore(state => state.setLoading);
   const isLoading = globalStore(state => state.loading);
   const listFavorite = globalStore(state => state.listFavorite);
+
+  const isDarkMode = themeStore(state => state.isDarkMode);
 
   const {getStoreDatabase} = useFavorite();
 
@@ -66,7 +68,7 @@ export default function FavoriteScreen({navigation}) {
 
   return (
     <>
-      <View style={tw.style('flex-1 bg-white')}>
+      <View style={tw.style('flex-1', isDarkMode ? 'bg-black' : 'bg-white')}>
         <Header title="Resep Favorit" isHideLeft />
         <Gap height={8} />
 
@@ -86,14 +88,16 @@ export default function FavoriteScreen({navigation}) {
             {/* <Gap height={16} /> */}
             <Text
               style={tw.style(
-                'font-sofia text-textPrimary text-center text-lg mx-4',
+                'font-sofia text-center text-lg mx-4',
+                isDarkMode ? 'text-white' : 'text-textPrimary',
               )}>
               Temukan Resep Favorit Anda
             </Text>
             <Gap height={8} />
             <Text
               style={tw.style(
-                'font-sofiaLight text-textGrey text-center text-md',
+                'font-sofiaLight text-center text-md',
+                isDarkMode ? 'text-white' : 'text-textGrey',
               )}>
               Anda belum menandai resep apapun sebagai favorit. Temukan
               resep-resep lezat dan simpan untuk akses mudah di sini
@@ -110,6 +114,7 @@ export default function FavoriteScreen({navigation}) {
             <InputSearch
               placeholder="Cari resep favorit"
               value={form?.keyowrd}
+              isDarkMode={isDarkMode}
               onBlur={handleSearchClick}
               onChangeText={value => {
                 setForm('keyword', value);
@@ -120,12 +125,14 @@ export default function FavoriteScreen({navigation}) {
               <View>
                 <Text
                   style={tw.style(
-                    'text-md text-textGrey font-sofia ml-5 mx-4',
+                    'text-md font-sofia ml-5 mx-4',
+                    isDarkMode ? 'text-white' : 'text-textGrey',
                   )}>
                   Hasil pencarian untuk{' '}
                   <Text
                     style={tw.style(
-                      'text-md text-textPrimary font-sofiaBold mx-4',
+                      'text-md font-sofiaBold mx-4',
+                      isDarkMode ? 'text-white' : 'text-textPrimary',
                     )}>
                     "{debouncedKeyword}"
                   </Text>
@@ -140,6 +147,7 @@ export default function FavoriteScreen({navigation}) {
                         title={item.title}
                         difficulty={item.difficulty}
                         time={item.times}
+                        isDarkMode={isDarkMode}
                         onPress={() => {
                           onNavigateDetail(item);
                         }}
@@ -168,6 +176,7 @@ export default function FavoriteScreen({navigation}) {
                           title={item.title}
                           difficulty={item.difficulty}
                           time={item.times}
+                          isDarkMode={isDarkMode}
                           onPress={() => {
                             onNavigateDetail(item);
                           }}

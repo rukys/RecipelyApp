@@ -1,16 +1,24 @@
 import React from 'react';
 import {Text, TouchableOpacity, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
+import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome6';
 import tw from '../../../tailwind';
-import {IconArrowRight, IconBolt, IconDot, IconTimeCircle} from '../../assets';
 import Gap from '../gap';
 
-const CardRecomended = ({Img, title, difficulty, times, onPressInside}) => {
+const CardRecomended = ({
+  Img,
+  title,
+  difficulty,
+  times,
+  isDarkMode = false,
+  onPressInside,
+}) => {
   return (
     <>
       <TouchableOpacity
         style={tw.style(
-          'h-24 bg-white mx-4 shadow rounded-lg mt-2 p-2.5 flex-row',
+          'h-24 mx-4 shadow rounded-lg mt-2 p-2.5 flex-row',
+          isDarkMode ? 'bg-black' : 'bg-white',
         )}
         onPress={onPressInside}>
         <FastImage
@@ -20,25 +28,52 @@ const CardRecomended = ({Img, title, difficulty, times, onPressInside}) => {
         />
         <Gap width={12} />
         <View style={tw.style('flex-1')}>
-          <Text style={tw.style('text-md font-sofia text-textPrimary')}>
+          <Text
+            style={tw.style(
+              'text-md font-sofia',
+              isDarkMode ? 'text-white' : 'text-textPrimary',
+            )}>
             {title}
           </Text>
           <Gap height={8} />
           <View>
             <View style={tw.style('flex-row items-center')}>
-              <IconBolt />
+              <FontAwesomeIcon
+                name={'bolt'}
+                size={14}
+                style={tw.style('mr-1')}
+                color={tw.color(isDarkMode ? 'text-white' : 'textGrey')}
+              />
               <Gap width={3} />
-              <Text style={tw.style('font-sofia text-md text-textGrey')}>
+              <Text
+                style={tw.style(
+                  'font-sofia text-md',
+                  isDarkMode ? 'text-white' : 'text-textGrey',
+                )}>
                 {difficulty}
               </Text>
               <Gap width={8} />
               <View style={tw.style('self-center')}>
-                <IconDot />
+                <View
+                  style={tw.style(
+                    'h-1 w-1 rounded-full',
+                    isDarkMode ? 'bg-white' : 'bg-textGrey',
+                  )}
+                />
               </View>
               <Gap width={8} />
-              <IconTimeCircle />
+              <FontAwesomeIcon
+                name="clock"
+                size={16}
+                style={tw.style('mr-1')}
+                color={tw.color(isDarkMode ? 'text-white' : 'textGrey')}
+              />
               <Gap width={3} />
-              <Text style={tw.style('font-sofia text-md text-textGrey')}>
+              <Text
+                style={tw.style(
+                  'font-sofia text-md',
+                  isDarkMode ? 'text-white' : 'text-textGrey',
+                )}>
                 {times}
               </Text>
             </View>
@@ -47,10 +82,15 @@ const CardRecomended = ({Img, title, difficulty, times, onPressInside}) => {
         <Gap width={12} />
         <TouchableOpacity
           style={tw.style(
-            'h-6 w-6 bg-textPrimary self-center rounded-lg justify-center items-center',
+            'h-6 w-6 self-center rounded-lg justify-center items-center',
+            isDarkMode ? 'bg-white' : 'bg-textPrimary',
           )}
           onPress={onPressInside}>
-          <IconArrowRight />
+          <FontAwesomeIcon
+            name="arrow-right"
+            size={12}
+            color={tw.color(isDarkMode ? 'bg-textPrimary' : 'white')}
+          />
         </TouchableOpacity>
       </TouchableOpacity>
       <Gap height={8} />

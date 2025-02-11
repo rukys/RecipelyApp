@@ -1,8 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import {Text, TouchableOpacity, View} from 'react-native';
+import {Text, TouchableOpacity, View, Switch} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
+import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome6';
 import {
   CardProfileDetail,
   CardProfileList,
@@ -10,19 +11,7 @@ import {
   Header,
   ModalConfirm,
 } from '../../components';
-import {globalStore, userStore} from '../../stores';
-import {
-  IconChef2,
-  IconContactMe,
-  // IconContrast,
-  IconDanger,
-  IconDeleteAccount,
-  IconHelp,
-  // IconLanguage,
-  IconLogout,
-  // IconNotif,
-  IconProfile,
-} from '../../assets';
+import {globalStore, userStore, themeStore} from '../../stores';
 import useRemoteSetting from '../../hooks/use-remote-setting';
 import tw from '../../../tailwind';
 
@@ -31,8 +20,8 @@ export default function ProfileScreen({navigation}) {
   const [photo, setPhoto] = useState(false);
   // const [language, setLanguage] = useState('id');
 
-  // const isDarkMode = themeStore(state => state.isDarkMode);
-  // const setIsDarkMode = themeStore(state => state.setIsDarkMode);
+  const isDarkMode = themeStore(state => state.isDarkMode);
+  const setIsDarkMode = themeStore(state => state.setIsDarkMode);
 
   const getUser = userStore(state => state.user);
   const setUser = userStore(state => state.setUser);
@@ -93,6 +82,7 @@ export default function ProfileScreen({navigation}) {
         .then(() => {
           setVisible(false);
           setIsLoading(false);
+          setIsDarkMode(false);
           setUser({});
           navigation.reset({
             index: 0,
@@ -110,7 +100,8 @@ export default function ProfileScreen({navigation}) {
 
   return (
     <>
-      <View style={tw.style('flex-1 bg-white px-4')}>
+      <View
+        style={tw.style('flex-1 px-4', isDarkMode ? 'bg-black' : 'bg-white')}>
         <Header title="Profil" isHideLeft />
         <Gap height={8} />
         <CardProfileDetail
@@ -140,48 +131,80 @@ export default function ProfileScreen({navigation}) {
         {/* <CardProfileList title="Ganti Bahasa" icon={<IconLanguage />} /> */}
         <CardProfileList
           title="Ubah Profil"
-          icon={<IconProfile />}
+          icon={
+            <FontAwesomeIcon
+              name="user"
+              size={20}
+              color={tw.color(isDarkMode ? 'text-white' : 'textPrimary')}
+            />
+          }
           onPress={() => onNavigateListMenu('ProfileDetailScreen')}
         />
-        {/* <CardProfileList
+        <CardProfileList
           onPress={() => {
             setIsDarkMode(!isDarkMode);
           }}
           title={isDarkMode ? 'Mode Gelap' : 'Mode Terang'}
-          icon={<IconContrast />}
+          icon={
+            <FontAwesomeIcon
+              name="circle-half-stroke"
+              size={20}
+              color={tw.color(isDarkMode ? 'text-white' : 'textPrimary')}
+            />
+          }
           iconRight={
             <Switch
-              trackColor={
-                isDarkMode ? tw.color('textPrimary') : tw.color('grey')
-              }
-              thumbColor={
-                isDarkMode ? tw.color('textPrimary') : tw.color('white')
-              }
+              trackColor={isDarkMode ? tw.color('white') : tw.color('grey')}
+              thumbColor={isDarkMode ? tw.color('white') : tw.color('primary')}
               value={isDarkMode}
               onValueChange={() => {
                 setIsDarkMode(!isDarkMode);
               }}
             />
           }
-        /> */}
+        />
         <CardProfileList
           title="Tentang Aplikasi"
-          icon={<IconChef2 />}
+          icon={
+            <FontAwesomeIcon
+              name="server"
+              size={20}
+              color={tw.color(isDarkMode ? 'text-white' : 'textPrimary')}
+            />
+          }
           onPress={() => onNavigateListMenu('AboutScreen')}
         />
         <CardProfileList
           title="F.A.Q"
-          icon={<IconHelp />}
+          icon={
+            <FontAwesomeIcon
+              name="circle-question"
+              size={20}
+              color={tw.color(isDarkMode ? 'text-white' : 'textPrimary')}
+            />
+          }
           onPress={() => onNavigateListMenu('FaqScreen')}
         />
         <CardProfileList
           title="Hubungi Kami"
-          icon={<IconContactMe />}
+          icon={
+            <FontAwesomeIcon
+              name="comment-dots"
+              size={20}
+              color={tw.color(isDarkMode ? 'text-white' : 'textPrimary')}
+            />
+          }
           onPress={() => onNavigateListMenu('ContactMeScreen')}
         />
         <CardProfileList
           title="Kebijakan dan Privasi"
-          icon={<IconDanger />}
+          icon={
+            <FontAwesomeIcon
+              name="shield-halved"
+              size={20}
+              color={tw.color(isDarkMode ? 'text-white' : 'textPrimary')}
+            />
+          }
           onPress={() => {
             onNavigateWebview(
               remoteSetting?.url_privacy,
@@ -191,14 +214,24 @@ export default function ProfileScreen({navigation}) {
         />
         <CardProfileList
           title="Hapus Akun"
-          icon={<IconDeleteAccount />}
+          icon={
+            <FontAwesomeIcon
+              name="user-minus"
+              size={20}
+              color={tw.color(isDarkMode ? 'text-white' : 'textPrimary')}
+            />
+          }
           onPress={() => onNavigateListMenu('DeleteAccountScreen')}
         />
         <TouchableOpacity
           style={tw.style('h-11 flex-row items-center')}
           onPress={onSubmitLogout}>
           <Gap width={3} />
-          <IconLogout />
+          <FontAwesomeIcon
+            name="arrow-right-from-bracket"
+            size={20}
+            color={tw.color('error')}
+          />
           <Gap width={13} />
           <Text style={tw.style('font-sofia text-base text-error')}>
             Keluar

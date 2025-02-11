@@ -12,6 +12,7 @@ Recipely is a daily cooking app that will be your kitchen assistant! With Recipe
 
 - React Native (0.72.7)
 - React Native Async Storage
+- React Native Vector Icons
 - React Native Fast Image
 - React Native SVG
 - React-Navigation

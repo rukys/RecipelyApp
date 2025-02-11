@@ -3,13 +3,8 @@ import {AnimatedScrollView} from '@kanelloc/react-native-animated-header-scroll-
 import React, {useEffect, useState} from 'react';
 import {StatusBar, Text, TouchableOpacity, View} from 'react-native';
 import ReactNativeModal from 'react-native-modal';
+import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome6';
 import tw from '../../../tailwind';
-import {
-  IconBolt,
-  IconCalories,
-  IconRectangle,
-  IconTimeCircle,
-} from '../../assets';
 import {
   Button,
   ButtonSwitch,
@@ -20,7 +15,7 @@ import {
 } from '../../components';
 import useFavorite from '../../hooks/use-favorite';
 import useRecipeDetail from '../../hooks/use-recipe-detail';
-import {globalStore} from '../../stores';
+import {globalStore, themeStore} from '../../stores';
 
 export default function RecipeDetailScreen({route}) {
   const {key, thumb, calories} = route.params || {};
@@ -30,6 +25,8 @@ export default function RecipeDetailScreen({route}) {
 
   const visible = globalStore(state => state.visible);
   const setVisible = globalStore(state => state.setVisible);
+
+  const isDarkMode = themeStore(state => state.isDarkMode);
 
   const {resultRecipeDetail, isLoadingRecipeDetail} = useRecipeDetail(key);
   const {
@@ -82,15 +79,22 @@ export default function RecipeDetailScreen({route}) {
           />
         }
         TopNavBarComponent={
-          <HeaderTopNavBar title={resultRecipeDetail?.title || ''} />
+          <HeaderTopNavBar
+            title={resultRecipeDetail?.title || ''}
+            isDarkMode={isDarkMode}
+          />
         }
         topBarHeight={75}
         headerImage={{
           uri: resultRecipeDetail?.thumb ? resultRecipeDetail?.thumb : thumb,
         }}>
-        <View style={tw.style('bg-white -mt-4 rounded-t-2xl p-5 pt-4')}>
+        <View
+          style={tw.style(
+            '-mt-4 rounded-t-2xl p-5 pt-4',
+            isDarkMode ? 'bg-black' : 'bg-white',
+          )}>
           <View style={tw.style('self-center')}>
-            <IconRectangle />
+            <View style={tw.style('w-14 h-1.5 rounded-full bg-grey')} />
           </View>
           <Gap height={16} />
 
@@ -104,7 +108,10 @@ export default function RecipeDetailScreen({route}) {
           ) : (
             <View>
               <Text
-                style={tw.style('font-sofiaBold text-base text-textPrimary')}>
+                style={tw.style(
+                  'font-sofiaBold text-base',
+                  isDarkMode ? ' text-white' : 'text-textPrimary',
+                )}>
                 {resultRecipeDetail?.title}
               </Text>
             </View>
@@ -124,12 +131,19 @@ export default function RecipeDetailScreen({route}) {
           ) : (
             <View>
               <Text
-                style={tw.style('font-sofia text-textGrey')}
+                style={tw.style(
+                  'font-sofia',
+                  isDarkMode ? ' text-white' : 'text-textGrey',
+                )}
                 numberOfLines={expand ? 300 : 3}>
                 {resultRecipeDetail?.desc}
               </Text>
               <TouchableOpacity onPress={() => setExpand(!expand)}>
-                <Text style={tw.style('font-sofia text-textPrimary')}>
+                <Text
+                  style={tw.style(
+                    'font-sofia',
+                    isDarkMode ? 'text-white' : 'text-textPrimary',
+                  )}>
                   {expand ? 'Sembunyikan' : 'Lihat selengkapnya'}
                 </Text>
               </TouchableOpacity>
@@ -173,11 +187,18 @@ export default function RecipeDetailScreen({route}) {
                       style={tw.style(
                         'h-9 w-9 rounded-lg justify-center items-center bg-grey',
                       )}>
-                      <IconCalories height={24} width={24} />
+                      <FontAwesomeIcon
+                        name={'fire'}
+                        size={20}
+                        color={tw.color('textGrey')}
+                      />
                     </View>
                     <Gap width={8} />
                     <Text
-                      style={tw.style('font-sofia self-center text-textGrey')}>
+                      style={tw.style(
+                        'font-sofia self-center',
+                        isDarkMode ? 'text-white' : 'text-textGrey',
+                      )}>
                       {resultRecipeDetail?.calories || calories}
                     </Text>
                     <Gap width={16} />
@@ -187,10 +208,18 @@ export default function RecipeDetailScreen({route}) {
                   style={tw.style(
                     'h-9 w-9 rounded-lg justify-center items-center bg-grey',
                   )}>
-                  <IconBolt height={24} width={24} />
+                  <FontAwesomeIcon
+                    name={'bolt'}
+                    size={20}
+                    color={tw.color('textGrey')}
+                  />
                 </View>
                 <Gap width={8} />
-                <Text style={tw.style('font-sofia self-center text-textGrey')}>
+                <Text
+                  style={tw.style(
+                    'font-sofia self-center',
+                    isDarkMode ? 'text-white' : 'text-textGrey',
+                  )}>
                   {resultRecipeDetail?.difficulty}
                 </Text>
                 <Gap width={16} />
@@ -198,10 +227,18 @@ export default function RecipeDetailScreen({route}) {
                   style={tw.style(
                     'h-9 w-9 rounded-lg justify-center items-center bg-grey',
                   )}>
-                  <IconTimeCircle height={24} width={24} />
+                  <FontAwesomeIcon
+                    name={'clock'}
+                    size={20}
+                    color={tw.color('textGrey')}
+                  />
                 </View>
                 <Gap width={8} />
-                <Text style={tw.style('font-sofia self-center text-textGrey')}>
+                <Text
+                  style={tw.style(
+                    'font-sofia self-center',
+                    isDarkMode ? 'text-white' : 'text-textGrey',
+                  )}>
                   {resultRecipeDetail?.times}
                 </Text>
               </>
@@ -216,6 +253,7 @@ export default function RecipeDetailScreen({route}) {
             <ButtonSwitch
               titleLeft="Komposisi"
               titleRight="Panduan"
+              isDarkMode={isDarkMode}
               onPress={onChangeSwitch}
             />
           )}
@@ -228,7 +266,8 @@ export default function RecipeDetailScreen({route}) {
             <View style={tw.style('flex-row')}>
               <Text
                 style={tw.style(
-                  'flex-1 text-base text-textPrimary font-sofiaBold',
+                  'flex-1 text-base font-sofiaBold',
+                  isDarkMode ? 'text-white' : 'text-textPrimary',
                 )}>
                 {isIngredient ? 'Pandaun :' : 'Komposisi :'}
               </Text>
@@ -266,9 +305,19 @@ export default function RecipeDetailScreen({route}) {
               return (
                 <View style={tw.style('flex-row')} key={index}>
                   {!isIngredient ? (
-                    <Text style={tw.style('font-sofia text-textGrey')}>- </Text>
+                    <Text
+                      style={tw.style(
+                        'font-sofia',
+                        isDarkMode ? 'text-white' : 'text-textGrey',
+                      )}>
+                      -{' '}
+                    </Text>
                   ) : null}
-                  <Text style={tw.style('font-sofia text-textGrey')}>
+                  <Text
+                    style={tw.style(
+                      'font-sofia',
+                      isDarkMode ? 'text-white' : 'text-textGrey',
+                    )}>
                     {item.trim()}
                   </Text>
                 </View>

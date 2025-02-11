@@ -16,7 +16,7 @@ const Button = ({
       <TouchableOpacity
         onPress={onPress}
         style={[
-          tw.style('w-full h-12  justify-center items-center rounded-lg'),
+          tw.style('w-full h-12 justify-center items-center rounded-lg'),
           style,
         ]}>
         <Text

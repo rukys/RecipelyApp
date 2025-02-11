@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {Text, TextInput, TouchableOpacity, View} from 'react-native';
+import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome6';
 import tw from '../../../tailwind';
-import {IconEye, IconEyeOff} from '../../assets';
 import Gap from '../gap';
 
 const Input = ({
@@ -53,11 +53,11 @@ const Input = ({
             onPress={() => {
               setSecure(!secure);
             }}>
-            {secure ? (
-              <IconEye width={25} height={25} />
-            ) : (
-              <IconEyeOff width={25} height={25} />
-            )}
+            <FontAwesomeIcon
+              name={secure ? 'eye' : 'eye-slash'}
+              size={18}
+              color={tw.color('white')}
+            />
           </TouchableOpacity>
         )}
       </View>

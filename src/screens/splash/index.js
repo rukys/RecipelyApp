@@ -5,8 +5,10 @@ import React, {useEffect} from 'react';
 import {StatusBar, Text, View} from 'react-native';
 import tw from '../../../tailwind';
 import {IconChef} from '../../assets';
+import {themeStore} from '../../stores';
 
 export default function SplashScreen({navigation}) {
+  const isDarkMode = themeStore(state => state.isDarkMode);
   // Generate unique token represents each devices
   const generateFCMToken = uid => {
     messaging()
@@ -44,9 +46,15 @@ export default function SplashScreen({navigation}) {
 
   return (
     <>
-      <StatusBar backgroundColor={tw.color('primary')} />
+      <StatusBar
+        backgroundColor={tw.color(isDarkMode ? 'black' : 'primary')}
+        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
+      />
       <View
-        style={tw.style('flex-1 bg-primary items-center justify-center p-8')}>
+        style={tw.style(
+          'flex-1 items-center justify-center p-8',
+          isDarkMode ? 'bg-black' : 'bg-primary',
+        )}>
         <IconChef width={125} height={125} />
         <Text style={tw.style('text-white text-2xl font-sofiaExtraLight')}>
           Recipely

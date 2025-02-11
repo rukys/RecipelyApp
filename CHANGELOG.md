@@ -1,3 +1,10 @@
+### Changelog v1.5
+
+- Add library react native vector icons
+- Change every icon with react native vector icons fontAwesome6
+- Add dark and light mode theme
+- Add function dinamis greeting in home header
+
 ### Changelog v1.4
 
 - Add library remind update google playstore

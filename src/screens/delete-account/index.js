@@ -5,7 +5,7 @@ import React, {useState} from 'react';
 import {Text, View} from 'react-native';
 import tw from '../../../tailwind';
 import {Button, Gap, Header, Input, ModalConfirm} from '../../components';
-import {userStore} from '../../stores';
+import {themeStore, userStore} from '../../stores';
 import {showMessage} from '../../utils';
 
 export default function DeleteAccountScreen({navigation}) {
@@ -16,6 +16,8 @@ export default function DeleteAccountScreen({navigation}) {
 
   const getUser = userStore(state => state.user);
   const setUser = userStore(state => state.setUser);
+
+  const isDarkMode = themeStore(state => state.isDarkMode);
 
   const onSubmitDeactiveAccount = () => {
     setVisible(false);
@@ -46,9 +48,10 @@ export default function DeleteAccountScreen({navigation}) {
 
   return (
     <>
-      <View style={tw.style('flex-1 bg-white')}>
+      <View style={tw.style('flex-1', isDarkMode ? 'bg-black' : 'bg-white')}>
         <Header
           title="Hapus Akun"
+          isWhite={isDarkMode}
           onPressBack={() => {
             navigation.goBack();
           }}
@@ -58,10 +61,22 @@ export default function DeleteAccountScreen({navigation}) {
             label="Alasan"
             multiline
             value={reason}
-            inputStyle={tw.style('self-start text-textPrimary')}
-            labelStyle={tw.style('text-textPrimary')}
-            containerStyle={tw.style('bg-white border-textPrimary h-36')}
-            placeholderColor={tw.style('text-textGrey')}
+            inputStyle={tw.style(
+              'self-start',
+              isDarkMode ? 'text-white' : 'text-textPrimary',
+            )}
+            labelStyle={tw.style(
+              isDarkMode ? 'text-white' : 'text-textPrimary',
+            )}
+            containerStyle={tw.style(
+              ' h-36',
+              isDarkMode
+                ? 'bg-black border-white'
+                : 'bg-white border-textPrimary',
+            )}
+            placeholderColor={tw.style(
+              isDarkMode ? 'text-white' : 'text-textGrey',
+            )}
             placeholder="Tuliskan alasan lengkap"
             onChangeText={val => setReason(val)}
             maxLength={300}
@@ -69,7 +84,8 @@ export default function DeleteAccountScreen({navigation}) {
           <Gap height={5} />
           <Text
             style={tw.style(
-              'font-sofiaLight text-textGrey text-xs self-end mr-1',
+              'font-sofiaLight text-xs self-end mr-1',
+              isDarkMode ? 'text-white' : 'text-textGrey',
             )}>
             {reason.length + '/300'}
           </Text>
@@ -82,7 +98,11 @@ export default function DeleteAccountScreen({navigation}) {
               onValueChange={newValue => setToggleCheckBox(newValue)}
             />
             <Gap width={5} />
-            <Text style={tw.style('font-sofia text-md text-textPrimary')}>
+            <Text
+              style={tw.style(
+                'font-sofia text-md',
+                isDarkMode ? 'text-white' : 'text-textPrimary',
+              )}>
               Dengan ini saya menyetujui penghapusan akun
             </Text>
           </View>
