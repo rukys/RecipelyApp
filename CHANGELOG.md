@@ -1,3 +1,8 @@
+### Changelog v1.6
+
+- Change android target SDK 34 to 35
+- Add welcome popup login
+
 ### Changelog v1.5
 
 - Add library react native vector icons

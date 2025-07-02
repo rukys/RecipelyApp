@@ -6,8 +6,10 @@ import {
   View,
 } from 'react-native';
 import React, {useState} from 'react';
+import ReactNativeModal from 'react-native-modal';
 import deviceInfoModule from 'react-native-device-info';
 import {
+  Button,
   ButtonCategory,
   CardArticle,
   CardNewRecipe,
@@ -26,9 +28,12 @@ import ShimmerCategory from './shimmer/shimmer-category';
 import ShimmerRecipeByCategory from './shimmer/shimmer-recipe-by-category';
 import ShimmerArticle from './shimmer/shimmer-article';
 import tw from '../../../tailwind';
+import {ImgWelcome} from '../../assets';
 
 export default function HomeScreen({navigation}) {
   const getUser = userStore(state => state.user);
+  const isFirstLogin = userStore(state => state.isFirstLogin);
+  const setIsFirstLogin = userStore(state => state.setIsFirstLogin);
 
   const setLoading = globalStore(state => state.setLoading);
   const isLoading = globalStore(state => state.loading);
@@ -300,6 +305,38 @@ export default function HomeScreen({navigation}) {
         </View>
         <Gap height={16} />
       </ScrollView>
+
+      <ReactNativeModal
+        isVisible={isFirstLogin}
+        onBackdropPress={() => {
+          setIsFirstLogin(false);
+        }}>
+        <View style={tw.style('bg-white rounded-xl p-6')}>
+          <View style={tw.style('items-center')}>
+            <ImgWelcome height={200} width={280} />
+          </View>
+          <Text
+            style={tw.style(
+              'font-sofiaMedium self-center text-black mt-4 text-lg',
+            )}>
+            Selamat Datang Di Recipely
+          </Text>
+          <Text
+            style={tw.style(
+              'font-sofia self-center text-textGrey mt-2 text-center mb-10 text-base mx-4',
+            )}>
+            Temukan berbagai macam resep makanan kesukaanmu disini, {'\n'}klik
+            Explore!
+          </Text>
+          <Button
+            title="Explore"
+            style={tw.style('')}
+            onPress={() => {
+              setIsFirstLogin(false);
+            }}
+          />
+        </View>
+      </ReactNativeModal>
     </View>
   );
 }

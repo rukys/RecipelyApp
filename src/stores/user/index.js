@@ -9,6 +9,11 @@ const userStore = create(
       setUser: user => {
         set({user});
       },
+
+      isFirstLogin: false,
+      setIsFirstLogin: data => {
+        set({isFirstLogin: data});
+      },
     }),
     {
       name: 'user-storage',
