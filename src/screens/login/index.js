@@ -10,6 +10,7 @@ import {showMessage, useForm} from '../../utils';
 
 export default function LoginScreen({navigation}) {
   const setUser = userStore(state => state.setUser);
+  const setIsFirstLogin = userStore(state => state.setIsFirstLogin);
   const setIsLoading = globalStore(state => state.setLoading);
   const isLoading = globalStore(state => state.loading);
 
@@ -44,7 +45,7 @@ export default function LoginScreen({navigation}) {
               if (getData?.isActive) {
                 setIsLoading(false);
                 setUser(snapshot.val());
-                showMessage('Selamat datang di Recipely', 'success');
+                setIsFirstLogin(true);
                 navigation.reset({
                   index: 0,
                   routes: [{name: 'AppBarScreen'}],

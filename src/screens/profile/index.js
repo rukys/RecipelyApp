@@ -25,6 +25,7 @@ export default function ProfileScreen({navigation}) {
 
   const getUser = userStore(state => state.user);
   const setUser = userStore(state => state.setUser);
+  const setIsFirstLogin = userStore(state => state.setIsFirstLogin);
   const visible = globalStore(state => state.visible);
   const setVisible = globalStore(state => state.setVisible);
   const isLoading = globalStore(state => state.loading);
@@ -84,6 +85,7 @@ export default function ProfileScreen({navigation}) {
           setIsLoading(false);
           setIsDarkMode(false);
           setUser({});
+          setIsFirstLogin(false);
           navigation.reset({
             index: 0,
             routes: [{name: 'OnboardScreen'}],
