@@ -1,6 +1,7 @@
 import CheckBox from '@react-native-community/checkbox';
 import auth from '@react-native-firebase/auth';
-import database from '@react-native-firebase/database';
+import {getApp} from '@react-native-firebase/app';
+import {getDatabase, ref, set} from '@react-native-firebase/database';
 import React, {useState} from 'react';
 import {ScrollView, StatusBar, Text, View} from 'react-native';
 import tw from '../../../tailwind';
@@ -59,21 +60,23 @@ export default function SignupScreen({navigation}) {
             isActive: true,
             language: 'id',
           };
-          database()
-            .ref('/users/' + response?.user?.uid + '/')
-            .set(store)
-            .then(() => {
-              setIsLoading(false);
-              setUser(store);
-              showMessage(
-                'Akun berhasil dibuat, Selamat datang di Recipely',
-                'success',
-              );
-              navigation.reset({
-                index: 0,
-                routes: [{name: 'AppBarScreen'}],
-              });
+
+          const app = getApp();
+          const db = getDatabase(app);
+          const userRef = ref(db, '/users/' + response?.user?.uid + '/');
+
+          set(userRef, store).then(() => {
+            setIsLoading(false);
+            setUser(store);
+            showMessage(
+              'Akun berhasil dibuat, Selamat datang di Recipely',
+              'success',
+            );
+            navigation.reset({
+              index: 0,
+              routes: [{name: 'AppBarScreen'}],
             });
+          });
         }
       })
       .catch(error => {

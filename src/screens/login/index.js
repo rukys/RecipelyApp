@@ -1,5 +1,10 @@
+import {getApp} from '@react-native-firebase/app';
+import {
+  getDatabase,
+  ref,
+  get as getData,
+} from '@react-native-firebase/database';
 import auth from '@react-native-firebase/auth';
-import database from '@react-native-firebase/database';
 import React from 'react';
 import {StatusBar, Text, View} from 'react-native';
 import tw from '../../../tailwind';
@@ -37,24 +42,25 @@ export default function LoginScreen({navigation}) {
       .signInWithEmailAndPassword(form.email, form.password)
       .then(response => {
         if (response?.user) {
-          database()
-            .ref('/users/' + response?.user?.uid)
-            .once('value')
-            .then(snapshot => {
-              const getData = snapshot.val();
-              if (getData?.isActive) {
-                setIsLoading(false);
-                setUser(snapshot.val());
-                setIsFirstLogin(true);
-                navigation.reset({
-                  index: 0,
-                  routes: [{name: 'AppBarScreen'}],
-                });
-              } else {
-                setIsLoading(false);
-                showMessage('Account Anda sudah tidak aktif', 'danger');
-              }
-            });
+          const app = getApp();
+          const db = getDatabase(app);
+          const userRef = ref(db, `/users/${response.user.uid}`);
+
+          getData(userRef).then(snapshot => {
+            const getDataVal = snapshot.val();
+            if (getDataVal?.isActive) {
+              setIsLoading(false);
+              setUser(getDataVal);
+              setIsFirstLogin(true);
+              navigation.reset({
+                index: 0,
+                routes: [{name: 'AppBarScreen'}],
+              });
+            } else {
+              setIsLoading(false);
+              showMessage('Account Anda sudah tidak aktif', 'danger');
+            }
+          });
         }
       })
       .catch(error => {
