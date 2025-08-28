@@ -1,3 +1,7 @@
+### Changelog v1.7
+
+- Upgrade react native version 0.72.7 to 0.79.0
+
 ### Changelog v1.6
 
 - Change android target SDK 34 to 35

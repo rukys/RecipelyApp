@@ -1,5 +1,14 @@
 import {useState} from 'react';
-import database from '@react-native-firebase/database';
+import {getApp} from '@react-native-firebase/app';
+import {
+  getDatabase,
+  ref,
+  onValue,
+  push,
+  set,
+  get,
+} from '@react-native-firebase/database';
+
 import {globalStore, userStore} from '../stores';
 import {showMessage} from '../utils';
 
@@ -9,112 +18,84 @@ export default function useFavorite() {
   const getUser = userStore(state => state.user);
   const setListFavorite = globalStore(state => state.setListFavorite);
 
-  const addressStore = '/users/' + getUser?.uid + '/favorite/';
-  const generateKey = database().ref(addressStore).push();
+  const app = getApp();
+  const db = getDatabase(app);
+
+  const addressStore = `/users/${getUser?.uid}/favorite/`;
+  const addressRef = ref(db, addressStore);
+  const generateKey = push(addressRef);
   const getUniqeId = generateKey.key;
 
   const getStoreDatabase = () => {
-    database()
-      .ref(addressStore)
-      .on('value', snapshot => {
-        if (snapshot.val()) {
-          const oldData = snapshot.val();
-          const favoriteData = [];
-          Object.keys(oldData).map(key => {
-            favoriteData.push(oldData[key]);
-          });
-          setListFavorite(favoriteData);
-        } else {
-          setListFavorite([]);
-        }
-      });
+    onValue(addressRef, snapshot => {
+      if (snapshot.exists()) {
+        const oldData = snapshot.val();
+        const favoriteData = Object.values(oldData);
+        setListFavorite(favoriteData);
+      } else {
+        setListFavorite([]);
+      }
+    });
   };
 
   const onCheckStoreDatabase = data => {
-    database()
-      .ref(addressStore)
-      .on('value', snapshot => {
-        if (snapshot.val()) {
-          const oldData = snapshot.val();
-          const favoriteData = [];
-          Object.keys(oldData).map(key => {
-            favoriteData.push(oldData[key]);
-          });
-          const checkSameData = favoriteData.filter(item => item.key === data);
-          if (checkSameData?.length === 0) {
-            setIsStore(false);
-          } else {
-            setIsStore(true);
-          }
-        }
-      });
+    onValue(addressRef, snapshot => {
+      if (snapshot.exists()) {
+        const oldData = snapshot.val();
+        const favoriteData = Object.values(oldData);
+        const checkSameData = favoriteData.filter(item => item.key === data);
+        setIsStore(checkSameData.length !== 0);
+      }
+    });
   };
 
   const onDeleteStoreDatabase = data => {
-    database()
-      .ref(addressStore)
-      .once('value')
-      .then(snapshot => {
-        if (snapshot.val()) {
-          const oldData = snapshot.val();
-          const favoriteData = [];
-          Object.keys(oldData).map(key => {
-            favoriteData.push(oldData[key]);
+    get(addressRef).then(snapshot => {
+      if (snapshot.exists()) {
+        const oldData = snapshot.val();
+        const favoriteData = Object.values(oldData);
+        const checkSameData = favoriteData.filter(item => item.key === data);
+        if (checkSameData.length !== 0) {
+          const deleteRef = ref(db, `${addressStore}/${checkSameData[0].id}`);
+          set(deleteRef, null).then(() => {
+            setIsStore(false);
+            showMessage('Resep berhasil di hapus dari favorit', 'success');
           });
-          const checkSameData = favoriteData.filter(item => item.key === data);
-          if (checkSameData?.length !== 0) {
-            database()
-              .ref(addressStore + '/' + checkSameData[0].id)
-              .set(null)
-              .then(() => {
-                setIsStore(false);
-                showMessage('Resep berhasil di hapus dari favorit', 'success');
-              });
-          }
         }
-      });
+      }
+    });
   };
 
   const onStoreDatabase = params => {
-    database()
-      .ref(addressStore)
-      .once('value')
-      .then(snapshot => {
-        const store = {
-          id: getUniqeId,
-          ...params,
-        };
+    get(addressRef).then(snapshot => {
+      const store = {
+        id: getUniqeId,
+        ...params,
+      };
 
-        if (snapshot.val()) {
-          const oldData = snapshot.val();
-          const favoriteData = [];
-          Object.keys(oldData).map(key => {
-            favoriteData.push(oldData[key]);
+      if (snapshot.exists()) {
+        const oldData = snapshot.val();
+        const favoriteData = Object.values(oldData);
+        const checkSameData = favoriteData.filter(
+          item => item.key === params.key,
+        );
+        if (checkSameData.length === 0) {
+          const newRef = ref(db, `${addressStore}/${getUniqeId}/`);
+          set(newRef, store).then(() => {
+            setIsStore(true);
+            showMessage('Resep berhasil di simpan ke favorit', 'success');
           });
-          const checkSameData = favoriteData.filter(
-            item => item.key === params.key,
-          );
-          if (checkSameData?.length === 0) {
-            database()
-              .ref(addressStore + '/' + getUniqeId + '/')
-              .set(store)
-              .then(() => {
-                setIsStore(true);
-                showMessage('Resep berhasil di simpan ke favorit', 'success');
-              });
-          } else {
-            showMessage('Resep sudah ada di favorit', 'info');
-          }
         } else {
-          database()
-            .ref(addressStore + '/' + getUniqeId + '/')
-            .set(store)
-            .then(() => {
-              setIsStore(true);
-              showMessage('Resep berhasil di simpan ke favorit', 'success');
-            });
+          showMessage('Resep sudah ada di favorit', 'info');
         }
-      });
+      } else {
+        const newRef = ref(db, `${addressStore}/${getUniqeId}/`);
+        set(newRef, store).then(() => {
+          setIsStore(true);
+          showMessage('Resep berhasil di simpan ke favorit', 'success');
+        });
+      }
+    });
   };
 
   return {
